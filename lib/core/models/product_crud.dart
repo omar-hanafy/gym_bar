@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gym_bar/core/models/product.dart';
-import 'package:gym_bar/core/service/api.dart';
+import 'package:gym_bar/core/services/api.dart';
 
 import '../../locator.dart';
 

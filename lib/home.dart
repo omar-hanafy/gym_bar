@@ -58,7 +58,7 @@ class Home extends StatelessWidget {
       //TODO: read the following link.. https://flutter.dev/docs/cookbook/forms/validation
       final _formKey = GlobalKey<FormState>();
       final TextEditingController _textFieldController =
-      TextEditingController();
+          TextEditingController();
       Alert(
           context: context,
           title: "New Product",
@@ -169,7 +169,7 @@ class Home extends StatelessWidget {
       //TODO: read the following link.. https://flutter.dev/docs/cookbook/forms/validation
       final _formKey = GlobalKey<FormState>();
       final TextEditingController _textFieldController =
-      TextEditingController();
+          TextEditingController();
       Alert(
           context: context,
           title: "New Cusomer",
@@ -256,12 +256,11 @@ class Home extends StatelessWidget {
       //TODO: read the following link.. https://flutter.dev/docs/cookbook/forms/validation
       final _formKey = GlobalKey<FormState>();
       final TextEditingController _textFieldController =
-      TextEditingController();
+          TextEditingController();
       Alert(
           context: context,
           title: "New Cusomer",
-          content:
-          Column(
+          content: Column(
             children: <Widget>[
               TextField(
                 decoration: InputDecoration(
@@ -337,7 +336,7 @@ class Home extends StatelessWidget {
       //TODO: read the following link.. https://flutter.dev/docs/cookbook/forms/validation
       final _formKey = GlobalKey<FormState>();
       final TextEditingController _textFieldController =
-      TextEditingController();
+          TextEditingController();
       Alert(
           context: context,
           title: "New Cusomer",
