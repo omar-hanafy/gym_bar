@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1020252714515",
+    "firebase_url": "https://gymbar-f657f.firebaseio.com",
+    "project_id": "gymbar-f657f",
+    "storage_bucket": "gymbar-f657f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020252714515:android:964862a0724778931bb1e6",
+        "android_client_info": {
+          "package_name": "handledexception.gym_bar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020252714515-3fi0ct7gia4p8mq6mi3afgpjqjb1jqh9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "handledexception.gym_bar",
+            "certificate_hash": "1f1078c17c881eaaf12ad956736905acaacd01a6"
+          }
+        },
+        {
+          "client_id": "1020252714515-1bi4o49l753t64dvdn6mmurq51s93v65.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDif-VB4UUHjfE7Ul3NVYkEfR-HryNlXgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020252714515-1bi4o49l753t64dvdn6mmurq51s93v65.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
