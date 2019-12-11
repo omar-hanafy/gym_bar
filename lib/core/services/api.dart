@@ -19,19 +19,16 @@ class Api {
 
   Stream<QuerySnapshot> streamDataCollection(String path) {
     ref = _db.collection(path);
-
     return ref.snapshots();
   }
 
   Future<DocumentSnapshot> getDocumentById(String id, String path) {
     ref = _db.collection(path);
-
     return ref.document(id).get();
   }
 
   Future<void> removeDocument(String id, String path) {
     ref = _db.collection(path);
-
     return ref.document(id).delete();
   }
 

@@ -1,7 +1,14 @@
 class Product {
-  String id, name, category, branch;
-  String number, customerPrice, employeePrice, housePrice;
-
+  String id,
+      name,
+      category,
+      discription,
+      branch,
+      number,
+      customerPrice,
+      employeePrice,
+      housePrice,
+      photo;
   Product({
     this.category,
     this.branch,

@@ -57,7 +57,7 @@ class ProductModel extends BaseModel {
 
   Future addProduct(Product data, String path) async {
     //!i have  replaced this line:
-    //? var result  = await _api.addDocument(data.toJson(),path) ;
+    //? var result  = await _api.addDocument(data.toJson(),path);
     setState(ViewState.Busy);
     await _api.addDocument(data.toJson(), path);
     setState(ViewState.Idle);
