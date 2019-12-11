@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/routers.dart';
 import 'package:provider/provider.dart';
-import 'core/view_models/product_crud.dart';
+import 'core/view_models/product_model.dart';
 import 'locator.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          builder: (_) => locator<ProductCrud>(),
+          builder: (_) => locator<ProductModel>(),
           create: (BuildContext context) {},
         ),
       ],

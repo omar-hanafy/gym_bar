@@ -1,10 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gym_bar/core/models/user.dart';
 
 class Api {
   final Firestore _db = Firestore.instance;
 
   //final String path;
   CollectionReference ref;
+  Future<User> getUserProfile(int userId) async {
+    var user;
+    //TODO: fetch user data from firestore here.
+    return user;
+  }
 
   Future<QuerySnapshot> getDataCollection(String path) {
     ref = _db.collection(path);

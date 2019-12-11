@@ -1,14 +1,14 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_bar/ui/views/Home.dart';
+import 'package:gym_bar/ui/views/login.dart';
 
 class Routers {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/' :
         return  MaterialPageRoute(
-            builder: (_)=> Home()
+            builder: (_)=> Login()
         );
 //      case '/addProduct' :
 //        return MaterialPageRoute(
