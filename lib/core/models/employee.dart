@@ -1,10 +1,12 @@
 class Employee {
-  String id, name, email, category, type, branch, cash;
+  String id, name, email, category, type, branch, cash, photo;
+
   Employee(
       {this.category,
       this.branch,
       this.name,
       this.id,
+      this.photo,
       this.type,
       this.cash,
       this.email});
@@ -16,12 +18,14 @@ class Employee {
         category = snapshot['category'] ?? '',
         branch = snapshot['branch'] ?? '',
         type = snapshot['type'],
+        photo = snapshot['photo'],
         cash = snapshot['cash'];
 
   toJson() {
     return {
       "name": name,
       "email": email,
+      "photo": photo,
       "category": category,
       "branch": branch,
       "type": type,

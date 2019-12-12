@@ -1,12 +1,15 @@
-class Client {
-  String id, name, date, hour, branch;
-  Client({this.branch, this.name, this.id, this.date, this.hour});
+class Attendance {
+  String id, name, date, hour, branch, photo;
 
-  Client.fromMap(Map snapshot, String id)
+  Attendance(
+      {this.branch, this.name, this.id, this.date, this.hour, this.photo});
+
+  Attendance.fromMap(Map snapshot, String id)
       : id = id ?? "",
         name = snapshot['name'] ?? '',
         branch = snapshot['branch'] ?? '',
         hour = snapshot['hour'] ?? '',
+        photo = snapshot['photo'] ?? '',
         date = snapshot['date'];
 
   toJson() {
@@ -14,6 +17,7 @@ class Client {
       "name": name,
       "branch": branch,
       "hour": hour,
+      "photo": photo,
       "date": date,
     };
   }

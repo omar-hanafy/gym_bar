@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gym_bar/core/enums/viewstate.dart';
 import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/services/api.dart';
@@ -20,12 +19,21 @@ class ProductModel extends BaseModel {
     return products;
   }
 
-  Stream<QuerySnapshot> fetchProductsAsStream(String path) {
-    setState(ViewState.Busy);
-    var api = _api.streamDataCollection(path);
-    setState(ViewState.Idle);
+  // Stream<QuerySnapshot> fetchProductsAsStream(String path) {
+  //   setState(ViewState.Busy);
+  //   var api = _api.streamDataCollection(path);
+  //   setState(ViewState.Idle);
 
-    return api;
+  //   return api;
+  // }
+
+  Future addProduct(Product data, String path) async {
+    //!i have  replaced this line:
+    //? var result  = await _api.addDocument(data.toJson(),path);
+    setState(ViewState.Busy);
+    await _api.addDocument(data.toJson(), path);
+    setState(ViewState.Idle);
+    return;
   }
 
   Future<Product> getProductById(String id, String path) async {
@@ -35,6 +43,10 @@ class ProductModel extends BaseModel {
     setState(ViewState.Idle);
 
     return prod;
+  }
+
+  Future<Product> getProductByBranch(String path) async {
+    return null;
   }
 
   Future removeProduct(String id, String path) async {
@@ -50,16 +62,6 @@ class ProductModel extends BaseModel {
     setState(ViewState.Busy);
 
     await _api.updateDocument(data.toJson(), id, path);
-    setState(ViewState.Idle);
-
-    return;
-  }
-
-  Future addProduct(Product data, String path) async {
-    //!i have  replaced this line:
-    //? var result  = await _api.addDocument(data.toJson(),path);
-    setState(ViewState.Busy);
-    await _api.addDocument(data.toJson(), path);
     setState(ViewState.Idle);
 
     return;

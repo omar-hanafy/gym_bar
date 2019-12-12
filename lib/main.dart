@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/',
+        initialRoute: '/login',
         title: 'Gym Caffe',
         theme: ThemeData(),
         onGenerateRoute: Routers.generateRoute,

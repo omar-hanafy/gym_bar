@@ -6,6 +6,7 @@ class Api {
 
   //final String path;
   CollectionReference ref;
+
   Future<User> getUserProfile(int userId) async {
     var user;
     //TODO: fetch user data from firestore here.

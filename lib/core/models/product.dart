@@ -9,6 +9,7 @@ class Product {
       employeePrice,
       housePrice,
       photo;
+
   Product({
     this.category,
     this.branch,
@@ -18,6 +19,7 @@ class Product {
     this.name,
     this.number,
     this.id,
+    this.photo,
   });
 
   Product.fromMap(Map snapshot, String id)
@@ -28,6 +30,7 @@ class Product {
         customerPrice = snapshot['customerPrice'] ?? '',
         employeePrice = snapshot['employeePrice'] ?? '',
         housePrice = snapshot['housePrice'] ?? '',
+        photo = snapshot['photo'] ?? '',
         number = snapshot['number'] ?? '';
 
   toJson() {
@@ -39,6 +42,7 @@ class Product {
       "employeePrice": employeePrice,
       "housePrice": housePrice,
       "number": number,
+      "photo": photo,
     };
   }
 }
