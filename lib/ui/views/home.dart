@@ -12,10 +12,18 @@ class Home extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          HomeItem().item("المنتجات", "assets/images/products.jpg"),
-          HomeItem().item("العملاء", "assets/images/clients.jpeg"),
-          HomeItem().item("الموظفين", "assets/images/employers.jpg"),
-          HomeItem().item("الفروع", "assets/images/branches.jpg"),
+          item("المنتجات", "assets/images/products.jpg", () {
+            //todo: navigate here.
+          }),
+          item("العملاء", "assets/images/clients.jpeg", () {
+            //todo: navigate here.
+          }),
+          item("الموظفين", "assets/images/employers.jpg", () {
+            //todo: navigate here.
+          }),
+          item("الفروع", "assets/images/branches.jpg", () {
+            //todo: navigate here.
+          }),
         ],
       ),
     );

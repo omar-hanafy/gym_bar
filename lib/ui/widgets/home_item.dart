@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 
-class HomeItem {
-  Widget item(String name, String photo) {
-    return Card(
+Widget item(String name, String photo, Function function) {
+  return GestureDetector(
+    onTap: function,
+    child: Card(
       color: Colors.black,
       semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -31,6 +32,6 @@ class HomeItem {
       ),
       elevation: 5,
       margin: EdgeInsets.all(20),
-    );
-  }
+    ),
+  );
 }
