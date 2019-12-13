@@ -10,7 +10,7 @@ class Login extends StatelessWidget {
       body: Center(
         child: RaisedButton(
           child: Text("Welcome to our caffe"),
-          onPressed: () {
+          onPressed: (){
             Navigator.pushNamed(context, '/');
           },
         )

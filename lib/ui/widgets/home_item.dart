@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 
-Widget item(String name, String photo, Function function) {
+Widget item({String title, String image, Function onPress}) {
   return GestureDetector(
-    onTap: function,
+    onTap: onPress,
     child: Card(
       color: Colors.black,
       semanticContainer: true,
@@ -14,14 +14,14 @@ Widget item(String name, String photo, Function function) {
             child: Opacity(
               opacity: 0.7,
               child:
-                  Image.asset(photo, width: 320, height: 300, fit: BoxFit.fill),
+                  Image.asset(image, width: 320, height: 300, fit: BoxFit.fill),
             ),
           ),
           Center(
               child: Padding(
             padding: const EdgeInsets.only(top: 110, right: 20),
             child: Text(
-              name,
+              title,
               style: imageTitle,
             ),
           )),
