@@ -3,13 +3,17 @@ import 'package:gym_bar/core/models/user.dart';
 
 class Api {
   final Firestore _db = Firestore.instance;
-
-  //final String path;
   CollectionReference ref;
 
-  Future<User> getUserProfile(int userId) async {
-    var user;
-    //TODO: fetch user data from firestore here.
+  Future<User> getUserProfile(userId) async {
+    User user;
+    if (userId != null) {
+      user = await Firestore.instance
+          .collection('users')
+          .document(userId)
+          .get()
+          .then((documentSnapshot) => User.fromDocument(documentSnapshot));
+    }
     return user;
   }
 

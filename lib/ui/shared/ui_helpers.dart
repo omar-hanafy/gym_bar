@@ -5,12 +5,14 @@ class UIHelper {
   // Vertical spacing constants. Adjust to your liking.
   static const double _VerticalSpaceSmall = 10.0;
   static const double _VerticalSpaceMedium = 20.0;
-  static const double _VerticalSpaceLarge = 60.0;
+  static const double _VerticalSpaceLarge = 40.0;
+  static const double _VerticalSpaceXLarge = 60.0;
 
   // Vertical spacing constants. Adjust to your liking.
   static const double _HorizontalSpaceSmall = 10.0;
   static const double _HorizontalSpaceMedium = 20.0;
-  static const double HorizontalSpaceLarge = 60.0;
+  static const double HorizontalSpaceLarge = 20.0;
+  static const double HorizontalSpaceXLarge = 60.0;
 
   /// Returns a vertical space with height set to [_VerticalSpaceSmall]
   static Widget verticalSpaceSmall() {
@@ -27,6 +29,11 @@ class UIHelper {
     return verticalSpace(_VerticalSpaceLarge);
   }
 
+  /// Returns a vertical space with height set to [_VerticalSpaceLarge]
+  static Widget verticalSpaceXLarge() {
+    return verticalSpace(_VerticalSpaceXLarge);
+  }
+
   /// Returns a vertical space equal to the [height] supplied
   static Widget verticalSpace(double height) {
     return Container(height: height);
@@ -40,6 +47,11 @@ class UIHelper {
   /// Returns a vertical space with height set to [_HorizontalSpaceMedium]
   static Widget horizontalSpaceMedium() {
     return horizontalSpace(_HorizontalSpaceMedium);
+  }
+
+  /// Returns a vertical space with height set to [HorizontalSpaceXLarge]
+  static Widget horizontalSpaceXLarge() {
+    return horizontalSpace(HorizontalSpaceXLarge);
   }
 
   /// Returns a vertical space with height set to [HorizontalSpaceLarge]

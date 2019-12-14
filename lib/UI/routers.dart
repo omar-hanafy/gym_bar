@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/views/home.dart';
 import 'package:gym_bar/ui/views/login.dart';
+import 'package:gym_bar/ui/views/signup.dart';
 
 class Routers {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -9,7 +10,10 @@ class Routers {
       case '/':
         return MaterialPageRoute(builder: (_) => Home());
       case '/login':
-        return MaterialPageRoute(builder: (_) => Login());
+        return MaterialPageRoute(
+            builder: (_) =>
+            Login());
+//                Signup());
 //      case '/addProduct' :
 //        return MaterialPageRoute(
 //            builder: (_)=> AddProduct()

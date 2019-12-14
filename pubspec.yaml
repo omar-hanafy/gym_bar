@@ -19,11 +19,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # firebase_auth: ^0.15.2
+  firebase_auth: ^0.15.2
   cloud_firestore: ^0.13.0+1
   firebase_database: ^3.1.1
+  firebase_storage: ^3.1.0
+  flushbar: ^1.9.1
+
   get_it: ^3.0.3
   provider: ^3.2.0
+  image_picker: ^0.6.2+3
+
   # rflutter_alert: ^1.0.3
 
 dev_dependencies:
@@ -48,6 +53,8 @@ flutter:
    - assets/images/employers.jpg
    - assets/images/branches.jpg
    - assets/images/products.jpg
+   - assets/images/logo.jpg
+   - assets/images/add.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
