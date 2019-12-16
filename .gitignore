@@ -28,6 +28,8 @@
 .packages
 .pub-cache/
 .pub/
+.pubspec.lock/
+.vscode/
 /build/
 
 # Web related
