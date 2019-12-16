@@ -29,6 +29,7 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
+
     signUp(email, password, name) async {
       await AuthenticationService().signUp(email, password).then((uID) {
         AuthenticationService.addUserDB(
