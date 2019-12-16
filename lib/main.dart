@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_bar/ui/routers.dart';
 import 'package:provider/provider.dart';
 
 import 'core/view_models/product_model.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/login',
         title: 'Gym Caffe',
         theme: ThemeData(),
-//        onGenerateRoute: Routers.generateRoute,
+        onGenerateRoute: Routers.generateRoute,
       ),
     );
   }
