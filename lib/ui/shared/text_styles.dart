@@ -12,3 +12,5 @@ const imageTitle = TextStyle(
     fontWeight: FontWeight.bold,
     fontFamily: 'Tajawal',
     color: Colors.white);
+const imageStatistics =
+    TextStyle(fontSize: 30.0, fontFamily: 'Tajawal', color: Colors.white);

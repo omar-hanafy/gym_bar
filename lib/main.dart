@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/routers.dart';
 import 'package:provider/provider.dart';
-
 import 'core/view_models/product_model.dart';
 import 'locator.dart';
 
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/login',
+        initialRoute: '/',
         title: 'Gym Caffe',
         theme: ThemeData(),
         onGenerateRoute: Routers.generateRoute,

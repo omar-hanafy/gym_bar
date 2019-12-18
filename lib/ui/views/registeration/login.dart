@@ -13,8 +13,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   Widget fields(context) {
     return Card(
@@ -22,10 +22,10 @@ class _LoginState extends State<Login> {
         children: <Widget>[
           UIHelper.verticalSpaceMedium(),
           formTitle("Login"),
-          customTextField(controller: emailController, hint: "Email"),
+          customTextField(controller: _emailController, hint: "Email"),
           UIHelper.verticalSpaceMedium(),
           customTextField(
-              controller: passwordController, hint: "Password", secure: true),
+              controller: _passwordController, hint: "Password", secure: true),
           UIHelper.verticalSpaceMedium(),
           logSignButton(
               context: context, text: "Login", function: () => handleSignin()),
@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
   handleSignin() async {
     try {
       bool logged = await UserModel()
-          .login(emailController.text, passwordController.text);
+          .login(_emailController.text, _passwordController.text);
       print(logged);
       Navigator.pushNamed(context, '/');
     } catch (e) {

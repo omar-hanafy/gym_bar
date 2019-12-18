@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 
-Widget item({String title, String image, Function onPress}) {
+Widget item({String statistics, String title, String image, Function onPress}) {
   return GestureDetector(
     onTap: onPress,
     child: Card(
@@ -12,19 +12,14 @@ Widget item({String title, String image, Function onPress}) {
         children: <Widget>[
           ClipRRect(
             child: Opacity(
-              opacity: 0.7,
+              opacity: 0.4,
               child:
                   Image.asset(image, width: 320, height: 300, fit: BoxFit.fill),
             ),
           ),
-          Center(
-              child: Padding(
-            padding: const EdgeInsets.only(top: 110, right: 20),
-            child: Text(
-              title,
-              style: imageTitle,
-            ),
-          )),
+          statistics == null
+              ? titleOnly(title)
+              : titleStatistics(title: title, statistics: statistics)
         ],
       ),
       shape: RoundedRectangleBorder(
@@ -32,6 +27,37 @@ Widget item({String title, String image, Function onPress}) {
       ),
       elevation: 5,
       margin: EdgeInsets.all(20),
+    ),
+  );
+}
+
+titleStatistics({title, statistics}) {
+  return Column(
+    children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(top: 110, right: 20),
+        child: Text(
+          statistics,
+          style: imageStatistics,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 110, right: 20),
+        child: Text(
+          title,
+          style: imageTitle,
+        ),
+      ),
+    ],
+  );
+}
+
+titleOnly(title) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 110, right: 20),
+    child: Text(
+      title,
+      style: imageTitle,
     ),
   );
 }
