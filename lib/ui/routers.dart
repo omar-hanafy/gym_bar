@@ -17,7 +17,9 @@ class Routers {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => Home());
+        return MaterialPageRoute(builder: (_) =>
+//            Home());
+        AddProduct());
       case '/login':
         return MaterialPageRoute(builder: (_) => Login());
       case '/add':

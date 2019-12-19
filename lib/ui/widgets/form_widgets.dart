@@ -16,19 +16,33 @@ logo(imageContent) {
   );
 }
 
-customTextField({
+logSignTextField({
   controller,
   validator,
   hint,
   secure = false,
+  double left = 10,
+  double right = 10,
 }) {
   return Container(
-    margin: EdgeInsets.only(left: 10, right: 10),
-    child: TextFormField(
-      controller: controller,
-      decoration: InputDecoration(hintText: hint),
-      validator: validator,
-      obscureText: secure,
+    margin: EdgeInsets.only(left: left, right: right),
+    child: Directionality(
+      textDirection: TextDirection.rtl,
+      child: TextFormField(
+        controller: controller,
+        validator: validator,
+        obscureText: secure,
+        textAlign: TextAlign.right,
+        decoration: InputDecoration(
+          labelStyle: formLabelsStyle,
+          labelText: hint,
+          border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
+        ),
+      ),
     ),
   );
 }
