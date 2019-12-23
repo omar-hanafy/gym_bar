@@ -67,7 +67,7 @@ class _SignupState extends State<Signup> {
             logSignButton(
               context: context,
               text: "Create Account",
-              function: () {
+              onTab: () {
                 signUp(emailController.text, passwordController.text,
                     nameController.text);
                 uploadImage();

@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
               controller: _passwordController, hint: "Password", secure: true),
           UIHelper.verticalSpaceMedium(),
           logSignButton(
-              context: context, text: "Login", function: () => handleSignin()),
+              context: context, text: "Login", onTab: () => handleSignin()),
           Row(
             children: <Widget>[
               Container(

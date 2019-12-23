@@ -20,6 +20,7 @@ logSignTextField({
   controller,
   validator,
   hint,
+  ValueChanged<String> onChanged,
   secure = false,
   double left = 10,
   double right = 10,
@@ -29,6 +30,7 @@ logSignTextField({
     child: Directionality(
       textDirection: TextDirection.rtl,
       child: TextFormField(
+        onChanged: onChanged,
         controller: controller,
         validator: validator,
         obscureText: secure,
@@ -51,7 +53,7 @@ formTitle(title) {
   return Text(title, style: formTitleStyle);
 }
 
-logSignButton({context, text, function}) {
+logSignButton({context, text, onTab}) {
   return ButtonTheme(
     minWidth: 300.0,
     height: 40,
@@ -61,7 +63,7 @@ logSignButton({context, text, function}) {
         text,
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: function,
+      onPressed: onTab,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
   );

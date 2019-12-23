@@ -104,7 +104,7 @@ class _AddEmployeeState extends State<AddEmployee> {
             forms(),
             logSignButton(
                 context: context,
-                function: () {
+                onTab: () {
                   print("dataaaaa2aaaaaah");
                   print("{name is: ${name.text} }");
                   print("{branch is: ${branch.text} }");
@@ -119,7 +119,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                   ));
                   dispose();
                 },
-                text: "Add Product"),
+                text: "Add Employee"),
             UIHelper.verticalSpaceMedium(),
           ],
         ),
