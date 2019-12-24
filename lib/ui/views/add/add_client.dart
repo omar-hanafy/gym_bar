@@ -41,21 +41,21 @@ class _AddClientState extends State<AddClient> {
         child: Column(
           children: <Widget>[
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "اسم العميل", controller: name),
+            formTextFieldTemplate(hint: "اسم العميل", controller: name),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "رقم العميل", controller: number),
+            formTextFieldTemplate(hint: "رقم العميل", controller: number),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(
+            formTextFieldTemplate(
               hint: "النوع",
               controller: type,
             ),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(
+            formTextFieldTemplate(
               hint: "الرصيد",
               controller: cash,
             ),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "الفرع", controller: branch),
+            formTextFieldTemplate(hint: "الفرع", controller: branch),
             UIHelper.verticalSpaceMedium(),
           ],
         ),
@@ -103,23 +103,26 @@ class _AddClientState extends State<AddClient> {
           children: <Widget>[
             addPhoto(),
             forms(),
-            logSignButton(
-                context: context,
-                onTab: () {
-                  print("dataaaaa2aaaaaah");
-                  print("{name is: ${name.text} }");
-                  print("{branch is: ${branch.text} }");
-                  model.addClient(Client(
-                    name: name.text,
-                    cash: cash.text,
-                    branch: branch.text,
-                    type: type.text,
-                    category: number.text,
-                    photo: "photo",
-                  ));
-                  dispose();
-                },
-                text: "Add Client"),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: formButtonTemplate(
+                  context: context,
+                  onTab: () {
+                    print("dataaaaa2aaaaaah");
+                    print("{name is: ${name.text} }");
+                    print("{branch is: ${branch.text} }");
+                    model.addClient(Client(
+                      name: name.text,
+                      cash: cash.text,
+                      branch: branch.text,
+                      type: type.text,
+                      category: number.text,
+                      photo: "photo",
+                    ));
+                    dispose();
+                  },
+                  text: "إضافة عميل"),
+            ),
             UIHelper.verticalSpaceMedium(),
           ],
         ),

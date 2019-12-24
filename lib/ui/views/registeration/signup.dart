@@ -58,13 +58,13 @@ class _SignupState extends State<Signup> {
         child: Column(
           children: <Widget>[
             Text("Sign up", style: formTitleStyle),
-            logSignTextField(controller: nameController, hint: "Name"),
+            formTextFieldTemplate(controller: nameController, hint: "Name"),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(controller: emailController, hint: "Email"),
+            formTextFieldTemplate(controller: emailController, hint: "Email"),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(controller: nameController, hint: "Password"),
+            formTextFieldTemplate(controller: nameController, hint: "Password"),
             UIHelper.verticalSpaceMedium(),
-            logSignButton(
+            formButtonTemplate(
               context: context,
               text: "Create Account",
               onTab: () {

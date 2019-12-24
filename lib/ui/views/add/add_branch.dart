@@ -34,9 +34,9 @@ class _AddBranchState extends State<AddBranch> {
         child: Column(
           children: <Widget>[
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "اسم الفرع", controller: name),
+            formTextFieldTemplate(hint: "اسم الفرع", controller: name),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "اسم الچيم", controller: gym),
+            formTextFieldTemplate(hint: "اسم الچيم", controller: gym),
             UIHelper.verticalSpaceMedium(),
           ],
         ),
@@ -84,20 +84,23 @@ class _AddBranchState extends State<AddBranch> {
           children: <Widget>[
             addPhoto(),
             forms(),
-            logSignButton(
-                context: context,
-                onTab: () {
-                  print("dataaaaa2aaaaaah");
-                  print("{name is: ${name.text} }");
-                  print("{branch is: ${gym.text} }");
-                  model.addBranch(Branch(
-                    photo: "photo",
-                    gym: gym.text,
-                    name: name.text,
-                  ));
-                  dispose();
-                },
-                text: "Add Branch"),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: formButtonTemplate(
+                  context: context,
+                  onTab: () {
+                    print("dataaaaa2aaaaaah");
+                    print("{name is: ${name.text} }");
+                    print("{branch is: ${gym.text} }");
+                    model.addBranch(Branch(
+                      photo: "photo",
+                      gym: gym.text,
+                      name: name.text,
+                    ));
+                    dispose();
+                  },
+                  text: "إضافة فرع"),
+            ),
             UIHelper.verticalSpaceMedium(),
           ],
         ),

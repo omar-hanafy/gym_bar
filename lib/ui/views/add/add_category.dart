@@ -32,7 +32,7 @@ class _AddCategoryState extends State<AddCategory> {
         child: Column(
           children: <Widget>[
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "اسم نوع المنتج", controller: name),
+            formTextFieldTemplate(hint: "اسم نوع المنتج", controller: name),
             UIHelper.verticalSpaceMedium(),
           ],
         ),
@@ -80,18 +80,21 @@ class _AddCategoryState extends State<AddCategory> {
           children: <Widget>[
             addPhoto(),
             forms(),
-            logSignButton(
-                context: context,
-                onTab: () {
-                  print("dataaaaa2aaaaaah");
-                  print("{name is: ${name.text} }");
-                  model.addCategory(Category(
-                    photo: "photo",
-                    name: name.text,
-                  ));
-                  dispose();
-                },
-                text: "Add Category"),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: formButtonTemplate(
+                  context: context,
+                  onTab: () {
+                    print("dataaaaa2aaaaaah");
+                    print("{name is: ${name.text} }");
+                    model.addCategory(Category(
+                      photo: "photo",
+                      name: name.text,
+                    ));
+                    dispose();
+                  },
+                  text: "إضافة نوع منتج"),
+            ),
             UIHelper.verticalSpaceMedium(),
           ],
         ),

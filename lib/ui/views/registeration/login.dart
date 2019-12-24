@@ -22,12 +22,12 @@ class _LoginState extends State<Login> {
         children: <Widget>[
           UIHelper.verticalSpaceMedium(),
           formTitle("Login"),
-          logSignTextField(controller: _emailController, hint: "Email"),
+          formTextFieldTemplate(controller: _emailController, hint: "Email"),
           UIHelper.verticalSpaceMedium(),
-          logSignTextField(
+          formTextFieldTemplate(
               controller: _passwordController, hint: "Password", secure: true),
           UIHelper.verticalSpaceMedium(),
-          logSignButton(
+          formButtonTemplate(
               context: context, text: "Login", onTab: () => handleSignin()),
           Row(
             children: <Widget>[

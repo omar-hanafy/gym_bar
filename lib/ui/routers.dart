@@ -8,13 +8,13 @@ import 'package:gym_bar/ui/views/add/add_employee.dart';
 import 'package:gym_bar/ui/views/add/add_product.dart';
 import 'package:gym_bar/ui/views/registeration/login.dart';
 import 'package:gym_bar/ui/views/registeration/signup.dart';
-import 'package:gym_bar/ui/views/report/branches/branches.dart';
-import 'package:gym_bar/ui/views/report/clients/clients.dart';
-import 'package:gym_bar/ui/views/report/employees/all_employees.dart';
-import 'package:gym_bar/ui/views/report/employees/dept_employees.dart';
-import 'package:gym_bar/ui/views/report/employees/emplyees.dart';
-import 'package:gym_bar/ui/views/report/home.dart';
-import 'package:gym_bar/ui/views/report/products/categories.dart';
+import 'package:gym_bar/ui/views/details/branches/branches.dart';
+import 'package:gym_bar/ui/views/details/clients/clients.dart';
+import 'package:gym_bar/ui/views/details/employees/all_employees.dart';
+import 'package:gym_bar/ui/views/details/employees/dept_employees.dart';
+import 'package:gym_bar/ui/views/details/employees/emplyees.dart';
+import 'package:gym_bar/ui/views/details/home.dart';
+import 'package:gym_bar/ui/views/details/products/categories.dart';
 
 class Routers {
   static Route<dynamic> generateRoute(RouteSettings settings) {

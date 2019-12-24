@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/models/user.dart';
 import '../../locator.dart';
 import 'api.dart';
@@ -46,10 +47,40 @@ class AuthenticationService {
     });
   }
 
+  static void addEmployeeDB(Employee employee) async {
+    checkUserExist(employee.id).then((value) {
+      if (!value) {
+        Firestore.instance
+            .document("employees/${employee.id}")
+            .setData(employee.toJson());
+      } else {
+        print("user ${employee.name} ${employee.email} exists");
+      }
+    });
+  }
+
   static Future<bool> checkUserExist(String userId) async {
     bool exists = false;
     try {
       await Firestore.instance.document("users/$userId").get().then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> checkEmployeeExist(String employeeId) async {
+    bool exists = false;
+    try {
+      await Firestore.instance
+          .document("employee/$employeeId")
+          .get()
+          .then((doc) {
         if (doc.exists)
           exists = true;
         else

@@ -5,7 +5,6 @@ import 'package:gym_bar/core/enums/viewstate.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/category.dart';
 import 'package:gym_bar/core/models/product.dart';
-import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
@@ -132,21 +131,21 @@ class _AddProductState extends State<AddProduct> {
         child: Column(
           children: <Widget>[
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "اسم المنتج", controller: name),
+            formTextFieldTemplate(hint: "اسم المنتج", controller: name),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "الوصف", controller: description),
+            formTextFieldTemplate(hint: "الوصف", controller: description),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "اسم الشركه", controller: companyName),
+            formTextFieldTemplate(hint: "اسم الشركه", controller: companyName),
             UIHelper.verticalSpaceMedium(),
             Row(children: <Widget>[
               Expanded(
-                child: logSignTextField(
+                child: formTextFieldTemplate(
                   controller: wholesaleQuantity,
                   hint: "الكمية(بالجملة)",
                 ),
               ),
               Expanded(
-                child: logSignTextField(
+                child: formTextFieldTemplate(
                     controller: wholesaleUnit,
                     hint: "الوحده(بالجملة)",
                     onChanged: (value) {
@@ -158,13 +157,13 @@ class _AddProductState extends State<AddProduct> {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: logSignTextField(
+                  child: formTextFieldTemplate(
                     controller: quantity,
                     hint: "كمية ال ${wholesaleUnit.text}",
                   ),
                 ),
                 Expanded(
-                  child: logSignTextField(
+                  child: formTextFieldTemplate(
                       controller: unit,
                       hint: "الوحده",
                       onChanged: (value) {
@@ -177,7 +176,7 @@ class _AddProductState extends State<AddProduct> {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: logSignTextField(
+                  child: formTextFieldTemplate(
                     hint: "كمية البيع للمنتج الواحد",
                     controller: theAmountOfSalesPerProduct,
                     right: 10,
@@ -205,13 +204,13 @@ class _AddProductState extends State<AddProduct> {
               ),
             ),
             UIHelper.verticalSpaceSmall(),
-            logSignTextField(
+            formTextFieldTemplate(
                 hint: "سعر العميل", controller: customerPrice, left: 80),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(
+            formTextFieldTemplate(
                 hint: "سعر الموظف", controller: employeePrice, left: 80),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(
+            formTextFieldTemplate(
                 hint: "سعر العامل", controller: housePrice, left: 80),
             UIHelper.verticalSpaceMedium(),
             branchWidget,
@@ -269,7 +268,7 @@ class _AddProductState extends State<AddProduct> {
           title: Text("إضافة منتج"),
         ),
         body: model.state == ViewState.Busy
-            ? CircularProgressIndicator()
+            ? Center(child: CircularProgressIndicator())
             : ListView(
                 children: <Widget>[
                   addPhoto(),
@@ -278,7 +277,7 @@ class _AddProductState extends State<AddProduct> {
                       branchWidget: dropDownBranches(model.branches)),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: logSignButton(
+                    child: formButtonTemplate(
                         context: context,
                         onTab: () {
                           print("dataaaaa2aaaaaah");

@@ -1,8 +1,8 @@
 class Employee {
-  String id, name, email, category, type, branch, cash, photo;
+  String id, name, email, number, type, branch, cash, photo;
 
   Employee(
-      {this.category,
+      {this.number,
       this.branch,
       this.name,
       this.id,
@@ -15,7 +15,7 @@ class Employee {
       : id = id ?? "",
         name = snapshot['name'] ?? '',
         email = snapshot['email'] ?? '',
-        category = snapshot['category'] ?? '',
+        number = snapshot['number'] ?? '',
         branch = snapshot['branch'] ?? '',
         type = snapshot['type'],
         photo = snapshot['photo'],
@@ -26,7 +26,7 @@ class Employee {
       "name": name,
       "email": email,
       "photo": photo,
-      "category": category,
+      "number": number,
       "branch": branch,
       "type": type,
       "cash": cash,
