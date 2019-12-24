@@ -7,6 +7,7 @@ import 'package:gym_bar/ui/views/add/add_client.dart';
 import 'package:gym_bar/ui/views/add/add_employee.dart';
 import 'package:gym_bar/ui/views/add/add_product.dart';
 import 'package:gym_bar/ui/views/registeration/login.dart';
+import 'package:gym_bar/ui/views/registeration/signup.dart';
 import 'package:gym_bar/ui/views/report/branches/branches.dart';
 import 'package:gym_bar/ui/views/report/clients/clients.dart';
 import 'package:gym_bar/ui/views/report/employees/all_employees.dart';
@@ -23,6 +24,8 @@ class Routers {
             builder: (_) =>
 //            Home());
                 AddProduct());
+                      case '/signup':
+        return MaterialPageRoute(builder: (_) => Signup());
       case '/login':
         return MaterialPageRoute(builder: (_) => Login());
       case '/add':
