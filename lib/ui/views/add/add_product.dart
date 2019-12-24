@@ -39,9 +39,13 @@ class _AddProductState extends State<AddProduct> {
   var file;
 
   netTotalQuantity() {
-    int quantityNumber = int.parse(quantity.text);
-    int wholesaleQuantityNumber = int.parse(wholesaleQuantity.text);
-    return quantityNumber * wholesaleQuantityNumber;
+    if (wholesaleQuantity.text == null) {
+      return "0";
+    } else {
+      int quantityNumber = int.parse(quantity.text);
+      int wholesaleQuantityNumber = int.parse(wholesaleQuantity.text);
+      return quantityNumber * wholesaleQuantityNumber;
+    }
   }
 
   void clear() {
@@ -64,6 +68,54 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
+
+    setSelectedRadio(int val) {
+      setState(() {
+        _selectedRadio = val;
+      });
+    }
+
+    Widget radioButtons() {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                    child: Row(
+                  children: <Widget>[
+                    Radio(
+                      value: 1,
+                      groupValue: _selectedRadio,
+                      onChanged: (value) {
+                        setSelectedRadio(value);
+                      },
+                    ),
+                    Text("اضافة الكمية الان"),
+                  ],
+                )),
+              ),
+              Expanded(
+                child: Container(
+                    child: Row(
+                  children: <Widget>[
+                    Radio(
+                        value: 2,
+                        groupValue: _selectedRadio,
+                        onChanged: (value) {
+                          setSelectedRadio(value);
+                        }),
+                    Text("اضافة المنتج فقط"),
+                  ],
+                )),
+              ),
+            ],
+          )
+        ],
+      );
+    }
+
     dropDownBranches(List<Branch> branch) {
       return Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
