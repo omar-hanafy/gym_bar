@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/models/user.dart';
@@ -18,6 +17,7 @@ class _SignupState extends State<Signup> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   String profilePic;
   var image;
   var downURL;
@@ -58,19 +58,19 @@ class _SignupState extends State<Signup> {
         child: Column(
           children: <Widget>[
             Text("Sign up", style: formTitleStyle),
-            customTextField(controller: nameController, hint: "Name"),
+            logSignTextField(controller: nameController, hint: "Name"),
             UIHelper.verticalSpaceMedium(),
-            customTextField(controller: emailController, hint: "Email"),
+            logSignTextField(controller: emailController, hint: "Email"),
             UIHelper.verticalSpaceMedium(),
-            customTextField(controller: nameController, hint: "Password"),
+            logSignTextField(controller: nameController, hint: "Password"),
             UIHelper.verticalSpaceMedium(),
             logSignButton(
               context: context,
               text: "Create Account",
-              function: () {
-                uploadImage();
+              onTab: () {
                 signUp(emailController.text, passwordController.text,
                     nameController.text);
+                uploadImage();
               },
             ),
             Row(

@@ -16,19 +16,35 @@ logo(imageContent) {
   );
 }
 
-customTextField({
+logSignTextField({
   controller,
   validator,
   hint,
+  ValueChanged<String> onChanged,
   secure = false,
+  double left = 10,
+  double right = 10,
 }) {
   return Container(
-    margin: EdgeInsets.only(left: 10, right: 10),
-    child: TextFormField(
-      controller: controller,
-      decoration: InputDecoration(hintText: hint),
-      validator: validator,
-      obscureText: secure,
+    margin: EdgeInsets.only(left: left, right: right),
+    child: Directionality(
+      textDirection: TextDirection.rtl,
+      child: TextFormField(
+        onChanged: onChanged,
+        controller: controller,
+        validator: validator,
+        obscureText: secure,
+        textAlign: TextAlign.right,
+        decoration: InputDecoration(
+          labelStyle: formLabelsStyle,
+          labelText: hint,
+          border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
+        ),
+      ),
     ),
   );
 }
@@ -37,7 +53,7 @@ formTitle(title) {
   return Text(title, style: formTitleStyle);
 }
 
-logSignButton({context, text, function}) {
+logSignButton({context, text, onTab}) {
   return ButtonTheme(
     minWidth: 300.0,
     height: 40,
@@ -47,7 +63,7 @@ logSignButton({context, text, function}) {
         text,
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: function,
+      onPressed: onTab,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
   );

@@ -1,7 +1,6 @@
+import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/view_models/base_model.dart';
 import 'package:gym_bar/core/enums/viewstate.dart';
-import 'package:gym_bar/core/models/attendance.dart';
-import 'package:gym_bar/core/models/Branch.dart';
 import 'package:gym_bar/core/services/api.dart';
 
 import '../../locator.dart';
@@ -11,9 +10,9 @@ class BranchModel extends BaseModel {
 
   List<Branch> branchs;
 
-  Future addBranch(Attendance data, String path) async {
+  Future addBranch(Branch branch) async {
     setState(ViewState.Busy);
-    await _api.addDocument(data.toJson(), path);
+    await _api.addDocument(branch.toJson(), "branches");
     setState(ViewState.Idle);
   }
 

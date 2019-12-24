@@ -27,13 +27,10 @@ class ProductModel extends BaseModel {
   //   return api;
   // }
 
-  Future addProduct(Product data, String path) async {
-    //!i have  replaced this line:
-    //? var result  = await _api.addDocument(data.toJson(),path);
+  Future addProduct(Product product, String branchName) async {
     setState(ViewState.Busy);
-    await _api.addDocument(data.toJson(), path);
+    await _api.addDocument(product.toJson(), "products/branches/$branchName");
     setState(ViewState.Idle);
-    return;
   }
 
   Future<Product> getProductById(String id, String path) async {
