@@ -46,9 +46,11 @@ class ProductModel extends BaseModel {
   //   return api;
   // }
 
-  Future addProduct(Product product, String branchName) async {
+  Future addProduct(
+      {Product product, String branchName, String categoryName}) async {
     setState(ViewState.Busy);
-    await _api.addDocument(product.toJson(), "products/branches/$branchName");
+    await _api.addDocument(product.toJson(),
+        "products/branches/$branchName/categories/$categoryName");
     setState(ViewState.Idle);
   }
 

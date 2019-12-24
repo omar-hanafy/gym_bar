@@ -62,7 +62,7 @@ class _SignupState extends State<Signup> {
             UIHelper.verticalSpaceMedium(),
             formTextFieldTemplate(controller: emailController, hint: "Email"),
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(controller: nameController, hint: "Password"),
+            formTextFieldTemplate(controller: passwordController, hint: "Password"),
             UIHelper.verticalSpaceMedium(),
             formButtonTemplate(
               context: context,

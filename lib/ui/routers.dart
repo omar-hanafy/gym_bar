@@ -22,7 +22,7 @@ class Routers {
         return MaterialPageRoute(
             builder: (_) =>
 //            Home());
-                AddEmployee());
+                AddProduct());
       case '/login':
         return MaterialPageRoute(builder: (_) => Login());
       case '/add':
