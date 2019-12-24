@@ -41,7 +41,7 @@ class _AddProductState extends State<AddProduct> {
   Widget _subForm = Container();
 
   netTotalQuantity() {
-    if (quantity.text == null) {
+    if (wholesaleQuantity.text == null) {
       return "0";
     } else {
       int quantityNumber = int.parse(quantity.text);
@@ -72,6 +72,7 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
+
     setSelectedRadio(int val) {
       setState(() {
         _selectedRadio = val;
