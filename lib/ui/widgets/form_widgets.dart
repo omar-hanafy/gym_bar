@@ -16,7 +16,7 @@ logo(imageContent) {
   );
 }
 
-logSignTextField({
+formTextFieldTemplate({
   controller,
   validator,
   hint,
@@ -53,7 +53,7 @@ formTitle(title) {
   return Text(title, style: formTitleStyle);
 }
 
-Widget logSignButton({context, text, onTab}) {
+Widget formButtonTemplate({context, text, onTab}) {
   return ButtonTheme(
     minWidth: 300.0,
     height: 40,
