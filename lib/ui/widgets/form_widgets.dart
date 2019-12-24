@@ -53,7 +53,7 @@ formTitle(title) {
   return Text(title, style: formTitleStyle);
 }
 
-logSignButton({context, text, onTab}) {
+Widget logSignButton({context, text, onTab}) {
   return ButtonTheme(
     minWidth: 300.0,
     height: 40,
@@ -61,7 +61,7 @@ logSignButton({context, text, onTab}) {
       color: Colors.blueAccent,
       child: Text(
         text,
-        style: TextStyle(color: Colors.white),
+        style: formButtonStyle,
       ),
       onPressed: onTab,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

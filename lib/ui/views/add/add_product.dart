@@ -1,7 +1,11 @@
 import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/core/models/branch.dart';
+import 'package:gym_bar/core/models/category.dart';
 import 'package:gym_bar/core/models/product.dart';
+import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
@@ -30,30 +34,100 @@ class _AddProductState extends State<AddProduct> {
   final TextEditingController theAmountOfSalesPerProduct =
       TextEditingController();
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    name.dispose();
-    category.dispose();
-    description.dispose();
-    companyName.dispose();
-    quantity.dispose();
-    unit.dispose();
-    wholesaleQuantity.dispose();
-    wholesaleUnit.dispose();
-    customerPrice.dispose();
-    employeePrice.dispose();
-    housePrice.dispose();
-    branch.dispose();
-    theAmountOfSalesPerProduct.dispose();
-    super.dispose();
+  var _selectedBranch;
+  var _selectedCategory;
+  var downURL;
+  var file;
+
+  netTotalQuantity() {
+    int quantityNumber = int.parse(quantity.text);
+    int wholesaleQuantityNumber = int.parse(wholesaleQuantity.text);
+    return quantityNumber * wholesaleQuantityNumber;
+  }
+
+  void clear() {
+    name.clear();
+    category.clear();
+    description.clear();
+    companyName.clear();
+    quantity.clear();
+    unit.clear();
+    wholesaleQuantity.clear();
+    wholesaleUnit.clear();
+    customerPrice.clear();
+    employeePrice.clear();
+    housePrice.clear();
+    branch.clear();
+    theAmountOfSalesPerProduct.clear();
+    _selectedCategory = null;
+    _selectedBranch = null;
   }
 
   @override
   Widget build(BuildContext context) {
-    var downURL;
-    var file;
-    Widget forms() {
+    dropDownBranches(List<Branch> branch) {
+      return Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            hint: Text(
+              "أختر الفرع",
+              style: formLabelsStyle,
+            ),
+            value: _selectedBranch,
+            isDense: true,
+            onChanged: (value) {
+              setState(() {
+                _selectedBranch = value;
+              });
+              print(_selectedBranch);
+            },
+            items: branch.map((branch) {
+              return DropdownMenuItem<String>(
+                value: "(${branch.name}) ${branch.gym}",
+                child: Text(
+                  "(${branch.name}) ${branch.gym}",
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      );
+    }
+
+    dropDownCategories(List<Category> category) {
+      return Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            hint: Text(
+              "أختر نوع المنتج",
+              style: formLabelsStyle,
+            ),
+            value: _selectedCategory,
+            isDense: true,
+            onChanged: (value) {
+              setState(() {
+                _selectedCategory = value;
+              });
+              print(_selectedCategory);
+            },
+            items: category.map((category) {
+              return DropdownMenuItem<String>(
+                value: "${category.name}",
+                child: Text(
+                  "${category.name}",
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      );
+    }
+
+    Widget forms({categoryWidget, branchWidget}) {
       return Card(
         child: Column(
           children: <Widget>[
@@ -67,22 +141,28 @@ class _AddProductState extends State<AddProduct> {
             Row(children: <Widget>[
               Expanded(
                 child: logSignTextField(
+                  controller: wholesaleQuantity,
+                  hint: "الكمية(بالجملة)",
+                ),
+              ),
+              Expanded(
+                child: logSignTextField(
                     controller: wholesaleUnit,
                     hint: "الوحده(بالجملة)",
                     onChanged: (value) {
                       setState(() {});
                     }),
               ),
-              Expanded(
-                child: logSignTextField(
-                  controller: wholesaleQuantity,
-                  hint: "الكمية(بالجملة)",
-                ),
-              ),
             ]),
             UIHelper.verticalSpaceMedium(),
             Row(
               children: <Widget>[
+                Expanded(
+                  child: logSignTextField(
+                    controller: quantity,
+                    hint: "كمية ال ${wholesaleUnit.text}",
+                  ),
+                ),
                 Expanded(
                   child: logSignTextField(
                       controller: unit,
@@ -91,19 +171,20 @@ class _AddProductState extends State<AddProduct> {
                         setState(() {});
                       }),
                 ),
-                Expanded(
-                  child: logSignTextField(
-                    controller: quantity,
-                    hint: "كمية ال ${wholesaleUnit.text}",
-                  ),
-                ),
               ],
             ),
             UIHelper.verticalSpaceMedium(),
             Row(
               children: <Widget>[
+                Expanded(
+                  child: logSignTextField(
+                    hint: "كمية البيع للمنتج الواحد",
+                    controller: theAmountOfSalesPerProduct,
+                    right: 10,
+                  ),
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30),
+                  padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     ///TODO: WARNING WARNING WARNING WARNING WARNING WARNING
                     ///TODO: Fix issue when [${unit.text}] char reach 1000.
@@ -111,13 +192,6 @@ class _AddProductState extends State<AddProduct> {
                     "${unit.text}",
 //                    "test",
                     style: formTitleStyle,
-                  ),
-                ),
-                Expanded(
-                  child: logSignTextField(
-                    hint: "كمية البيع للمنتج الواحد",
-                    controller: theAmountOfSalesPerProduct,
-                    left: 30,
                   ),
                 ),
               ],
@@ -140,9 +214,16 @@ class _AddProductState extends State<AddProduct> {
             logSignTextField(
                 hint: "سعر العامل", controller: housePrice, left: 80),
             UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "النوع", controller: category),
-            UIHelper.verticalSpaceMedium(),
-            logSignTextField(hint: "الفرع", controller: branch),
+            branchWidget,
+            UIHelper.verticalSpaceSmall(),
+            Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Divider(
+                thickness: 1,
+              ),
+            ),
+            UIHelper.verticalSpaceSmall(),
+            categoryWidget,
             UIHelper.verticalSpaceMedium(),
           ],
         ),
@@ -182,42 +263,53 @@ class _AddProductState extends State<AddProduct> {
     }
 
     return BaseView<ProductModel>(
+      onModelReady: (model) => model.fetchBranchesAndCategories(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("إضافة منتج"),
         ),
-        body: ListView(
-          children: <Widget>[
-            addPhoto(),
-            forms(),
-            logSignButton(
-                context: context,
-                onTab: () {
-                  print("dataaaaa2aaaaaah");
-                  print("{name is: ${name.text} }");
-                  print("{branch is: ${branch.text} }");
-                  model.addProduct(
-                      Product(
-                          name: name.text,
-                          category: category.text,
-                          description: description.text,
-                          branch: branch.text,
-                          customerPrice: customerPrice.text,
-                          employeePrice: employeePrice.text,
-                          housePrice: housePrice.text,
-                          quantity: quantity.text,
-                          unit: unit.text,
-                          wholesaleQuantity: wholesaleQuantity.text,
-                          wholesaleUnit: wholesaleQuantity.text,
-                          supplierName: companyName.text,
-                          photo: "photo"),
-                      branch.text);
-                  dispose();
-                },
-                text: "Add Product"),
-            UIHelper.verticalSpaceMedium(),
-          ],
-        ),
+        body: model.state == ViewState.Busy
+            ? CircularProgressIndicator()
+            : ListView(
+                children: <Widget>[
+                  addPhoto(),
+                  forms(
+                      categoryWidget: dropDownCategories(model.categories),
+                      branchWidget: dropDownBranches(model.branches)),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: logSignButton(
+                        context: context,
+                        onTab: () {
+                          print("dataaaaa2aaaaaah");
+                          print("{name is: ${name.text} }");
+                          print("{branch is: ${branch.text} }");
+                          model.addProduct(
+                              Product(
+                                  name: name.text,
+                                  category: _selectedCategory,
+                                  description: description.text,
+                                  branch: _selectedBranch,
+                                  customerPrice: customerPrice.text,
+                                  employeePrice: employeePrice.text,
+                                  housePrice: housePrice.text,
+                                  quantity: quantity.text,
+                                  unit: unit.text,
+                                  wholesaleQuantity: wholesaleQuantity.text,
+                                  wholesaleUnit: wholesaleQuantity.text,
+                                  supplierName: companyName.text,
+                                  netTotalQuantity:
+                                      "${netTotalQuantity().toString()}",
+                                  photo: "photo"),
+                              _selectedBranch);
+                          clear();
+//                          dispose();
+                        },
+                        text: "إضافة منتج"),
+                  ),
+                  UIHelper.verticalSpaceMedium(),
+                ],
+              ),
       ),
     );
   }

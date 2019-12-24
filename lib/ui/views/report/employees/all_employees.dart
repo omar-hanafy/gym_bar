@@ -52,8 +52,7 @@ class AllEmployees extends StatelessWidget {
 //            tooltip: "الإسم",
               onSort: (columnIndex, ascending) {}),
         ],
-        rows: employees
-            .map((employee) => DataRow(cells: [
+        rows: employees.map((employee) => DataRow(cells: [
                   DataCell(
                     Text(employee.branch),
                     onTap: () {

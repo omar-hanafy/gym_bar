@@ -12,6 +12,7 @@ class Product {
       wholesaleQuantity,
       wholesaleUnit,
       supplierName,
+      netTotalQuantity,
       photo;
 
   Product({
@@ -28,12 +29,14 @@ class Product {
     this.wholesaleQuantity,
     this.wholesaleUnit,
     this.supplierName,
+    this.netTotalQuantity,
     this.photo,
   });
 
   Product.fromMap(Map snapshot, String id)
       : id = id ?? "",
         name = snapshot['name'] ?? '',
+        netTotalQuantity = snapshot['netTotalQuantity'] ?? '',
         category = snapshot['category'] ?? '',
         description = snapshot['description'] ?? '',
         branch = snapshot['branch'] ?? '',
@@ -52,6 +55,7 @@ class Product {
       "name": name,
       "category": category,
       "description": description,
+      "netTotalQuantity": netTotalQuantity,
       "branch": branch,
       "customerPrice": customerPrice,
       "employeePrice": employeePrice,
