@@ -68,7 +68,6 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
-
     setSelectedRadio(int val) {
       setState(() {
         _selectedRadio = val;
