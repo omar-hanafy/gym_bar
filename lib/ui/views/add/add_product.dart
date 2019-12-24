@@ -37,6 +37,8 @@ class _AddProductState extends State<AddProduct> {
   var _selectedCategory;
   var downURL;
   var file;
+  int _selectedRadio;
+  Widget _subForm = Container();
 
   netTotalQuantity() {
     if (wholesaleQuantity.text == null) {
@@ -64,10 +66,13 @@ class _AddProductState extends State<AddProduct> {
     theAmountOfSalesPerProduct.clear();
     _selectedCategory = null;
     _selectedBranch = null;
+    _selectedRadio = null;
+    _subForm = Container();
   }
 
   @override
   Widget build(BuildContext context) {
+
     setSelectedRadio(int val) {
       setState(() {
         _selectedRadio = val;
@@ -188,41 +193,93 @@ class _AddProductState extends State<AddProduct> {
             UIHelper.verticalSpaceMedium(),
             formTextFieldTemplate(hint: "اسم الشركه", controller: companyName),
             UIHelper.verticalSpaceMedium(),
-            Row(children: <Widget>[
-              Expanded(
-                child: formTextFieldTemplate(
-                  controller: wholesaleQuantity,
-                  hint: "الكمية(بالجملة)",
-                ),
-              ),
-              Expanded(
-                child: formTextFieldTemplate(
-                    controller: wholesaleUnit,
-                    hint: "الوحده(بالجملة)",
-                    onChanged: (value) {
-                      setState(() {});
-                    }),
-              ),
-            ]),
+            radioButtons(),
             UIHelper.verticalSpaceMedium(),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: formTextFieldTemplate(
-                    controller: quantity,
-                    hint: "كمية ال ${wholesaleUnit.text}",
-                  ),
-                ),
-                Expanded(
-                  child: formTextFieldTemplate(
-                      controller: unit,
-                      hint: "الوحده",
-                      onChanged: (value) {
-                        setState(() {});
-                      }),
-                ),
-              ],
-            ),
+            _selectedRadio == 1
+                ? Column(
+                    children: <Widget>[
+                      Row(children: <Widget>[
+                        Expanded(
+                          child: formTextFieldTemplate(
+                            controller: wholesaleQuantity,
+                            hint: "الكمية(بالجملة)",
+                          ),
+                        ),
+                        Expanded(
+                          child: formTextFieldTemplate(
+                              controller: wholesaleUnit,
+                              hint: "الوحده(بالجملة)",
+                              onChanged: (value) {
+                                setState(() {
+                                  print(value);
+                                });
+                              }),
+                        ),
+                      ]),
+                      UIHelper.verticalSpaceMedium(),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: formTextFieldTemplate(
+                              controller: quantity,
+                              hint: "كمية ال ${wholesaleUnit.text}",
+                            ),
+                          ),
+                          Expanded(
+                            child: formTextFieldTemplate(
+                                controller: unit,
+                                hint: "الوحده",
+                                onChanged: (value) {
+                                  setState(() {});
+                                }),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : _selectedRadio == 2
+                    ? Column(
+                        children: <Widget>[
+                          Row(children: <Widget>[
+//                            Expanded(
+//                              child: formTextFieldTemplate(
+//                                controller: wholesaleQuantity,
+//                                hint: "الكمية(بالجملة)",
+//                              ),
+//                            ),
+                            Expanded(
+                              child: formTextFieldTemplate(
+                                  controller: wholesaleUnit,
+                                  hint: "الوحده(بالجملة)",
+                                  onChanged: (value) {
+                                    setState(() {
+                                      print(value);
+                                    });
+                                  }),
+                            ),
+                          ]),
+                          UIHelper.verticalSpaceMedium(),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: formTextFieldTemplate(
+                                  controller: quantity,
+                                  hint: "كمية ال ${wholesaleUnit.text}",
+                                ),
+                              ),
+                              Expanded(
+                                child: formTextFieldTemplate(
+                                    controller: unit,
+                                    hint: "الوحده",
+                                    onChanged: (value) {
+                                      setState(() {});
+                                    }),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    : Container(),
             UIHelper.verticalSpaceMedium(),
             Row(
               children: <Widget>[
@@ -335,7 +392,7 @@ class _AddProductState extends State<AddProduct> {
                           print("{name is: ${name.text} }");
                           print("{branch is: ${branch.text} }");
                           model.addProduct(
-                              Product(
+                              product: Product(
                                   name: name.text,
                                   category: _selectedCategory,
                                   description: description.text,
@@ -348,10 +405,10 @@ class _AddProductState extends State<AddProduct> {
                                   wholesaleQuantity: wholesaleQuantity.text,
                                   wholesaleUnit: wholesaleQuantity.text,
                                   supplierName: companyName.text,
-                                  netTotalQuantity:
-                                      "${netTotalQuantity().toString()}",
+                                  netTotalQuantity: netTotalQuantity(),
                                   photo: "photo"),
-                              _selectedBranch);
+                              branchName: _selectedBranch,
+                              categoryName: _selectedCategory);
                           clear();
 //                          dispose();
                         },

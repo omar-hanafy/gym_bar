@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: '/signup',
+          initialRoute: '/',
           title: 'Gym Bar',
           theme: ThemeData(fontFamily: 'Tajawal'),
           onGenerateRoute: Routers.generateRoute,
