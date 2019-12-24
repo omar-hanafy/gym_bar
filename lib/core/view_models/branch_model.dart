@@ -8,7 +8,7 @@ import '../../locator.dart';
 class BranchModel extends BaseModel {
   Api _api = locator<Api>();
 
-  List<Branch> branchs;
+  List<Branch> branches;
 
   Future addBranch(Branch branch) async {
     setState(ViewState.Busy);
@@ -16,13 +16,12 @@ class BranchModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
-  Future<List<Branch>> fetchAttendance(String path) async {
+  Future fetchBranches() async {
     setState(ViewState.Busy);
-    var result = await _api.getDataCollection(path);
-    branchs = result.documents
+    var result = await _api.getDataCollection("employees");
+    branches = result.documents
         .map((doc) => Branch.fromMap(doc.data, doc.documentID))
         .toList();
     setState(ViewState.Idle);
-    return branchs;
   }
 }

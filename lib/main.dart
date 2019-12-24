@@ -3,6 +3,7 @@ import 'package:gym_bar/ui/routers.dart';
 import 'package:provider/provider.dart';
 import 'core/view_models/product_model.dart';
 import 'locator.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,12 +21,19 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        title: 'Gym Bar',
-        theme: ThemeData(),
-        onGenerateRoute: Routers.generateRoute,
-      ),
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          title: 'Gym Bar',
+          theme: ThemeData(fontFamily: 'Tajawal'),
+          onGenerateRoute: Routers.generateRoute,
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: [
+            Locale("ar", "EG"), // OR Locale('ar', 'AE') OR Other RTL locales
+          ],
+          locale: Locale("ar", "EG")),
     );
   }
 }

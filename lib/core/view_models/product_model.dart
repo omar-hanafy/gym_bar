@@ -1,4 +1,6 @@
 import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/core/models/branch.dart';
+import 'package:gym_bar/core/models/category.dart';
 import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/services/api.dart';
 import 'package:gym_bar/core/view_models/base_model.dart';
@@ -8,6 +10,8 @@ class ProductModel extends BaseModel {
   Api _api = locator<Api>();
 
   List<Product> products;
+  List<Branch> branches;
+  List<Category> categories;
 
   Future<List<Product>> fetchProducts(String path) async {
     setState(ViewState.Busy);
@@ -17,6 +21,21 @@ class ProductModel extends BaseModel {
         .toList();
     setState(ViewState.Idle);
     return products;
+  }
+
+  Future fetchBranchesAndCategories() async {
+    setState(ViewState.Busy);
+    var branchResult = await _api.getDataCollection("branches");
+    var categoryResult = await _api.getDataCollection("categories");
+    branches = branchResult.documents
+        .map((doc) => Branch.fromMap(doc.data, doc.documentID))
+        .toList();
+
+    categories = categoryResult.documents
+        .map((doc) => Category.fromMap(doc.data, doc.documentID))
+        .toList();
+
+    setState(ViewState.Idle);
   }
 
   // Stream<QuerySnapshot> fetchProductsAsStream(String path) {
