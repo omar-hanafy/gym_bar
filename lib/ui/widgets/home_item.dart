@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 
-Widget item({String statistics, String title, String image, Function onPress}) {
+item({String statistics, String title, String image, Function onPress}) {
   return GestureDetector(
     onTap: onPress,
     child: Card(

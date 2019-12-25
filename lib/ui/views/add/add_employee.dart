@@ -6,7 +6,6 @@ import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/services/authentication_service.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
-import 'package:gym_bar/core/view_models/employee_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
@@ -249,7 +248,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                               onTab: () {
                                 print("dataaaaa2aaaaaah");
                                 print("{name is: ${name.text} }");
-                                print("{branch is: ${_selectedBranch.text} }");
+                                print("{branch is: ${_selectedBranch} }");
                                 signUp(
                                   email: email.text,
                                   password: password.text,

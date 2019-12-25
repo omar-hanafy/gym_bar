@@ -6,6 +6,13 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var w = item(
+        title: "المنتجات",
+        image: "assets/images/products.jpg",
+        onPress: () {
+          Navigator.pushNamed(context, '/categories');
+        });
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -15,6 +22,13 @@ class Home extends StatelessWidget {
       ),
       appBar: AppBar(
         title: Text("Ms Amany"),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.file_download),
+              onPressed: () {
+//            Navigator.pushNamed(context, '/download');
+              })
+        ],
       ),
       body: ListView(
         children: <Widget>[

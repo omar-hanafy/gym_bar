@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gym_bar/core/enums/viewstate.dart';
@@ -5,6 +8,8 @@ import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class AllEmployees extends StatelessWidget {
@@ -15,22 +20,30 @@ class AllEmployees extends StatelessWidget {
     return BaseView<EmployeeModel>(
       onModelReady: (model) => model.fetchEmployees(),
       builder: (context, model, child) => Scaffold(
-          body: model.state == ViewState.Busy
-              ? Center(child: CircularProgressIndicator())
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    UIHelper.verticalSpaceLarge(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        'كل الموظفين',
-                      ),
+        body: model.state == ViewState.Busy
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  UIHelper.verticalSpaceLarge(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'كل الموظفين',
                     ),
-                    UIHelper.verticalSpaceSmall(),
-                    Expanded(child: dataBody(model.employees)),
-                  ],
-                )),
+                  ),
+                  UIHelper.verticalSpaceSmall(),
+                  Expanded(child: dataBody(model.employees)),
+                ],
+              ),
+        appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.file_download),
+                onPressed: () => getCsv(model.employees))
+          ],
+        ),
+      ),
     );
   }
 
@@ -52,7 +65,8 @@ class AllEmployees extends StatelessWidget {
 //            tooltip: "الإسم",
               onSort: (columnIndex, ascending) {}),
         ],
-        rows: employees.map((employee) => DataRow(cells: [
+        rows: employees
+            .map((employee) => DataRow(cells: [
                   DataCell(
                     Text(employee.branch),
                     onTap: () {
@@ -65,4 +79,34 @@ class AllEmployees extends StatelessWidget {
       ),
     );
   }
+}
+
+getCsv(List<Employee> employees) async {
+  List<List<dynamic>> rows = List<List<dynamic>>();
+  rows.add(["الرقم", "الاسم", "الايميل", "النوع", "الرصيد", "الفرع"]);
+  for (int i = 0; i < employees.length; i++) {
+    List<dynamic> row = List();
+    row.add("${employees[i].number}");
+    row.add("${employees[i].name}");
+    row.add("${employees[i].email}");
+    row.add("${employees[i].type}");
+    row.add("${employees[i].cash}");
+    row.add("${employees[i].branch}");
+    rows.add(row);
+  }
+//store file in documents folder
+  String csv = const ListToCsvConverter().convert(rows);
+
+  await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+
+//  Directory appDocDir = await getApplicationDocumentsDirectory();
+//  String appDocPath = appDocDir.path;
+//  print(appDocPath);
+  String appDocPath2 = "/storage/emulated/0/GymBar/Downloads";
+  final Directory directory =
+      await Directory(appDocPath2).create(recursive: true);
+  print("The directory $directory is created");
+  final file = File("$appDocPath2/allEmployees.csv");
+  await file.writeAsString(csv); // Page
+// convert rows to String and write as csv file
 }
