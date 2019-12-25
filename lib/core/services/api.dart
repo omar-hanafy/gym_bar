@@ -39,7 +39,7 @@ class Api {
 
   Future<DocumentReference> addDocument(Map data, String path) {
     ref = _db.collection(path);
-    return ref.dadd(data);
+    return ref.add(data);
   }
 
   Future<void> updateDocument(Map data, String id, String path) {
