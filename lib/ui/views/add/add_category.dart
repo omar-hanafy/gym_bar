@@ -19,9 +19,8 @@ class _AddCategoryState extends State<AddCategory> {
 
   final TextEditingController name = TextEditingController();
 
-  void dispose() {
-    name.dispose();
-    super.dispose();
+  void clear() {
+    name.clear();
   }
 
   @override
@@ -54,7 +53,7 @@ class _AddCategoryState extends State<AddCategory> {
       if (file != null) {
         int random = Random().nextInt(1000000000000);
         StorageReference ref =
-            FirebaseStorage.instance.ref().child("image_$random.jpg");
+        FirebaseStorage.instance.ref().child("image_$random.jpg");
         StorageUploadTask uploadTask = ref.putFile(file);
         downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
         print(downURL.toString());
@@ -72,33 +71,34 @@ class _AddCategoryState extends State<AddCategory> {
     }
 
     return BaseView<CategoryModel>(
-      builder: (context, model, child) => Scaffold(
-        appBar: AppBar(
-          title: Text("إضافة نوع المنتج"),
-        ),
-        body: ListView(
-          children: <Widget>[
-            addPhoto(),
-            forms(),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: formButtonTemplate(
-                  context: context,
-                  onTab: () {
-                    print("dataaaaa2aaaaaah");
-                    print("{name is: ${name.text} }");
-                    model.addCategory(Category(
-                      photo: "photo",
-                      name: name.text,
-                    ));
-                    dispose();
-                  },
-                  text: "إضافة نوع منتج"),
+      builder: (context, model, child) =>
+          Scaffold(
+            appBar: AppBar(
+              title: Text("إضافة نوع المنتج"),
             ),
-            UIHelper.verticalSpaceMedium(),
-          ],
-        ),
-      ),
+            body: ListView(
+              children: <Widget>[
+                addPhoto(),
+                forms(),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: formButtonTemplate(
+                      context: context,
+                      onTab: () {
+                        print("dataaaaa2aaaaaah");
+                        print("{name is: ${name.text} }");
+                        model.addCategory(Category(
+                          photo: "photo",
+                          name: name.text,
+                        ));
+                        clear();
+                      },
+                      text: "إضافة نوع منتج"),
+                ),
+                UIHelper.verticalSpaceMedium(),
+              ],
+            ),
+          ),
     );
   }
 }

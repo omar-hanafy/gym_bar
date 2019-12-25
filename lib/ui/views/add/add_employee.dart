@@ -5,6 +5,7 @@ import 'package:gym_bar/core/enums/viewstate.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/services/authentication_service.dart';
+import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
@@ -118,7 +119,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       );
     }
 
-    Widget dropDownBranches(List<Branch> branch) {
+    dropDownBranches(List<Branch> branch) {
       return Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
         child: DropdownButtonHideUnderline(
@@ -212,7 +213,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       if (file != null) {
         int random = Random().nextInt(1000000000000);
         StorageReference ref =
-        FirebaseStorage.instance.ref().child("image_$random.jpg");
+            FirebaseStorage.instance.ref().child("image_$random.jpg");
         StorageUploadTask uploadTask = ref.putFile(file);
         downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
         print(downURL.toString());
@@ -229,44 +230,43 @@ class _AddEmployeeState extends State<AddEmployee> {
               : logo(FileImage(file)));
     }
 
-    return BaseView<EmployeeModel>(
+    return BaseView<BranchModel>(
         onModelReady: (model) => model.fetchBranches(),
-        builder: (context, model, child) =>
-            Scaffold(
+        builder: (context, model, child) => Scaffold(
               appBar: AppBar(
                 title: Text("إضافة موظف"),
               ),
               body: model.state == ViewState.Busy
                   ? Center(child: CircularProgressIndicator())
                   : ListView(
-                children: <Widget>[
-                  addPhoto(),
-                  forms(dropDownBranches(model.branches)),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: formButtonTemplate(
-                        context: context,
-                        onTab: () {
-                          print("dataaaaa2aaaaaah");
-                          print("{name is: ${name.text} }");
-                          print("{branch is: ${_selectedBranch.text} }");
-                          signUp(
-                            email: email.text,
-                            password: password.text,
-                            name: name.text,
-                            cash: cash.text == null ? "0" : cash.text,
-                            branch: _selectedBranch,
-                            type: _selectedType,
-                            number: number.text,
-                            photo: "photo",
-                          );
-                          clean();
-                        },
-                        text: "إضافة موظف"),
-                  ),
-                  UIHelper.verticalSpaceMedium(),
-                ],
-              ),
+                      children: <Widget>[
+                        addPhoto(),
+                        forms(dropDownBranches(model.branches)),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: formButtonTemplate(
+                              context: context,
+                              onTab: () {
+                                print("dataaaaa2aaaaaah");
+                                print("{name is: ${name.text} }");
+                                print("{branch is: ${_selectedBranch.text} }");
+                                signUp(
+                                  email: email.text,
+                                  password: password.text,
+                                  name: name.text,
+                                  cash: cash.text == null ? "0" : cash.text,
+                                  branch: _selectedBranch,
+                                  type: _selectedType,
+                                  number: number.text,
+                                  photo: "photo",
+                                );
+                                clean();
+                              },
+                              text: "إضافة موظف"),
+                        ),
+                        UIHelper.verticalSpaceMedium(),
+                      ],
+                    ),
             ));
   }
 }

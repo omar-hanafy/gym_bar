@@ -20,10 +20,9 @@ class _AddBranchState extends State<AddBranch> {
   final TextEditingController name = TextEditingController();
   final TextEditingController gym = TextEditingController();
 
-  void dispose() {
-    name.dispose();
-    gym.dispose();
-    super.dispose();
+  void clear() {
+    name.clear();
+    gym.clear();
   }
 
   @override
@@ -97,7 +96,7 @@ class _AddBranchState extends State<AddBranch> {
                       gym: gym.text,
                       name: name.text,
                     ));
-                    dispose();
+                    clear();
                   },
                   text: "إضافة فرع"),
             ),

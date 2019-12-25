@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gym_bar/ui/routers.dart';
 import 'package:provider/provider.dart';
 import 'core/view_models/product_model.dart';
@@ -6,6 +7,8 @@ import 'locator.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MyApp());
   setupLocator();
 }

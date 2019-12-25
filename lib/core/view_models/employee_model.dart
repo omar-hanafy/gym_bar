@@ -10,17 +10,6 @@ class EmployeeModel extends BaseModel {
   Api _api = locator<Api>();
 
   List<Employee> employees;
-  List<Branch> branches;
-
-
-  Future fetchBranches() async {
-    setState(ViewState.Busy);
-    var branchResult = await _api.getDataCollection("branches");
-    branches = branchResult.documents
-        .map((doc) => Branch.fromMap(doc.data, doc.documentID))
-        .toList();
-    setState(ViewState.Idle);
-  }
 
 //  Future<List<Employee>> fetchAttendance(String path) async {
 //    setState(ViewState.Busy);

@@ -1,3 +1,4 @@
+import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/view_models/base_model.dart';
 import 'package:gym_bar/core/enums/viewstate.dart';
@@ -9,6 +10,16 @@ class ClientModel extends BaseModel {
   Api _api = locator<Api>();
 
   List<Client> client;
+  List<Branch> branches;
+
+  Future fetchBranches() async {
+    setState(ViewState.Busy);
+    var branchResult = await _api.getDataCollection("branches");
+    branches = branchResult.documents
+        .map((doc) => Branch.fromMap(doc.data, doc.documentID))
+        .toList();
+    setState(ViewState.Idle);
+  }
 
   Future addClient(Client client) async {
     setState(ViewState.Busy);

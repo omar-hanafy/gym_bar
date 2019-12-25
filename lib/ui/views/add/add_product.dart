@@ -42,7 +42,7 @@ class _AddProductState extends State<AddProduct> {
 
   netTotalQuantity() {
     if (wholesaleQuantity.text == null) {
-      return "0";
+      return 0;
     } else {
       int quantityNumber = int.parse(quantity.text);
       int wholesaleQuantityNumber = int.parse(wholesaleQuantity.text);
@@ -72,7 +72,6 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
-
     setSelectedRadio(int val) {
       setState(() {
         _selectedRadio = val;
@@ -405,7 +404,8 @@ class _AddProductState extends State<AddProduct> {
                                   wholesaleQuantity: wholesaleQuantity.text,
                                   wholesaleUnit: wholesaleQuantity.text,
                                   supplierName: companyName.text,
-                                  netTotalQuantity: netTotalQuantity(),
+                                  netTotalQuantity:
+                                      netTotalQuantity().toString(),
                                   photo: "photo"),
                               branchName: _selectedBranch,
                               categoryName: _selectedCategory);

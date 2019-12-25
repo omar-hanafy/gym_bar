@@ -62,7 +62,8 @@ class _SignupState extends State<Signup> {
             UIHelper.verticalSpaceMedium(),
             formTextFieldTemplate(controller: emailController, hint: "Email"),
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(controller: passwordController, hint: "Password"),
+            formTextFieldTemplate(
+                controller: passwordController, hint: "Password"),
             UIHelper.verticalSpaceMedium(),
             formButtonTemplate(
               context: context,
@@ -112,7 +113,6 @@ class _SignupState extends State<Signup> {
         body: Center(
       child: ListView(
         children: <Widget>[
-          SizedBox(height: 30),
           addPhoto(),
           fields(context),
         ],

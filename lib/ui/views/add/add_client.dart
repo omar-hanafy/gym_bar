@@ -1,10 +1,15 @@
 import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/models/employee.dart';
+import 'package:gym_bar/core/services/other_services.dart';
+import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
+import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
 import 'package:gym_bar/ui/widgets/form_widgets.dart';
@@ -18,25 +23,121 @@ class AddClient extends StatefulWidget {
 class _AddClientState extends State<AddClient> {
   var downURL;
   var file;
+  var _selectedBranch;
+  var _selectedType;
+  var _finalCash;
+  Widget _subForm = Container();
+
   final TextEditingController name = TextEditingController();
   final TextEditingController number = TextEditingController();
-  final TextEditingController type = TextEditingController();
   final TextEditingController cash = TextEditingController();
-  final TextEditingController branch = TextEditingController();
 
-  void dispose() {
-    name.dispose();
-    number.dispose();
-    type.dispose();
-    cash.dispose();
-    branch.dispose();
-    super.dispose();
+  void clear() {
+    name.clear();
+    number.clear();
+    cash.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-//الجمله, سعر القطعه
-    Widget forms() {
+    Widget raseed(hint) {
+      return Column(children: <Widget>[
+        formTextFieldTemplate(
+          hint: hint,
+          controller: cash,
+        ),
+      ]);
+    }
+
+    Widget dropDownType() {
+      return Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            hint: Text(
+              "أختر النوع",
+              style: formLabelsStyle,
+            ),
+            value: _selectedType,
+            isDense: true,
+            onChanged: (value) {
+              setState(() {
+                _selectedType = value;
+              });
+              if (value == "دائن") {
+                setState(() {
+                  _subForm = raseed("رصيد الموظف الدائن");
+                });
+              } else if (value == "مدين") {
+                setState(() {
+                  _subForm = raseed("رصيد الموظف المدين");
+                });
+              } else if (value == "خالص") {
+                setState(() {
+                  _subForm = Column(
+                    children: <Widget>[Text("رصيد العميل خالص (يساوي صفر)")],
+                  );
+                });
+              }
+            },
+            items: [
+              DropdownMenuItem<String>(
+                value: "دائن",
+                child: Text(
+                  "دائن",
+                ),
+              ),
+              DropdownMenuItem<String>(
+                value: "مدين",
+                child: Text(
+                  "مدين",
+                ),
+              ),
+              DropdownMenuItem<String>(
+                value: "خالص",
+                child: Text(
+                  "خالص",
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget dropDownBranches(List<Branch> branch) {
+      return Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            hint: Text(
+              "أختر الفرع",
+              style: formLabelsStyle,
+            ),
+            value: _selectedBranch,
+            isDense: true,
+            onChanged: (value) {
+              setState(() {
+                _selectedBranch = value;
+              });
+              print(_selectedBranch);
+            },
+            items: branch.map((branch) {
+              return DropdownMenuItem<String>(
+                value: "(${branch.name}) ${branch.gym}",
+                child: Text(
+                  "(${branch.name}) ${branch.gym}",
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      );
+    }
+
+    Widget forms(branchWidget) {
       return Card(
         child: Column(
           children: <Widget>[
@@ -44,18 +145,19 @@ class _AddClientState extends State<AddClient> {
             formTextFieldTemplate(hint: "اسم العميل", controller: name),
             UIHelper.verticalSpaceMedium(),
             formTextFieldTemplate(hint: "رقم العميل", controller: number),
+            UIHelper.verticalSpaceLarge(),
+            dropDownType(),
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(
-              hint: "النوع",
-              controller: type,
+            _subForm,
+            UIHelper.verticalSpaceSmall(),
+            Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Divider(
+                thickness: 1,
+              ),
             ),
-            UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(
-              hint: "الرصيد",
-              controller: cash,
-            ),
-            UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(hint: "الفرع", controller: branch),
+            UIHelper.verticalSpaceSmall(),
+            branchWidget,
             UIHelper.verticalSpaceMedium(),
           ],
         ),
@@ -95,37 +197,43 @@ class _AddClientState extends State<AddClient> {
     }
 
     return BaseView<ClientModel>(
+      onModelReady: (model) => model.fetchBranches(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("إضافة عميل"),
         ),
-        body: ListView(
-          children: <Widget>[
-            addPhoto(),
-            forms(),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: formButtonTemplate(
-                  context: context,
-                  onTab: () {
-                    print("dataaaaa2aaaaaah");
-                    print("{name is: ${name.text} }");
-                    print("{branch is: ${branch.text} }");
-                    model.addClient(Client(
-                      name: name.text,
-                      cash: cash.text,
-                      branch: branch.text,
-                      type: type.text,
-                      category: number.text,
-                      photo: "photo",
-                    ));
-                    dispose();
-                  },
-                  text: "إضافة عميل"),
-            ),
-            UIHelper.verticalSpaceMedium(),
-          ],
-        ),
+        body: model.state == ViewState.Busy
+            ? Center(child: CircularProgressIndicator())
+            : ListView(
+                children: <Widget>[
+                  addPhoto(),
+                  forms(dropDownBranches(model.branches)),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: formButtonTemplate(
+                        context: context,
+                        onTab: () {
+                          print("dataaaaa2aaaaaah");
+                          print("{name is: ${name.text} }");
+                          print("{branch is: ${_selectedBranch} }");
+                          print("{branch is: "
+                              "${cashCalculations(selectedType: _selectedType, cash: cash)} }");
+                          model.addClient(Client(
+                            name: name.text,
+                            cash: cashCalculations(
+                                selectedType: _selectedType, cash: cash),
+                            branch: _selectedBranch,
+                            type: _selectedType,
+                            category: number.text,
+                            photo: "photo",
+                          ));
+                          clear();
+                        },
+                        text: "إضافة عميل"),
+                  ),
+                  UIHelper.verticalSpaceMedium(),
+                ],
+              ),
       ),
     );
   }
