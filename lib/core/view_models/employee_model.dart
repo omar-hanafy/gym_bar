@@ -20,10 +20,15 @@ class EmployeeModel extends BaseModel {
 //    setState(ViewState.Idle);
 //    return employees;
 //  }
-
-  Future fetchEmployees() async {
+  Future addClient(Employee employee, String branchName) async {
     setState(ViewState.Busy);
-    var result = await _api.getDataCollection("employees");
+    await _api.addDocument(employee.toJson(), "branches/$branchName/employees");
+    setState(ViewState.Idle);
+  }
+
+  Future fetchEmployees({branchName}) async {
+    setState(ViewState.Busy);
+    var result = await _api.getDataCollection("branches/$branchName/employees");
     employees = result.documents
         .map((doc) => Employee.fromMap(doc.data, doc.documentID))
         .toList();

@@ -9,6 +9,10 @@ import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddCategory extends StatefulWidget {
+  final String branchName;
+
+  AddCategory({this.branchName});
+
   @override
   _AddCategoryState createState() => _AddCategoryState();
 }
@@ -53,7 +57,7 @@ class _AddCategoryState extends State<AddCategory> {
       if (file != null) {
         int random = Random().nextInt(1000000000000);
         StorageReference ref =
-        FirebaseStorage.instance.ref().child("image_$random.jpg");
+            FirebaseStorage.instance.ref().child("image_$random.jpg");
         StorageUploadTask uploadTask = ref.putFile(file);
         downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
         print(downURL.toString());
@@ -71,34 +75,33 @@ class _AddCategoryState extends State<AddCategory> {
     }
 
     return BaseView<CategoryModel>(
-      builder: (context, model, child) =>
-          Scaffold(
-            appBar: AppBar(
-              title: Text("إضافة نوع المنتج"),
+      builder: (context, model, child) => Scaffold(
+        appBar: AppBar(
+          title: Text("إضافة نوع المنتج"),
+        ),
+        body: ListView(
+          children: <Widget>[
+            addPhoto(),
+            forms(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: formButtonTemplate(
+                  context: context,
+                  onTab: () {
+                    print("dataaaaa2aaaaaah");
+                    print("{name is: ${name.text} }");
+                    model.addCategory(Category(
+                      photo: "photo",
+                      name: name.text,
+                    ));
+                    clear();
+                  },
+                  text: "إضافة نوع منتج"),
             ),
-            body: ListView(
-              children: <Widget>[
-                addPhoto(),
-                forms(),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: formButtonTemplate(
-                      context: context,
-                      onTab: () {
-                        print("dataaaaa2aaaaaah");
-                        print("{name is: ${name.text} }");
-                        model.addCategory(Category(
-                          photo: "photo",
-                          name: name.text,
-                        ));
-                        clear();
-                      },
-                      text: "إضافة نوع منتج"),
-                ),
-                UIHelper.verticalSpaceMedium(),
-              ],
-            ),
-          ),
+            UIHelper.verticalSpaceMedium(),
+          ],
+        ),
+      ),
     );
   }
 }

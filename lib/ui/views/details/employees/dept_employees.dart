@@ -6,11 +6,11 @@ import 'package:gym_bar/ui/views/base_view.dart';
 
 class DeptEmployees extends StatelessWidget {
   final String title = "Data Table Flutter Demo";
- 
+
   @override
   Widget build(BuildContext context) {
     return BaseView<EmployeeModel>(
-        onModelReady: (model) => model.fetchEmployees(),
+        onModelReady: (model) => model.fetchEmployees(branchName: ""),
         builder: (context, model, child) => Scaffold(
               appBar: AppBar(
                 title: Text("العملاء المدينين"),

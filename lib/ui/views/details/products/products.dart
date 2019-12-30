@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/enums/viewstate.dart';
-import 'package:gym_bar/core/view_models/category_model.dart';
-import 'package:gym_bar/ui/views/base_view.dart';
+import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';
 
-class Categories extends StatelessWidget {
-  final String branchName;
+import '../../base_view.dart';
 
-  Categories({this.branchName});
+class Products extends StatelessWidget {
+  final List<String> args;
 
-  static List<String> args = List(2);
+  Products({this.args});
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<CategoryModel>(
-      onModelReady: (model) => model.fetchCategories(),
+    return BaseView<ProductModel>(
+      onModelReady: (model) =>
+          model.fetchProducts(branchName: args[0], categoryName: args[1]),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("أختر نوع المنتج"),
@@ -22,19 +22,17 @@ class Categories extends StatelessWidget {
         body: model.state == ViewState.Busy
             ? Center(child: CircularProgressIndicator())
             : GridView.builder(
-                itemCount: model.categories.length,
+                itemCount: model.products.length,
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2),
                 itemBuilder: (BuildContext context, int index) {
                   return item(
-                    title: model.categories[index].name,
+                    title: model.products[index].name,
+                    statistics: "${model.products[index].netTotalQuantity}"
+                        "${model.products[index].unit} ",
                     assetImage: "",
                     backGround: Colors.lightBlue,
-                    onPress: () {
-                      args = [branchName, model.categories[index].name];
-                      Navigator.pushNamed(context, "/products",
-                          arguments: args);
-                    },
+                    onPress: () {},
                   );
                 },
               ),

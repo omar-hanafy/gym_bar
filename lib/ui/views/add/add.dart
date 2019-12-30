@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';
 
 class Add extends StatelessWidget {
-  const Add({Key key}) : super(key: key);
+  final String branchName;
+
+  Add({this.branchName});
 
   @override
   Widget build(BuildContext context) {
@@ -14,31 +16,26 @@ class Add extends StatelessWidget {
         children: <Widget>[
           item(
               title: "اضافة منتج",
-              image: "assets/images/products.jpg",
+              assetImage: "assets/images/products.jpg",
               onPress: () {
-                Navigator.pushNamed(context, '/add_product');
+                Navigator.pushNamed(context, '/add_product',
+                    arguments: branchName);
               }),
           item(
               title: "اضافة عميل",
-              image: "assets/images/clients.jpeg",
+              assetImage: "assets/images/clients.jpeg",
               onPress: () {
                 Navigator.pushNamed(context, '/add_client');
               }),
           item(
               title: "اضافة موظف",
-              image: "assets/images/employers.jpg",
+              assetImage: "assets/images/employers.jpg",
               onPress: () {
                 Navigator.pushNamed(context, '/add_employee');
               }),
           item(
-              title: "اضافة فرع",
-              image: "assets/images/branches.jpg",
-              onPress: () {
-                Navigator.pushNamed(context, '/add_branch');
-              }),
-          item(
               title: "اضافة نوع منتج",
-              image: "assets/images/branches.jpg",
+              assetImage: "assets/images/branches.jpg",
               onPress: () {
                 Navigator.pushNamed(context, '/add_category');
               }),

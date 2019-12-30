@@ -16,6 +16,10 @@ import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddClient extends StatefulWidget {
+  final String branchName;
+
+  AddClient({this.branchName});
+
   @override
   _AddClientState createState() => _AddClientState();
 }
@@ -218,15 +222,17 @@ class _AddClientState extends State<AddClient> {
                           print("{branch is: ${_selectedBranch} }");
                           print("{branch is: "
                               "${cashCalculations(selectedType: _selectedType, cash: cash)} }");
-                          model.addClient(Client(
-                            name: name.text,
-                            cash: cashCalculations(
-                                selectedType: _selectedType, cash: cash),
-                            branch: _selectedBranch,
-                            type: _selectedType,
-                            category: number.text,
-                            photo: "photo",
-                          ));
+                          model.addClient(
+                              client: Client(
+                                name: name.text,
+                                cash: cashCalculations(
+                                    selectedType: _selectedType, cash: cash),
+                                branch: _selectedBranch,
+                                type: _selectedType,
+                                category: number.text,
+                                photo: "photo",
+                              ),
+                              branchName: widget.branchName);
                           clear();
                         },
                         text: "إضافة عميل"),

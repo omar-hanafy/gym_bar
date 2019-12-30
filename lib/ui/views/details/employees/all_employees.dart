@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,9 +7,7 @@ import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 class AllEmployees extends StatelessWidget {
   final String title = "Data Table Flutter Demo";
@@ -100,13 +97,13 @@ getCsv(List<Employee> employees) async {
   await PermissionHandler().requestPermissions([PermissionGroup.storage]);
 
 //  Directory appDocDir = await getApplicationDocumentsDirectory();
-//  String appDocPath = appDocDir.path;
-//  print(appDocPath);
-  String appDocPath2 = "/storage/emulated/0/GymBar/Downloads";
-  final Directory directory =
-      await Directory(appDocPath2).create(recursive: true);
+//  String appPath = appDocDir.path;
+//  print(appPath);
+
+  String appPath = "/storage/emulated/0/GymBar/Downloads";
+  final Directory directory = await Directory(appPath).create(recursive: true);
   print("The directory $directory is created");
-  final file = File("$appDocPath2/allEmployees.csv");
+  final file = File("$appPath/allEmployees.csv");
   await file.writeAsString(csv); // Page
 // convert rows to String and write as csv file
 }

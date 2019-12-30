@@ -13,6 +13,10 @@ import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddEmployee extends StatefulWidget {
+  final String branchName;
+
+  AddEmployee({this.branchName});
+
   @override
   _AddEmployeeState createState() => _AddEmployeeState();
 }

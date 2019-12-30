@@ -21,9 +21,9 @@ class ClientModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
-  Future addClient(Client client) async {
+  Future addClient({Client client, String branchName}) async {
     setState(ViewState.Busy);
-    await _api.addDocument(client.toJson(), "clients");
+    await _api.addDocument(client.toJson(), "branches/$branchName/clients");
     setState(ViewState.Idle);
   }
 
@@ -37,9 +37,9 @@ class ClientModel extends BaseModel {
 //    return employees;
 //  }
 
-  Future fetchClients() async {
+  Future fetchClients(branchName) async {
     setState(ViewState.Busy);
-    var result = await _api.getDataCollection("employees");
+    var result = await _api.getDataCollection("branches/$branchName/clients");
     client = result.documents
         .map((doc) => Client.fromMap(doc.data, doc.documentID))
         .toList();

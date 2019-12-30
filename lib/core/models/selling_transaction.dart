@@ -1,16 +1,19 @@
-class Transaction {
-  String id,
+class SellingTransaction {
+  String product,
+      id,
       date,
       employeeName,
       customerName,
       customerId,
       sells,
       total,
+      productNumber,
+      oneProductTotal,
       paid,
       change,
       branch;
 
-  Transaction(
+  SellingTransaction(
       {this.branch,
       this.change,
       this.customerId,
@@ -22,7 +25,7 @@ class Transaction {
       this.sells,
       this.total});
 
-  Transaction.fromMap(Map snapshot, String id)
+  SellingTransaction.fromMap(Map snapshot, String id)
       : id = id ?? "",
         branch = snapshot['branch'] ?? '',
         customerName = snapshot['customerName'] ?? '',

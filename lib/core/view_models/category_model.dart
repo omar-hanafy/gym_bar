@@ -25,4 +25,13 @@ class CategoryModel extends BaseModel {
     setState(ViewState.Idle);
     return categories;
   }
+
+  Future fetchCategories() async {
+    setState(ViewState.Busy);
+    var result = await _api.getDataCollection("categories");
+    categories = result.documents
+        .map((doc) => Category.fromMap(doc.data, doc.documentID))
+        .toList();
+    setState(ViewState.Idle);
+  }
 }

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 
-item({String statistics, String title, String image, Function onPress}) {
+item(
+    {String statistics,
+    String title,
+    String assetImage,
+    String networkImage,
+    backGround = Colors.black,
+    Function onPress}) {
   return GestureDetector(
     onTap: onPress,
     child: Card(
-      color: Colors.black,
+      color: backGround,
       semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Stack(
@@ -13,8 +19,11 @@ item({String statistics, String title, String image, Function onPress}) {
           ClipRRect(
             child: Opacity(
               opacity: 0.4,
-              child:
-                  Image.asset(image, width: 320, height: 300, fit: BoxFit.fill),
+              child: assetImage == null
+                  ? Image.network(networkImage,
+                      width: 400, height: 300, fit: BoxFit.fill)
+                  : Image.asset(assetImage,
+                      width: 400, height: 300, fit: BoxFit.fill),
             ),
           ),
           statistics == null

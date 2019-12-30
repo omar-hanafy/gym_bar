@@ -1,6 +1,7 @@
 import 'package:gym_bar/core/enums/viewstate.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/category.dart';
+import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/services/api.dart';
 import 'package:gym_bar/core/view_models/base_model.dart';
@@ -13,9 +14,10 @@ class ProductModel extends BaseModel {
   List<Branch> branches;
   List<Category> categories;
 
-  Future<List<Product>> fetchProducts(String path) async {
+  Future<List<Product>> fetchProducts({categoryName, branchName}) async {
     setState(ViewState.Busy);
-    var result = await _api.getDataCollection(path);
+    var result = await _api.getDataCollection(
+        "products/branches/$branchName/categories/$categoryName");
     products = result.documents
         .map((doc) => Product.fromMap(doc.data, doc.documentID))
         .toList();

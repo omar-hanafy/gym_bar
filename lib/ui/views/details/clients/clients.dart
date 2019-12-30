@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';
 
 class Clients extends StatelessWidget {
-  const Clients({Key key}) : super(key: key);
+  String branchName;
 
+  Clients({this.branchName});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,19 +15,19 @@ class Clients extends StatelessWidget {
         children: <Widget>[
           item(
               title: "كل العملاء",
-              image: "assets/images/products.jpg",
+              assetImage: "assets/images/products.jpg",
               onPress: () {
                 //todo: navigate here.
               }),
           item(
               title: "دائن",
-              image: "assets/images/clients.jpeg",
+              assetImage: "assets/images/clients.jpeg",
               onPress: () {
                 //todo: navigate here.
               }),
           item(
               title: "مدين",
-              image: "assets/images/employers.jpg",
+              assetImage: "assets/images/employers.jpg",
               onPress: () {
                 //todo: navigate here.
               }),

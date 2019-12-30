@@ -5,6 +5,7 @@ import 'package:gym_bar/core/enums/viewstate.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/category.dart';
 import 'package:gym_bar/core/models/product.dart';
+import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
@@ -13,6 +14,10 @@ import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddProduct extends StatefulWidget {
+  final String branchName;
+
+  AddProduct({this.branchName});
+
   @override
   _AddProductState createState() => _AddProductState();
 }
@@ -72,6 +77,7 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
+    print("lgfsgdgnfsgnlknsdf" + widget.branchName);
     setSelectedRadio(int val) {
       setState(() {
         _selectedRadio = val;
@@ -119,37 +125,6 @@ class _AddProductState extends State<AddProduct> {
       );
     }
 
-    dropDownBranches(List<Branch> branch) {
-      return Padding(
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: Text(
-              "أختر الفرع",
-              style: formLabelsStyle,
-            ),
-            value: _selectedBranch,
-            isDense: true,
-            onChanged: (value) {
-              setState(() {
-                _selectedBranch = value;
-              });
-              print(_selectedBranch);
-            },
-            items: branch.map((branch) {
-              return DropdownMenuItem<String>(
-                value: "(${branch.name}) ${branch.gym}",
-                child: Text(
-                  "(${branch.name}) ${branch.gym}",
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      );
-    }
-
     dropDownCategories(List<Category> category) {
       return Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
@@ -181,7 +156,7 @@ class _AddProductState extends State<AddProduct> {
       );
     }
 
-    Widget forms({categoryWidget, branchWidget}) {
+    Widget forms({categoryWidget}) {
       return Card(
         child: Column(
           children: <Widget>[
@@ -320,7 +295,6 @@ class _AddProductState extends State<AddProduct> {
             formTextFieldTemplate(
                 hint: "سعر العامل", controller: housePrice, left: 80),
             UIHelper.verticalSpaceMedium(),
-            branchWidget,
             UIHelper.verticalSpaceSmall(),
             Padding(
               padding: EdgeInsets.only(left: 10, right: 10),
@@ -369,7 +343,6 @@ class _AddProductState extends State<AddProduct> {
     }
 
     return BaseView<ProductModel>(
-      onModelReady: (model) => model.fetchBranchesAndCategories(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("إضافة منتج"),
@@ -380,8 +353,11 @@ class _AddProductState extends State<AddProduct> {
                 children: <Widget>[
                   addPhoto(),
                   forms(
-                      categoryWidget: dropDownCategories(model.categories),
-                      branchWidget: dropDownBranches(model.branches)),
+                    categoryWidget: BaseView<CategoryModel>(
+                        onModelReady: (model) => model.fetchCategories(),
+                        builder: (context, model, child) =>
+                            dropDownCategories(model.categories)),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: formButtonTemplate(
@@ -407,10 +383,9 @@ class _AddProductState extends State<AddProduct> {
                                   netTotalQuantity:
                                       netTotalQuantity().toString(),
                                   photo: "photo"),
-                              branchName: _selectedBranch,
+                              branchName: widget.branchName,
                               categoryName: _selectedCategory);
                           clear();
-//                          dispose();
                         },
                         text: "إضافة منتج"),
                   ),

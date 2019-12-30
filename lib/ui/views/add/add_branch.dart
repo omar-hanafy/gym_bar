@@ -9,6 +9,10 @@ import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddBranch extends StatefulWidget {
+  final String branchName;
+
+  AddBranch({this.branchName});
+
   @override
   _AddBranchState createState() => _AddBranchState();
 }
@@ -97,6 +101,8 @@ class _AddBranchState extends State<AddBranch> {
                       name: name.text,
                     ));
                     clear();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/", (_) => false);
                   },
                   text: "إضافة فرع"),
             ),

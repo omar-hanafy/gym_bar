@@ -8,6 +8,7 @@ import 'locator.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   permission() async {
     await PermissionHandler().requestPermissions([PermissionGroup.storage]);
   }
@@ -30,19 +31,20 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          initialRoute: '/',
-          title: 'Gym Bar',
-          theme: ThemeData(fontFamily: 'Tajawal'),
-          onGenerateRoute: Routers.generateRoute,
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: [
-            Locale("ar", "EG"), // OR Locale('ar', 'AE') OR Other RTL locales
-          ],
-          locale: Locale("ar", "EG")),
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        title: 'Gym Bar',
+        theme: ThemeData(fontFamily: 'Tajawal'),
+        onGenerateRoute: Routers.generateRoute,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+//        supportedLocales: [
+//          Locale("ar", "EG"), // OR Locale('ar', 'AE') OR Other RTL locales
+//        ],
+//        locale: Locale("ar", "EG"),
+      ),
     );
   }
 }
