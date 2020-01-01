@@ -65,6 +65,8 @@ class _AddEmployeeState extends State<AddEmployee> {
 
   @override
   Widget build(BuildContext context) {
+    String branchName = widget.branchName;
+    print("employees branch name" + branchName);
     Widget dropDownType() {
       return Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
@@ -155,16 +157,18 @@ class _AddEmployeeState extends State<AddEmployee> {
 
     signUp({email, password, name, cash, type, number, branch, photo}) async {
       await AuthenticationService().signUp(email, password).then((uID) {
-        AuthenticationService.addEmployeeDB(Employee(
-          id: uID,
-          name: name,
-          cash: cash,
-          branch: branch,
-          type: type,
-          email: email,
-          number: number,
-          photo: photo,
-        ));
+        AuthenticationService.addEmployeeDB(
+            Employee(
+              id: uID,
+              name: name,
+              cash: cash,
+              branch: branch,
+              type: type,
+              email: email,
+              number: number,
+              photo: photo,
+            ),
+            branchName);
         print("created");
 //      flushBar("Done :)", "User added");
       });

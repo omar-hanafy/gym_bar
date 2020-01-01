@@ -5,8 +5,10 @@ class Employees extends StatelessWidget {
   String branchName;
 
   Employees({this.branchName});
+
   @override
   Widget build(BuildContext context) {
+    print(branchName + " :mozafeen page");
     return Scaffold(
       appBar: AppBar(
         title: Text("Ms Amany"),
@@ -14,11 +16,14 @@ class Employees extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           item(
-              title: "كل الموظفين",
-              assetImage: "assets/images/products.jpg",
-              onPress: () {
-                //todo: navigate here.
-              }),
+            title: "كل الموظفين",
+            assetImage: "assets/images/products.jpg",
+            onPress: () {
+              print("dsaddsddsadasdsadasdasds");
+              Navigator.pushNamed(context, '/all_employees',
+                  arguments: branchName);
+            },
+          ),
           item(
               title: "دائن",
               assetImage: "assets/images/clients.jpeg",

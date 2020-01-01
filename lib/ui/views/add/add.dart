@@ -8,6 +8,7 @@ class Add extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Add page branch name = $branchName");
     return Scaffold(
       appBar: AppBar(
         title: Text("Ms Amany"),
@@ -25,19 +26,22 @@ class Add extends StatelessWidget {
               title: "اضافة عميل",
               assetImage: "assets/images/clients.jpeg",
               onPress: () {
-                Navigator.pushNamed(context, '/add_client');
+                Navigator.pushNamed(context, '/add_client',
+                    arguments: branchName);
               }),
           item(
               title: "اضافة موظف",
               assetImage: "assets/images/employers.jpg",
               onPress: () {
-                Navigator.pushNamed(context, '/add_employee');
+                Navigator.pushNamed(context, '/add_employee',
+                    arguments: branchName);
               }),
           item(
               title: "اضافة نوع منتج",
               assetImage: "assets/images/branches.jpg",
               onPress: () {
-                Navigator.pushNamed(context, '/add_category');
+                Navigator.pushNamed(context, '/add_category',
+                    arguments: branchName);
               }),
         ],
       ),

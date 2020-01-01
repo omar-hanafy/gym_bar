@@ -35,7 +35,6 @@ item(
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 5,
-      margin: EdgeInsets.all(20),
     ),
   );
 }

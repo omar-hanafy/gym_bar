@@ -47,11 +47,11 @@ class AuthenticationService {
     });
   }
 
-  static void addEmployeeDB(Employee employee) async {
+  static void addEmployeeDB(Employee employee, branchName) async {
     checkUserExist(employee.id).then((value) {
       if (!value) {
         Firestore.instance
-            .document("employees/${employee.id}")
+            .document("employees/branches/$branchName/${employee.id}")
             .setData(employee.toJson());
       } else {
         print("user ${employee.name} ${employee.email} exists");

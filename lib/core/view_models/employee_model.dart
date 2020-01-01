@@ -22,13 +22,15 @@ class EmployeeModel extends BaseModel {
 //  }
   Future addClient(Employee employee, String branchName) async {
     setState(ViewState.Busy);
-    await _api.addDocument(employee.toJson(), "branches/$branchName/employees");
+    await _api.addDocument(
+        employee.toJson(), "employees/branches/$branchName/");
     setState(ViewState.Idle);
   }
 
   Future fetchEmployees({branchName}) async {
     setState(ViewState.Busy);
-    var result = await _api.getDataCollection("branches/$branchName/employees");
+    var result =
+        await _api.getDataCollection("employees/branches/$branchName/");
     employees = result.documents
         .map((doc) => Employee.fromMap(doc.data, doc.documentID))
         .toList();

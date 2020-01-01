@@ -34,7 +34,9 @@ dependencies:
   image_picker: ^0.6.2+3
   permission_handler: ^4.0.0
   flutter_speed_dial: ^1.2.5
-#  unicorndial: ^1.1.5
+  search_widget: ^1.0.0
+
+  #  unicorndial: ^1.1.5
 
 
   # rflutter_alert: ^1.0.3
