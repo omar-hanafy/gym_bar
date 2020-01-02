@@ -200,9 +200,44 @@ class _AddPurchaseState extends State<AddPurchase> {
                         "خد فتيسك",
                         style: formTitleStyle,
                       )
-                    : _selectedPurchaseType == "شراء عادي"
+                    : _selectedPurchaseType == "شراء عادي" &&
+                            _selectedCategory == null
                         ? dropDownCategory()
-                        : Container(),
+                        : GestureDetector(
+                            onTap: () {
+                              print("tabbbbed");
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(_selectedCategory),
+                                  ButtonTheme(
+                                    minWidth: 1.0,
+                                    height: 30.0,
+                                    child: RaisedButton(
+                                        color: Colors.blue,
+                                        child: Text("الغاء"),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _selectedCategory = null;
+                                            _selectedProduct = ["", "", ""];
+                                            _selectedUnit = null;
+                                            quantity.clear();
+                                          });
+                                        }),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
             UIHelper.verticalSpaceMedium(),
             _selectedCategory == null || _selectedCategory.length < 1
                 ? Container()
