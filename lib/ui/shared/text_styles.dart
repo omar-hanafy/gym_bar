@@ -23,7 +23,12 @@ const tableTitleStyle = TextStyle(
     fontFamily: 'Tajawal',
     color: Colors.black);
 
-const formLabelsStyle = TextStyle(fontSize: 15, fontFamily: 'Tajawal');
+const formLabelsStyle = TextStyle(
+  fontSize: 15,
+  fontFamily: 'Tajawal',
+);
+const dropDownLabelsStyle =
+    TextStyle(fontSize: 16, fontFamily: 'Tajawal', color: Colors.black);
 const formButtonStyle =
     TextStyle(fontSize: 15, fontFamily: 'Tajawal', color: Colors.white);
 

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/enums/viewstate.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
@@ -23,10 +24,27 @@ class _AddPurchaseState extends State<AddPurchase> {
   int _selectedUnit;
   TextEditingController quantity = TextEditingController();
   TextEditingController price = TextEditingController();
+  TextEditingController notes = TextEditingController();
   var value2;
 
   @override
   Widget build(BuildContext context) {
+    actions() {
+      return Column(
+        children: <Widget>[
+          formButtonTemplate(
+              context: context, onTab: () {}, text: "إتمام العملية"),
+          UIHelper.verticalSpaceMedium(),
+          formButtonTemplate(
+              context: context,
+              onTab: () {},
+              text: "إلغاء",
+              color: Colors.grey),
+          UIHelper.verticalSpaceMedium(),
+        ],
+      );
+    }
+
     dropDownPurchaseType() {
       return Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
@@ -45,14 +63,15 @@ class _AddPurchaseState extends State<AddPurchase> {
                 _selectedCategory = null;
                 _selectedProduct = ["", "", ""];
                 _selectedUnit = null;
+                price.clear();
                 quantity.clear();
               });
               print(value);
             },
-            items: <String>["شراء عادي", "شراء شخصي"].map((String value) {
+            items: <String>["شراء عادي", "سحب شخصي"].map((String value) {
               return new DropdownMenuItem<String>(
                 value: value,
-                child: new Text(value),
+                child: Text(value),
               );
             }).toList(),
           ),
@@ -60,49 +79,17 @@ class _AddPurchaseState extends State<AddPurchase> {
       );
     }
 
-    dropDownProduct() {
-      return BaseView<ProductModel>(
-          onModelReady: (model) => model.fetchProducts(
-              branchName: "${widget.branchName}",
-              categoryName: _selectedCategory),
-          builder: (context, model, child) => model.state == ViewState.Busy
-              ? Container(child: Center(child: CircularProgressIndicator()))
-              : Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: DropdownButtonHideUnderline(
-                      child: DropdownButton<List<String>>(
-                    isExpanded: true,
-                    hint: _selectedProduct[2].length < 1
-                        ? Text(
-                            "اختر المنتج",
-                            style: formLabelsStyle,
-                          )
-                        : Text(
-                            _selectedProduct[2],
-                            style: formLabelsStyle,
-                          ),
-                    value: value2,
-                    isDense: true,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedProduct = value;
-                        _selectedUnit = null;
-                        quantity.clear();
-                      });
-                    },
-                    items: model.products.map((products) {
-                      return DropdownMenuItem<List<String>>(
-                        value: <String>[
-                          products.unit,
-                          products.wholesaleUnit,
-                          products.name,
-                        ],
-                        child: Text(
-                          "${products.name}",
-                        ),
-                      );
-                    }).toList(),
-                  ))));
+    Widget handlePersonalWithdrawals() {
+      return Column(
+        children: <Widget>[
+          UIHelper.verticalSpaceMedium(),
+          formTextFieldTemplate(hint: "السعر المدفوع", controller: price),
+          UIHelper.verticalSpaceMedium(),
+          formTextFieldTemplate(hint: "ملاحظات", controller: notes),
+          SizedBox(height: 300),
+          actions(),
+        ],
+      );
     }
 
     dropDownCategory() {
@@ -137,6 +124,86 @@ class _AddPurchaseState extends State<AddPurchase> {
                               ),
                             );
                           }).toList()))));
+    }
+
+    handleDropDownCategory() {
+      if (_selectedPurchaseType == null) {
+        return Container();
+      } else if (_selectedPurchaseType == "سحب شخصي") {
+        return handlePersonalWithdrawals();
+      } else if (_selectedPurchaseType == "شراء عادي" &&
+          _selectedCategory == null) {
+        return Column(
+          children: <Widget>[
+            UIHelper.verticalSpaceMedium(),
+            dropDownCategory(),
+          ],
+        );
+      } else if (_selectedPurchaseType != null && _selectedCategory != null) {
+        return Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(_selectedCategory, style: dropDownLabelsStyle),
+                GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedCategory = null;
+                        _selectedProduct = ["", "", ""];
+                        _selectedUnit = null;
+                        quantity.clear();
+                      });
+                    },
+                    child: Icon(CupertinoIcons.clear_circled_solid)),
+              ],
+            ));
+      }
+    }
+
+    dropDownProduct() {
+      return BaseView<ProductModel>(
+          onModelReady: (model) => model.fetchProducts(
+              branchName: "${widget.branchName}",
+              categoryName: _selectedCategory),
+          builder: (context, model, child) => model.state == ViewState.Busy
+              ? Container(child: Center(child: CircularProgressIndicator()))
+              : Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: DropdownButtonHideUnderline(
+                      child: DropdownButton<List<String>>(
+                    isExpanded: true,
+                    hint: _selectedProduct[2].length < 1
+                        ? Text(
+                            "اختر المنتج",
+                            style: dropDownLabelsStyle,
+                          )
+                        : Text(
+                            _selectedProduct[2],
+                            style: dropDownLabelsStyle,
+                          ),
+                    value: value2,
+                    isDense: true,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedProduct = value;
+                        _selectedUnit = null;
+                        quantity.clear();
+                      });
+                    },
+                    items: model.products.map((products) {
+                      return DropdownMenuItem<List<String>>(
+                        value: <String>[
+                          products.unit,
+                          products.wholesaleUnit,
+                          products.name,
+                        ],
+                        child: Text(
+                          "${products.name}",
+                        ),
+                      );
+                    }).toList(),
+                  ))));
     }
 
     setSelectedRadio(int val) {
@@ -192,82 +259,62 @@ class _AddPurchaseState extends State<AddPurchase> {
           children: <Widget>[
             UIHelper.verticalSpaceMedium(),
             dropDownPurchaseType(),
-            UIHelper.verticalSpaceMedium(),
-            _selectedPurchaseType == null
-                ? Container()
-                : _selectedPurchaseType == "شراء شخصي"
-                    ? Text(
-                        "خد فتيسك",
-                        style: formTitleStyle,
-                      )
-                    : _selectedPurchaseType == "شراء عادي" &&
-                            _selectedCategory == null
-                        ? dropDownCategory()
-                        : GestureDetector(
-                            onTap: () {
-                              print("tabbbbed");
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(_selectedCategory),
-                                  ButtonTheme(
-                                    minWidth: 1.0,
-                                    height: 30.0,
-                                    child: RaisedButton(
-                                        color: Colors.blue,
-                                        child: Text("الغاء"),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(18.0),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _selectedCategory = null;
-                                            _selectedProduct = ["", "", ""];
-                                            _selectedUnit = null;
-                                            quantity.clear();
-                                          });
-                                        }),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-            UIHelper.verticalSpaceMedium(),
+            Column(
+              children: <Widget>[
+                handleDropDownCategory(),
+                UIHelper.verticalSpaceMedium(),
+              ],
+            ),
             _selectedCategory == null || _selectedCategory.length < 1
                 ? Container()
-                : dropDownProduct(),
-            UIHelper.verticalSpaceMedium(),
-            _selectedProduct[1].length < 1 ? Container() : radioUnit(),
-            UIHelper.verticalSpaceMedium(),
+                : Column(
+                    children: <Widget>[
+                      dropDownProduct(),
+                      UIHelper.verticalSpaceMedium(),
+                    ],
+                  ),
             _selectedProduct[1].length < 1
                 ? Container()
-                : formTextFieldTemplate(
-                    controller: quantity,
-                    hint: _selectedUnit == 1
-                        ? "كمية ال ${_selectedProduct[0]}"
-                        : "كمية ال ${_selectedProduct[1]}",
+                : Column(
+                    children: <Widget>[
+                      radioUnit(),
+                      UIHelper.verticalSpaceMedium(),
+                    ],
                   ),
-            UIHelper.verticalSpaceMedium(),
             _selectedProduct[1].length < 1
                 ? Container()
-                : formTextFieldTemplate(
-                    controller: price,
-                    hint: "السعر المدفوع",
+                : Column(
+                    children: <Widget>[
+                      formTextFieldTemplate(
+                        controller: quantity,
+                        hint: _selectedUnit == 1
+                            ? "كمية ال ${_selectedProduct[0]}"
+                            : "كمية ال ${_selectedProduct[1]}",
+                      ),
+                      UIHelper.verticalSpaceMedium(),
+                    ],
                   ),
-            UIHelper.verticalSpaceMedium(),
+            _selectedProduct[1].length < 1
+                ? Container()
+                : Column(
+                    children: <Widget>[
+                      formTextFieldTemplate(
+                        controller: price,
+                        hint: "السعر المدفوع",
+                      ),
+                      SizedBox(
+                        height: 160,
+                      ),
+                      actions(),
+                    ],
+                  ),
           ],
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
         elevation: 5,
-        margin: EdgeInsets.only(left: 10, right: 10, top: 50, bottom: 10),
+        margin: EdgeInsets.only(left: 10, right: 10, top: 30),
       );
     }
 
