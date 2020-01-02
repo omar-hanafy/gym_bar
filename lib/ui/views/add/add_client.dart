@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:gym_bar/core/enums/viewstate.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/client.dart';
-import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/services/other_services.dart';
-import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
-import 'package:gym_bar/core/view_models/employee_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
@@ -110,38 +107,7 @@ class _AddClientState extends State<AddClient> {
       );
     }
 
-    Widget dropDownBranches(List<Branch> branch) {
-      return Padding(
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: Text(
-              "أختر الفرع",
-              style: formLabelsStyle,
-            ),
-            value: _selectedBranch,
-            isDense: true,
-            onChanged: (value) {
-              setState(() {
-                _selectedBranch = value;
-              });
-              print(_selectedBranch);
-            },
-            items: branch.map((branch) {
-              return DropdownMenuItem<String>(
-                value: "(${branch.name}) ${branch.gym}",
-                child: Text(
-                  "(${branch.name}) ${branch.gym}",
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      );
-    }
-
-    Widget forms(branchWidget) {
+    Widget forms() {
       return Card(
         child: Column(
           children: <Widget>[
@@ -161,7 +127,6 @@ class _AddClientState extends State<AddClient> {
               ),
             ),
             UIHelper.verticalSpaceSmall(),
-            branchWidget,
             UIHelper.verticalSpaceMedium(),
           ],
         ),
@@ -201,7 +166,6 @@ class _AddClientState extends State<AddClient> {
     }
 
     return BaseView<ClientModel>(
-      onModelReady: (model) => model.fetchBranches(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("إضافة عميل"),
@@ -211,7 +175,7 @@ class _AddClientState extends State<AddClient> {
             : ListView(
                 children: <Widget>[
                   addPhoto(),
-                  forms(dropDownBranches(model.branches)),
+                  forms(),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: formButtonTemplate(
@@ -219,7 +183,6 @@ class _AddClientState extends State<AddClient> {
                         onTab: () {
                           print("dataaaaa2aaaaaah");
                           print("{name is: ${name.text} }");
-                          print("{branch is: ${_selectedBranch} }");
                           print("{branch is: "
                               "${cashCalculations(selectedType: _selectedType, cash: cash)} }");
                           model.addClient(
@@ -227,7 +190,7 @@ class _AddClientState extends State<AddClient> {
                                 name: name.text,
                                 cash: cashCalculations(
                                     selectedType: _selectedType, cash: cash),
-                                branch: _selectedBranch,
+                                branch: widget.branchName,
                                 type: _selectedType,
                                 category: number.text,
                                 photo: "photo",

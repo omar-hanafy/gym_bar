@@ -27,7 +27,8 @@ class Details extends StatelessWidget {
           label: 'عملية شراء',
           labelStyle: TextStyle(fontSize: 18.0),
           onTap: () {
-            Navigator.pushNamed(context, "/add_purchase");
+            Navigator.pushNamed(context, "/add_purchase",
+                arguments: branchName);
           }),
     ];
     var floating = SpeedDial(

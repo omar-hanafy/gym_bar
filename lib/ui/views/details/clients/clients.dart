@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';
 
 class Clients extends StatelessWidget {
-  String branchName;
+  final String branchName;
 
   Clients({this.branchName});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +18,8 @@ class Clients extends StatelessWidget {
               title: "كل العملاء",
               assetImage: "assets/images/products.jpg",
               onPress: () {
-                //todo: navigate here.
+                Navigator.pushNamed(context, '/all_clients',
+                    arguments: branchName);
               }),
           item(
               title: "دائن",

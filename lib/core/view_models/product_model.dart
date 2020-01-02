@@ -11,8 +11,6 @@ class ProductModel extends BaseModel {
   Api _api = locator<Api>();
 
   List<Product> products;
-  List<Branch> branches;
-  List<Category> categories;
 
   Future<List<Product>> fetchProducts({categoryName, branchName}) async {
     setState(ViewState.Busy);
@@ -23,21 +21,6 @@ class ProductModel extends BaseModel {
         .toList();
     setState(ViewState.Idle);
     return products;
-  }
-
-  Future fetchBranchesAndCategories() async {
-    setState(ViewState.Busy);
-    var branchResult = await _api.getDataCollection("branches");
-    var categoryResult = await _api.getDataCollection("categories");
-    branches = branchResult.documents
-        .map((doc) => Branch.fromMap(doc.data, doc.documentID))
-        .toList();
-
-    categories = categoryResult.documents
-        .map((doc) => Category.fromMap(doc.data, doc.documentID))
-        .toList();
-
-    setState(ViewState.Idle);
   }
 
   // Stream<QuerySnapshot> fetchProductsAsStream(String path) {

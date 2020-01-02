@@ -78,6 +78,7 @@ class _AddProductState extends State<AddProduct> {
   @override
   Widget build(BuildContext context) {
     print("lgfsgdgnfsgnlknsdf" + widget.branchName);
+
     setSelectedRadio(int val) {
       setState(() {
         _selectedRadio = val;

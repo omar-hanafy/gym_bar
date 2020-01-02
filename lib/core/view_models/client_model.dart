@@ -5,21 +5,10 @@ import 'package:gym_bar/core/enums/viewstate.dart';
 import 'package:gym_bar/core/services/api.dart';
 
 import '../../locator.dart';
-
 class ClientModel extends BaseModel {
   Api _api = locator<Api>();
 
   List<Client> client;
-  List<Branch> branches;
-
-  Future fetchBranches() async {
-    setState(ViewState.Busy);
-    var branchResult = await _api.getDataCollection("branches");
-    branches = branchResult.documents
-        .map((doc) => Branch.fromMap(doc.data, doc.documentID))
-        .toList();
-    setState(ViewState.Idle);
-  }
 
   Future addClient({Client client, String branchName}) async {
     setState(ViewState.Busy);
