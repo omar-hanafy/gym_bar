@@ -17,6 +17,13 @@ const signLogHintStyle = TextStyle(
 
 const formTitleStyle =
     TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: 'Tajawal');
+const formTitleStyleWhite = TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+    fontSize: 20,
+    fontFamily: 'Tajawal');
+const formTitleStyleLight = TextStyle(fontSize: 20, fontFamily: 'Tajawal');
+
 const tableTitleStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 20,
@@ -33,10 +40,10 @@ const formButtonStyle =
     TextStyle(fontSize: 15, fontFamily: 'Tajawal', color: Colors.white);
 
 const imageTitle = TextStyle(
-    fontSize: 20.0,
+    fontSize: 30.0,
     fontWeight: FontWeight.bold,
     fontFamily: 'Tajawal',
     color: Colors.white);
 
 const imageStatistics =
-    TextStyle(fontSize: 30.0, fontFamily: 'Tajawal', color: Colors.white);
+    TextStyle(fontSize: 20.0, fontFamily: 'Tajawal', color: Colors.white);

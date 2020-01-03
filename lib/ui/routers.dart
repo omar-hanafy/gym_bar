@@ -12,6 +12,7 @@ import 'package:gym_bar/ui/views/add/add_purchase.dart';
 import 'package:gym_bar/ui/views/details/clients/all_clients.dart';
 import 'package:gym_bar/ui/views/details/details.dart';
 import 'package:gym_bar/ui/views/details/employees/all_employees.dart';
+import 'package:gym_bar/ui/views/details/products/product_profile.dart';
 import 'package:gym_bar/ui/views/details/products/products.dart';
 import 'package:gym_bar/ui/views/details/clients/clients.dart';
 import 'package:gym_bar/ui/views/details/employees/emplyees.dart';
@@ -41,6 +42,10 @@ class Routers {
       case '/products':
         List<String> args = settings.arguments;
         return MaterialPageRoute(builder: (_) => Products(args: args));
+      case '/product_profile':
+        Map productDetails = settings.arguments;
+        return MaterialPageRoute(
+            builder: (_) => ProductProfile(productDetails: productDetails));
       case '/clients':
         var branch = settings.arguments;
         return MaterialPageRoute(

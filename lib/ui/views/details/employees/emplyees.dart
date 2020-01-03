@@ -17,6 +17,7 @@ class Employees extends StatelessWidget {
         children: <Widget>[
           item(
             title: "كل الموظفين",
+            statistics: '155',
             assetImage: "assets/images/products.jpg",
             onPress: () {
               print("dsaddsddsadasdsadasdasds");
@@ -26,12 +27,14 @@ class Employees extends StatelessWidget {
           ),
           item(
               title: "دائن",
+              statistics: '155',
               assetImage: "assets/images/clients.jpeg",
               onPress: () {
                 //todo: navigate here.
               }),
           item(
               title: "مدين",
+              statistics: '155',
               assetImage: "assets/images/employers.jpg",
               onPress: () {
                 //todo: navigate here.

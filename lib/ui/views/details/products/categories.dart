@@ -21,22 +21,27 @@ class Categories extends StatelessWidget {
         ),
         body: model.state == ViewState.Busy
             ? Center(child: CircularProgressIndicator())
-            : GridView.builder(
-                itemCount: model.categories.length,
-                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemBuilder: (BuildContext context, int index) {
-                  return item(
-                    title: model.categories[index].name,
-                    assetImage: "",
-                    backGround: Colors.lightBlue,
-                    onPress: () {
-                      args = [branchName, model.categories[index].name];
-                      Navigator.pushNamed(context, "/products",
-                          arguments: args);
-                    },
-                  );
-                },
+            : Container(
+                padding: const EdgeInsets.all(6),
+                child: GridView.builder(
+                  itemCount: model.categories.length,
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 6,
+                      crossAxisSpacing: 6),
+                  itemBuilder: (BuildContext context, int index) {
+                    return item(
+                      title: model.categories[index].name,
+                      assetImage: "",
+                      backGround: Colors.lightBlue,
+                      onPress: () {
+                        args = [branchName, model.categories[index].name];
+                        Navigator.pushNamed(context, "/products",
+                            arguments: args);
+                      },
+                    );
+                  },
+                ),
               ),
       ),
     );

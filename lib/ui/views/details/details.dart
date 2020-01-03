@@ -95,14 +95,14 @@ class Details extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(6),
               child: CustomScrollView(
                 slivers: <Widget>[
                   SliverGrid(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10),
+                        mainAxisSpacing: 6,
+                        crossAxisSpacing: 6),
                     delegate: SliverChildListDelegate(
                       [
 //                  SizedBox(height: 20),

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 
-item(
-    {String statistics,
-    String title,
-    String assetImage,
-    String networkImage,
-    backGround = Colors.black,
-    Function onPress}) {
+item({
+  String statistics,
+  String title,
+  String assetImage,
+  String networkImage,
+  backGround = Colors.black,
+  Function onPress,
+  topSpace,
+  betweenSpace,
+}) {
   return GestureDetector(
     onTap: onPress,
     child: Card(
@@ -15,6 +18,8 @@ item(
       semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Stack(
+        alignment: AlignmentDirectional.center,
+        textDirection: TextDirection.rtl,
         children: <Widget>[
           ClipRRect(
             child: Opacity(
@@ -28,7 +33,11 @@ item(
           ),
           statistics == null
               ? titleOnly(title)
-              : titleStatistics(title: title, statistics: statistics)
+              : titleStatistics(
+                  title: title,
+                  statistics: statistics,
+                  topSpace: topSpace,
+                  betweenSpace: betweenSpace),
         ],
       ),
       shape: RoundedRectangleBorder(
@@ -39,33 +48,26 @@ item(
   );
 }
 
-titleStatistics({title, statistics}) {
+titleStatistics({title, statistics, topSpace, betweenSpace}) {
   return Column(
     children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(top: 110, right: 20),
-        child: Text(
-          statistics,
-          style: imageStatistics,
-        ),
+      topSpace != null ? topSpace : SizedBox(),
+      Text(
+        statistics,
+        style: imageStatistics,
       ),
-      Padding(
-        padding: const EdgeInsets.only(top: 110, right: 20),
-        child: Text(
-          title,
-          style: imageTitle,
-        ),
+      betweenSpace != null ? betweenSpace : SizedBox(),
+      Text(
+        title,
+        style: imageTitle,
       ),
     ],
   );
 }
 
 titleOnly(title) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 110, right: 20),
-    child: Text(
-      title,
-      style: imageTitle,
-    ),
+  return Text(
+    title,
+    style: imageTitle,
   );
 }

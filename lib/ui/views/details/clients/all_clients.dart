@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/enums/viewstate.dart';
@@ -10,6 +9,7 @@ import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
 import 'package:gym_bar/ui/widgets/search.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:search_widget/search_widget.dart';
 
 class AllClients extends StatefulWidget {
   final String branchName;
@@ -224,4 +224,39 @@ getCsv(List<Client> clients) async {
   final file = File("$appPath/allClients.csv");
   await file.writeAsString(csv); // Page
 // convert rows to String and write as csv file
+}
+
+clientSearch(List<Client> client, context) {
+  return SearchWidget<Client>(
+    dataList: client,
+    hideSearchBoxWhenItemSelected: false,
+    listContainerHeight: MediaQuery.of(context).size.height / 4,
+    queryBuilder: (String query, List<Client> client) {
+      return client
+          .where((Client client) =>
+              client.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    },
+    popupListItemBuilder: (Client client) {
+      return Container(
+        padding: const EdgeInsets.all(12),
+        child: Text(
+          client.name,
+          style: const TextStyle(fontSize: 16),
+        ),
+      );
+    },
+    selectedItemBuilder:
+        (Client selectedItem, VoidCallback deleteSelectedItem) {
+      //TODO: navigate here to user profile
+      return null;
+    },
+    // widget customization
+    noItemsFoundWidget: Center(
+      child: Text("No item Found"),
+    ),
+    textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+      return searchTextField(controller, focusNode, context);
+    },
+  );
 }

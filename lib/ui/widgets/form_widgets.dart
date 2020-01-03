@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 
-logo(imageContent) {
+Widget logo(imageContent) {
   return Card(
     child: Container(
       child: CircleAvatar(
+          child: ClipOval(
+            child: imageContent
+          ),
           backgroundColor: Colors.blueAccent,
-          maxRadius: 100.0,
-          backgroundImage: imageContent),
+          maxRadius: 80.0,
+//          backgroundImage: imageContent,
+      ),
     ),
     elevation: 18.0,
     shape: CircleBorder(),

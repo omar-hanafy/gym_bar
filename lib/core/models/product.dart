@@ -8,6 +8,7 @@ class Product {
       employeePrice,
       housePrice,
       quantity,
+      quantityLimit,
       unit,
       wholesaleQuantity,
       wholesaleUnit,
@@ -30,6 +31,7 @@ class Product {
     this.wholesaleUnit,
     this.supplierName,
     this.netTotalQuantity,
+    this.quantityLimit,
     this.photo,
   });
 
@@ -44,6 +46,7 @@ class Product {
         employeePrice = snapshot['employeePrice'] ?? '',
         housePrice = snapshot['housePrice'] ?? '',
         quantity = snapshot['quantity'],
+        quantityLimit = snapshot['quantityLimit'],
         wholesaleQuantity = snapshot['wholesaleQuantity'],
         wholesaleUnit = snapshot['wholesaleUnit'],
         unit = snapshot['unit'] ?? '',
@@ -61,6 +64,7 @@ class Product {
       "employeePrice": employeePrice,
       "housePrice": housePrice,
       "quantity": quantity,
+      "quantityLimit": quantityLimit,
       "wholesaleQuantity": wholesaleQuantity,
       "wholesaleUnit": wholesaleUnit,
       "unit": unit,

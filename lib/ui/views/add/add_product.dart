@@ -27,6 +27,7 @@ class _AddProductState extends State<AddProduct> {
   final TextEditingController description = TextEditingController();
   final TextEditingController companyName = TextEditingController();
   final TextEditingController quantity = TextEditingController();
+  final TextEditingController quantityLimit = TextEditingController();
   final TextEditingController unit = TextEditingController();
   final TextEditingController wholesaleQuantity = TextEditingController();
   final TextEditingController wholesaleUnit = TextEditingController();
@@ -61,6 +62,7 @@ class _AddProductState extends State<AddProduct> {
     description.clear();
     companyName.clear();
     quantity.clear();
+    quantityLimit.clear();
     unit.clear();
     wholesaleQuantity.clear();
     wholesaleUnit.clear();
@@ -279,6 +281,11 @@ class _AddProductState extends State<AddProduct> {
               ],
             ),
             UIHelper.verticalSpaceMedium(),
+            formTextFieldTemplate(
+              hint: 'الحد الادنى للعدد',
+              controller: quantityLimit,
+            ),
+            UIHelper.verticalSpaceMedium(),
             Padding(
               padding: const EdgeInsets.only(left: 300),
               child: Text(
@@ -377,6 +384,7 @@ class _AddProductState extends State<AddProduct> {
                                   employeePrice: employeePrice.text,
                                   housePrice: housePrice.text,
                                   quantity: quantity.text,
+                                  quantityLimit: quantityLimit.text,
                                   unit: unit.text,
                                   wholesaleQuantity: wholesaleQuantity.text,
                                   wholesaleUnit: wholesaleQuantity.text,

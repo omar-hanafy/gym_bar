@@ -10,6 +10,7 @@ import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
 import 'package:gym_bar/ui/widgets/search.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:search_widget/search_widget.dart';
 
 class AllEmployees extends StatefulWidget {
   final String branchName;
@@ -230,4 +231,38 @@ getCsv(List<Employee> employees) async {
   final file = File("$appPath/allEmployees.csv");
   await file.writeAsString(csv); // Page
 // convert rows to String and write as csv file
+}
+
+employeeSearch(List<Employee> employee, context) {
+  return SearchWidget<Employee>(
+    dataList: employee,
+    hideSearchBoxWhenItemSelected: false,
+    listContainerHeight: MediaQuery.of(context).size.height / 4,
+    queryBuilder: (String query, List<Employee> employee) {
+      return employee
+          .where((Employee employee) =>
+              employee.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    },
+    popupListItemBuilder: (Employee employee) {
+      return Container(
+          padding: const EdgeInsets.all(12),
+          child: Text(
+            employee.name,
+            style: const TextStyle(fontSize: 16),
+          ));
+    },
+    selectedItemBuilder:
+        (Employee selectedItem, VoidCallback deleteSelectedItem) {
+      //TODO: navigate here to user profile
+      return null;
+    },
+    // widget customization
+    noItemsFoundWidget: Center(
+      child: Text("No item Found"),
+    ),
+    textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+      return searchTextField(controller, focusNode, context);
+    },
+  );
 }

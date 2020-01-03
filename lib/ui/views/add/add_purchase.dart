@@ -126,6 +126,7 @@ class _AddPurchaseState extends State<AddPurchase> {
                           }).toList()))));
     }
 
+    // ignore: missing_return
     handleDropDownCategory() {
       if (_selectedPurchaseType == null) {
         return Container();
