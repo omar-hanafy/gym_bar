@@ -101,11 +101,14 @@ class _AllEmployeesState extends State<AllEmployees> {
                         children: <Widget>[
                           Container(
                               color: int.parse(employees[index].cash) > 0
-                                  ? Colors.green
+                                  ? Colors.white
                                   : Colors.red,
                               height: 50,
-                              child:
-                                  Center(child: Text(employees[index].name))),
+                              child: Center(
+                                  child: Text(
+                                employees[index].name,
+                                style: formTitleStyleLight,
+                              ))),
                           Divider(height: 1, color: Colors.black),
                         ],
                       ))),
@@ -141,11 +144,14 @@ class _AllEmployeesState extends State<AllEmployees> {
                         children: <Widget>[
                           Container(
                               color: int.parse(employees[index].cash) > 0
-                                  ? Colors.green
+                                  ? Colors.white
                                   : Colors.red,
                               height: 50,
-                              child:
-                                  Center(child: Text(employees[index].cash))),
+                              child: Center(
+                                  child: Text(
+                                employees[index].cash,
+                                style: formTitleStyleLight,
+                              ))),
                           Divider(height: 1, color: Colors.black),
                         ],
                       )))

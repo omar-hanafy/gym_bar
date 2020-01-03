@@ -15,30 +15,39 @@ class Employees extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          item(
-            title: "كل الموظفين",
-            statistics: '155',
-            assetImage: "assets/images/products.jpg",
-            onPress: () {
-              print("dsaddsddsadasdsadasdasds");
-              Navigator.pushNamed(context, '/all_employees',
-                  arguments: branchName);
-            },
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+            child: item(
+              title: "كل الموظفين",
+              statistics: '155',
+              assetImage: "assets/images/products.jpg",
+              onPress: () {
+                print("dsaddsddsadasdsadasdasds");
+                Navigator.pushNamed(context, '/all_employees',
+                    arguments: branchName);
+              },
+            ),
           ),
-          item(
-              title: "دائن",
-              statistics: '155',
-              assetImage: "assets/images/clients.jpeg",
-              onPress: () {
-                //todo: navigate here.
-              }),
-          item(
-              title: "مدين",
-              statistics: '155',
-              assetImage: "assets/images/employers.jpg",
-              onPress: () {
-                //todo: navigate here.
-              }),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+            child: item(
+                title: "دائن",
+                statistics: '155',
+                assetImage: "assets/images/clients.jpeg",
+                onPress: () {
+                  //todo: navigate here.
+                }),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+            child: item(
+                title: "مدين",
+                statistics: '155',
+                assetImage: "assets/images/employers.jpg",
+                onPress: () {
+                  //todo: navigate here.
+                }),
+          ),
         ],
       ),
     );

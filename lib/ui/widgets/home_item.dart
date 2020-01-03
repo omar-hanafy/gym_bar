@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 
-item({
+Widget item({
   String statistics,
   String title,
   String assetImage,
