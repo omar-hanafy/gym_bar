@@ -19,10 +19,6 @@ searchTextField(controller, focusNode, context) {
             border: InputBorder.none,
             hintText: "Search here...",
             contentPadding: const EdgeInsets.only(
-              left: 16,
-              right: 20,
-              top: 14,
-              bottom: 14,
-            )),
+                left: 16, right: 20, top: 14, bottom: 14)),
       ));
 }

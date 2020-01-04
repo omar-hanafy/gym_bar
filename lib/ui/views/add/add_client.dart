@@ -161,8 +161,8 @@ class _AddClientState extends State<AddClient> {
       return GestureDetector(
           onTap: () => getImage(""),
           child: file == null
-              ? logo(AssetImage("assets/images/add.jpg"))
-              : logo(FileImage(file)));
+              ? logo(Image.asset("assets/images/add.jpg"))
+              : logo(Image.file(file)));
     }
 
     return BaseView<ClientModel>(

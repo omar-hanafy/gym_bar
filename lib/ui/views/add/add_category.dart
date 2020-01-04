@@ -54,24 +54,26 @@ class _AddCategoryState extends State<AddCategory> {
     }
 
     uploadImage() async {
-      if (file != null) {
-        int random = Random().nextInt(1000000000000);
-        StorageReference ref =
-            FirebaseStorage.instance.ref().child("image_$random.jpg");
-        StorageUploadTask uploadTask = ref.putFile(file);
-        downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
-        print(downURL.toString());
-        return downURL;
-      } else
-        print("ds;klfjhsio;kr");
+      if (file != null)
+        try {
+          int random = Random().nextInt(1000000000000);
+          StorageReference ref =
+              FirebaseStorage.instance.ref().child("image_$random.jpg");
+          StorageUploadTask uploadTask = ref.putFile(file);
+          downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
+          print(downURL.toString());
+          return downURL;
+        } catch (e) {
+          print("errrrrrror: $e");
+        }
     }
 
     Widget addPhoto() {
       return GestureDetector(
           onTap: () => getImage(""),
           child: file == null
-              ? logo(AssetImage("assets/images/add.jpg"))
-              : logo(FileImage(file)));
+              ? logo(Image.asset("assets/images/add.jpg"))
+              : logo(Image.file(file)));
     }
 
     return BaseView<CategoryModel>(

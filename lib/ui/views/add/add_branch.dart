@@ -74,8 +74,8 @@ class _AddBranchState extends State<AddBranch> {
       return GestureDetector(
           onTap: () => getImage(""),
           child: file == null
-              ? logo(AssetImage("assets/images/add.jpg"))
-              : logo(FileImage(file)));
+              ? logo(Image.asset("assets/images/add.jpg"))
+              : logo(Image.file(file)));
     }
 
     return BaseView<BranchModel>(

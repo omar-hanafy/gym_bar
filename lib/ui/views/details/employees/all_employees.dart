@@ -272,3 +272,101 @@ employeeSearch(List<Employee> employee, context) {
     },
   );
 }
+//TODO: U CAN USE ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN USE ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//tableHead(employees) {
+//  return Container(
+//    height: 50,
+//    color: Colors.grey,
+//    child: Row(
+//      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//      children: <Widget>[
+//        GestureDetector(
+//            onTap: () {
+//              changeNameAscendingState();
+//              onSortName(employees);
+//            },
+//            child: Center(
+//                child: Row(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("Name", style: tableTitleStyle),
+//                    SizedBox(width: 10),
+//                    Icon(sortNameIcon)
+//                  ],
+//                ))),
+//        GestureDetector(
+//            onTap: () {
+//              changeCashAscendingState();
+//              onSortCash(employees);
+//            },
+//            child: Center(
+//                child: Row(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Text("Cash", style: tableTitleStyle),
+//                    SizedBox(width: 10),
+//                    Icon(sortCashIcon)
+//                  ],
+//                ))),
+//      ],
+//    ),
+//  );
+//}
+//
+//tableBuilder(List<Employee> employees) {
+//  return ListView.builder(
+//      itemCount: employees.length,
+//      itemBuilder: (BuildContext context, int index) {
+//        return Column(
+//          children: <Widget>[
+//            Container(
+//              color: int.parse(employees[index].cash) > 0
+//                  ? Colors.white
+//                  : Colors.red,
+//              height: 50,
+//              child: Center(
+//                child: Row(
+//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                  children: <Widget>[
+//                    Text(employees[index].name, style: formTitleStyleLight),
+//                    Text(employees[index].cash, style: formTitleStyleLight),
+//                  ],
+//                ),
+//              ),
+//            ),
+//            Divider(height: 1, color: Colors.black),
+//          ],
+//        );
+//      });
+//}
+//
+//table(employees) {
+//  return Column(
+//    children: <Widget>[
+//      tableHead(employees),
+//      Divider(
+//        thickness: 3,
+//        color: Colors.black54,
+//        height: 3,
+//      ),
+//      Expanded(child: tableBuilder(employees)),
+//    ],
+//  );
+//}
+//TODO: U CAN USE ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
+//TODO: U CAN Use ALTERNATIVE TABLE
