@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/services/other_services.dart';

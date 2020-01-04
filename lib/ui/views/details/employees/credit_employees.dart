@@ -12,13 +12,13 @@
 //import 'package:permission_handler/permission_handler.dart';
 //import 'package:search_widget/search_widget.dart';
 //
-//class DeptEmployees extends StatefulWidget {
+//class CreditEmployees extends StatefulWidget {
 //  final String branchName;
 //
-//  DeptEmployees({this.branchName});
+//  CreditEmployees({this.branchName});
 //
 //  @override
-//  _DeptEmployeesState createState() => _DeptEmployeesState();
+//  _CreditEmployeesState createState() => _CreditEmployeesState();
 //}
 //
 //bool nameAscending = false;
@@ -27,7 +27,7 @@
 //IconData sortNameIcon = Icons.sort;
 //String sendNull = "لا يوجد";
 //
-//class _DeptEmployeesState extends State<DeptEmployees> {
+//class _CreditEmployeesState extends State<CreditEmployees> {
 //  onSortName(List<Employee> employees) {
 //    if (nameAscending) {
 //      setState(() {
@@ -178,7 +178,7 @@
 //
 //    return BaseView<EmployeeModel>(
 //      onModelReady: (model) => model.fetchFilteredEmployees(
-//          branchName: widget.branchName, field: "type", equalTo: "دائن"),
+//          branchName: widget.branchName, field: "type", equalTo: "مدين"),
 //      builder: (context, model, child) => Scaffold(
 //        appBar: AppBar(
 //          title: Text("كل الموظفين"),

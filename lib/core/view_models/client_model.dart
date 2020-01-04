@@ -1,7 +1,7 @@
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/view_models/base_model.dart';
-import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/services/api.dart';
 
 import '../../locator.dart';

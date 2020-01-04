@@ -3,7 +3,7 @@ import 'package:gym_bar/core/models/user.dart';
 
 class Api {
   final Firestore _db = Firestore.instance;
-  CollectionReference ref;
+  var ref;
 
   Future<User> getUserProfile(userId) async {
     User user;
@@ -18,7 +18,12 @@ class Api {
   }
 
   Future<QuerySnapshot> getDataCollection(String path) {
-    ref = _db.collection(path);
+    ref = _db.collection(path).getDocuments();
+    return ref;
+  }
+
+  Future<QuerySnapshot> getCustomDataCollection({path, field, equalTo}) {
+    ref = _db.collection(path).where(field, isEqualTo: equalTo);
     return ref.getDocuments();
   }
 

@@ -1,4 +1,4 @@
-import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/category.dart';
 import 'package:gym_bar/core/models/employee.dart';

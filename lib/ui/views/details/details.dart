@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
+import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';
 
 class Details extends StatelessWidget {
@@ -11,7 +12,54 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("br2aaaanch" + (branchName));
+    quickReport() {
+      return Padding(
+        padding: const EdgeInsets.only(right: 10, top: 5),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text(
+                ": الشهر الحالي",
+                style: formTitleStyle,
+              ),
+              UIHelper.verticalSpaceSmall(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "2000",
+                      style: dropDownLabelsStyle,
+                    ),
+                    Text(
+                      "الربح",
+                      style: formTitleStyleSmall,
+                    ),
+                  ],
+                ),
+              ),
+              UIHelper.verticalSpaceSmall(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "2000",
+                      style: dropDownLabelsStyle,
+                    ),
+                    Text(
+                      "السحب الشخصي",
+                      style: formTitleStyleSmall,
+                    ),
+                  ],
+                ),
+              )
+            ]),
+      );
+    }
+
     var floatingButtons = [
       SpeedDialChild(
           child: Icon(Icons.library_add),
@@ -44,7 +92,7 @@ class Details extends StatelessWidget {
       children: floatingButtons,
     );
     print(branchName);
-    bool notifOn = true;
+    bool notifOn = false;
     return Scaffold(
       floatingActionButton: floating,
       appBar: AppBar(
@@ -54,48 +102,27 @@ class Details extends StatelessWidget {
                 ? Icon(
                     Icons.notification_important,
                     color: Colors.amber,
-                    size: 40,
+                    size: 30,
                   )
                 : Icon(
                     Icons.notifications,
                     color: Colors.amber,
+                    size: 30,
                   ),
             onPressed: () {},
           ),
-          SizedBox(
-            width: 10,
-          )
+          SizedBox(width: 10)
         ],
-        iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        backgroundColor: Colors.white,
-        title: Text(
-          branchName,
-          style: TextStyle(color: Colors.black),
-        ),
+        title: Text(branchName),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          Text(
-            ":الشهر الحالي",
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                "المشتريات الشخصية",
-              )
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                "الربح",
-              )
-            ],
-          ),
+          quickReport(),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(6),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
               child: CustomScrollView(
                 slivers: <Widget>[
                   SliverGrid(
@@ -105,16 +132,16 @@ class Details extends StatelessWidget {
                         crossAxisSpacing: 6),
                     delegate: SliverChildListDelegate(
                       [
-//                  SizedBox(height: 20),
                         item(
-                          title: "المنتجات",
-                          assetImage: "assets/images/products.jpg",
-                          onPress: () {
-                            Navigator.pushNamed(context, '/categories',
-                                arguments: branchName);
-                          },
+                          title: "المبيعات",
+                          assetImage: "assets/images/clients.jpeg",
+                          onPress: () {},
                         ),
-//                  SizedBox(height: 20),
+                        item(
+                          title: "المشتريات",
+                          assetImage: "assets/images/employers.jpg",
+                          onPress: () {},
+                        ),
                         item(
                           title: "العملاء",
                           assetImage: "assets/images/clients.jpeg",
@@ -123,7 +150,6 @@ class Details extends StatelessWidget {
                                 arguments: branchName);
                           },
                         ),
-//                  SizedBox(height: 20),
                         item(
                           title: "الموظفين",
                           assetImage: "assets/images/employers.jpg",
@@ -133,28 +159,17 @@ class Details extends StatelessWidget {
                           },
                         ),
                         item(
-                          title: "المبيعات",
-                          assetImage: "assets/images/clients.jpeg",
+                          title: "المنتجات",
+                          assetImage: "assets/images/products.jpg",
                           onPress: () {
-                            Navigator.pushNamed(context, '/clients',
-                                arguments: branchName);
-                          },
-                        ),
-                        item(
-                          title: "المشتريات",
-                          assetImage: "assets/images/employers.jpg",
-                          onPress: () {
-                            Navigator.pushNamed(context, '/employees',
+                            Navigator.pushNamed(context, '/categories',
                                 arguments: branchName);
                           },
                         ),
                         item(
                           title: "التحميلات",
                           assetImage: "assets/images/employers.jpg",
-                          onPress: () {
-                            Navigator.pushNamed(context, '/employees',
-                                arguments: branchName);
-                          },
+                          onPress: () {},
                         ),
                       ],
                     ),

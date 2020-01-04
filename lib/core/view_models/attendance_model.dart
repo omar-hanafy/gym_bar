@@ -1,4 +1,4 @@
-import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/models/attendance.dart';
 import 'package:gym_bar/core/services/api.dart';
 import 'package:gym_bar/core/view_models/base_model.dart';

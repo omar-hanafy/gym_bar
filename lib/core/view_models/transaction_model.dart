@@ -1,5 +1,5 @@
 import 'package:gym_bar/core/view_models/base_model.dart';
-import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/models/attendance.dart';
 import 'package:gym_bar/core/models/selling_transaction.dart';
 import 'package:gym_bar/core/services/api.dart';

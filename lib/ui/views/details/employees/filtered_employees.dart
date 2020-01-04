@@ -12,13 +12,13 @@ import 'package:gym_bar/ui/widgets/search.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:search_widget/search_widget.dart';
 
-class AllEmployees extends StatefulWidget {
-  final String branchName;
+class FilteredEmployees extends StatefulWidget {
+  final List<String> args;
 
-  AllEmployees({this.branchName});
+  FilteredEmployees({this.args});
 
   @override
-  _AllEmployeesState createState() => _AllEmployeesState();
+  _FilteredEmployeesState createState() => _FilteredEmployeesState();
 }
 
 bool nameAscending = false;
@@ -27,7 +27,7 @@ IconData sortCashIcon = Icons.sort;
 IconData sortNameIcon = Icons.sort;
 String sendNull = "لا يوجد";
 
-class _AllEmployeesState extends State<AllEmployees> {
+class _FilteredEmployeesState extends State<FilteredEmployees> {
   onSortName(List<Employee> employees) {
     if (nameAscending) {
       setState(() {
@@ -74,6 +74,8 @@ class _AllEmployeesState extends State<AllEmployees> {
 
   @override
   Widget build(BuildContext context) {
+    print("dept employee brannnnnnnsh ${widget.args[1]}");
+
     firstColumn(List<Employee> employees) {
       return Column(
         children: <Widget>[
@@ -174,11 +176,13 @@ class _AllEmployeesState extends State<AllEmployees> {
     }
 
     return BaseView<EmployeeModel>(
-      onModelReady: (model) =>
-          model.fetchEmployees(branchName: widget.branchName),
+      onModelReady: (model) => model.fetchFilteredEmployees(
+          branchName: widget.args[0],
+          field: widget.args[1],
+          equalTo: widget.args[2]),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          title: Text("كل الموظفين"),
+          title: Text("${widget.args[2]}"),
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.file_download),

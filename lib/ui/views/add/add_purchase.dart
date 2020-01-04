@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';

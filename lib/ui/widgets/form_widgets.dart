@@ -5,11 +5,9 @@ Widget logo(imageContent) {
   return Card(
     child: Container(
       child: CircleAvatar(
-          child: ClipOval(
-            child: imageContent
-          ),
-          backgroundColor: Colors.blueAccent,
-          maxRadius: 80.0,
+        child: ClipOval(child: imageContent),
+        backgroundColor: Colors.blueAccent,
+        maxRadius: 80.0,
 //          backgroundImage: imageContent,
       ),
     ),

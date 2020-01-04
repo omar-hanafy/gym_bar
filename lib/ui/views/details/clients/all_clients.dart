@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_bar/core/enums/viewstate.dart';
+import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';

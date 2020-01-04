@@ -17,6 +17,8 @@ const signLogHintStyle = TextStyle(
 
 const formTitleStyle =
     TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: 'Tajawal');
+const formTitleStyleSmall =
+    TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Tajawal');
 const formTitleStyleWhite = TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.bold,

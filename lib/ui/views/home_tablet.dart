@@ -2,27 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
-import 'package:gym_bar/ui/responsive/screen_type_layout.dart';
-import 'package:gym_bar/ui/responsive/ui_utils.dart';
-import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
-import 'package:gym_bar/ui/views/home_tablet.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';
 
-class Home extends StatelessWidget {
+class HomeTablet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double omar = 0;
-    double width = Dimensions().width(context);
-
-    var mediaQuery = MediaQuery.of(context);
-    bool mobile = getDeviceType(mediaQuery) == DeviceScreenType.Mobile;
-    bool tablet = getDeviceType(mediaQuery) == DeviceScreenType.Tablet;
-
     return BaseView<BranchModel>(
-      onModelReady: (model) => model.fetchBranches(),
-      builder: (context, model, child) => ScreenTypeLayout(
-        mobile: model.state == ViewState.Busy
+        onModelReady: (model) => model.fetchBranches(),
+        builder: (context, model, child) => model.state == ViewState.Busy
             ? Scaffold(
                 body: Center(child: CircularProgressIndicator()),
               )
@@ -35,14 +23,18 @@ class Home extends StatelessWidget {
                 ),
                 appBar: AppBar(title: Text("الفروع")),
                 body: model.branches.length > 0
-                    ? ListView.builder(
+                    ? GridView.builder(
                         itemCount: model.branches.length,
+                        gridDelegate:
+                            new SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
                         itemBuilder: (BuildContext context, int index) {
                           return model.branches == null
                               ? Navigator.pushNamed(context, "/add_branch")
                               : Container(
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 4, horizontal: 10),
+                                      vertical: 20, horizontal: 20),
                                   child: item(
                                       networkImage: model.branches[index].photo,
                                       onPress: () {
@@ -56,9 +48,6 @@ class Home extends StatelessWidget {
                     : Center(
                         child: Text(
                             "لم نجد اية فروع, من فضلك اضغط على الزر السفلي لاضافة اول فرع لك"),
-                      )),
-        tablet: HomeTablet(),
-      ),
-    );
+                      )));
   }
 }
