@@ -2,11 +2,9 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/enums.dart';
-import 'package:gym_bar/core/models/employee.dart';
-import 'package:gym_bar/core/view_models/employee_model.dart';
+import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
@@ -14,13 +12,13 @@ import 'package:gym_bar/ui/widgets/search.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:search_widget/search_widget.dart';
 
-class AllClients extends StatefulWidget {
-  final String branchName;
+class FilteredClients extends StatefulWidget {
+  final List<String> args;
 
-  AllClients({this.branchName});
+  FilteredClients({this.args});
 
   @override
-  _AllClientsState createState() => _AllClientsState();
+  _FilteredClientsState createState() => _FilteredClientsState();
 }
 
 bool nameAscending = false;
@@ -29,7 +27,7 @@ IconData sortCashIcon = Icons.sort;
 IconData sortNameIcon = Icons.sort;
 String sendNull = "لا يوجد";
 
-class _AllClientsState extends State<AllClients> {
+class _FilteredClientsState extends State<FilteredClients> {
   onSortName(List<Client> clients) {
     if (nameAscending) {
       setState(() {
@@ -76,6 +74,8 @@ class _AllClientsState extends State<AllClients> {
 
   @override
   Widget build(BuildContext context) {
+    print("dept client brannnnnnnsh ${widget.args[1]}");
+
     firstColumn(List<Client> clients) {
       return Column(
         children: <Widget>[
@@ -89,18 +89,19 @@ class _AllClientsState extends State<AllClients> {
                   },
                   child: Center(
                       child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Name", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortNameIcon)
-                    ],
-                  )))),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Name", style: tableTitleStyle),
+                          SizedBox(width: 10),
+                          Icon(sortNameIcon)
+                        ],
+                      )))),
           Divider(height: 1, color: Colors.black),
           Expanded(
               child: ListView.builder(
                   itemCount: clients.length,
-                  itemBuilder: (BuildContext context, int index) => Column(
+                  itemBuilder: (BuildContext context, int index) =>
+                      Column(
                         children: <Widget>[
                           Container(
                               color: int.parse(clients[index].cash) > 0
@@ -109,11 +110,11 @@ class _AllClientsState extends State<AllClients> {
                               height: 50,
                               child: Center(
                                   child: Text(
-                                clients[index].name == null
-                                    ? sendNull
-                                    : clients[index].name,
-                                style: formTitleStyleLight,
-                              ))),
+                                    clients[index].name == null
+                                        ? sendNull
+                                        : clients[index].name,
+                                    style: formTitleStyleLight,
+                                  ))),
                           Divider(height: 1, color: Colors.black),
                         ],
                       ))),
@@ -134,18 +135,19 @@ class _AllClientsState extends State<AllClients> {
                   },
                   child: Center(
                       child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Cash", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortCashIcon)
-                    ],
-                  )))),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Cash", style: tableTitleStyle),
+                          SizedBox(width: 10),
+                          Icon(sortCashIcon)
+                        ],
+                      )))),
           Divider(height: 1, color: Colors.black),
           Expanded(
               child: ListView.builder(
                   itemCount: clients.length,
-                  itemBuilder: (BuildContext context, int index) => Column(
+                  itemBuilder: (BuildContext context, int index) =>
+                      Column(
                         children: <Widget>[
                           Container(
                               color: int.parse(clients[index].cash) > 0
@@ -154,11 +156,11 @@ class _AllClientsState extends State<AllClients> {
                               height: 50,
                               child: Center(
                                   child: Text(
-                                clients[index].cash == null
-                                    ? sendNull
-                                    : clients[index].cash,
-                                style: formTitleStyleLight,
-                              ))),
+                                    clients[index].cash == null
+                                        ? sendNull
+                                        : clients[index].cash,
+                                    style: formTitleStyleLight,
+                                  ))),
                           Divider(height: 1, color: Colors.black),
                         ],
                       )))
@@ -176,10 +178,13 @@ class _AllClientsState extends State<AllClients> {
     }
 
     return BaseView<ClientModel>(
-      onModelReady: (model) => model.fetchClients(widget.branchName),
+      onModelReady: (model) => model.fetchFilteredClients(
+          branchName: widget.args[0],
+          field: widget.args[1],
+          equalTo: widget.args[2]),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          title: Text("كل العملاء"),
+          title: Text("${widget.args[2]}"),
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.file_download),
@@ -320,7 +325,7 @@ clientSearch(List<Client> client, context) {
 //  );
 //}
 //
-//tableBuilder(List<Employee> clients) {
+//tableBuilder(List<Client> clients) {
 //  return ListView.builder(
 //      itemCount: clients.length,
 //      itemBuilder: (BuildContext context, int index) {

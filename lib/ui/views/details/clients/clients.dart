@@ -6,33 +6,56 @@ class Clients extends StatelessWidget {
 
   Clients({this.branchName});
 
+  static List<String> args = List(2);
+
   @override
   Widget build(BuildContext context) {
+    print(branchName + " :mozafeen page");
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ms Amany"),
+        title: Text("العملاء"),
       ),
       body: ListView(
         children: <Widget>[
-          item(
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+            child: item(
               title: "كل العملاء",
+              statistics: '155',
               assetImage: "assets/images/products.jpg",
               onPress: () {
+                print("dsaddsddsadasdsadasdasds");
                 Navigator.pushNamed(context, '/all_clients',
                     arguments: branchName);
-              }),
-          item(
+              },
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+            child: item(
               title: "دائن",
+              statistics: '155',
               assetImage: "assets/images/clients.jpeg",
               onPress: () {
-                //todo: navigate here.
-              }),
-          item(
+                args = [branchName, "type", "دائن"];
+                Navigator.pushNamed(context, '/filtered_clients',
+                    arguments: args);
+              },
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+            child: item(
               title: "مدين",
+              statistics: '155',
               assetImage: "assets/images/employers.jpg",
               onPress: () {
-                //todo: navigate here.
-              }),
+                args = [branchName, "type", "مدين"];
+                Navigator.pushNamed(context, '/filtered_clients',
+                    arguments: args);
+              },
+            ),
+          ),
         ],
       ),
     );

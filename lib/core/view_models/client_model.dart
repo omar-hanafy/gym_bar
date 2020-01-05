@@ -16,19 +16,21 @@ class ClientModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
-//  Future<List<Employee>> fetchAttendance(String path) async {
-//    setState(ViewState.Busy);
-//    var result = await _api.getDataCollection(path);
-//    employees = result.documents
-//        .map((doc) => Employee.fromMap(doc.data, doc.documentID))
-//        .toList();
-//    setState(ViewState.Idle);
-//    return employees;
-//  }
-
   Future fetchClients(branchName) async {
     setState(ViewState.Busy);
     var result = await _api.getDataCollection("branches/$branchName/clients");
+    client = result.documents
+        .map((doc) => Client.fromMap(doc.data, doc.documentID))
+        .toList();
+    setState(ViewState.Idle);
+  }
+
+  Future fetchFilteredClients({branchName, field, equalTo}) async {
+    setState(ViewState.Busy);
+    var result = await _api.getCustomDataCollection(
+        path: "branches/$branchName/clients",
+        field: field,
+        equalTo: equalTo);
     client = result.documents
         .map((doc) => Client.fromMap(doc.data, doc.documentID))
         .toList();

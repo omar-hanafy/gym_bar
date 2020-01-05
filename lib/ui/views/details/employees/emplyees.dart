@@ -13,7 +13,7 @@ class Employees extends StatelessWidget {
     print(branchName + " :mozafeen page");
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ms Amany"),
+        title: Text("الموظفين"),
       ),
       body: ListView(
         children: <Widget>[

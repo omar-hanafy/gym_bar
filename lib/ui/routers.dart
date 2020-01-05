@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_bar/core/models/branch.dart';
-import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/ui/views/add/add.dart';
 import 'package:gym_bar/ui/views/add/add_branch.dart';
 import 'package:gym_bar/ui/views/add/add_category.dart';
@@ -10,10 +8,9 @@ import 'package:gym_bar/ui/views/add/add_employee.dart';
 import 'package:gym_bar/ui/views/add/add_product.dart';
 import 'package:gym_bar/ui/views/add/add_purchase.dart';
 import 'package:gym_bar/ui/views/details/clients/all_clients.dart';
+import 'package:gym_bar/ui/views/details/clients/filtered_clients.dart';
 import 'package:gym_bar/ui/views/details/details.dart';
 import 'package:gym_bar/ui/views/details/employees/all_employees.dart';
-import 'package:gym_bar/ui/views/details/employees/credit_employees.dart';
-import 'package:gym_bar/ui/views/details/employees/dept_employees.dart';
 import 'package:gym_bar/ui/views/details/employees/filtered_employees.dart';
 import 'package:gym_bar/ui/views/details/products/product_profile.dart';
 import 'package:gym_bar/ui/views/details/products/products.dart';
@@ -59,6 +56,10 @@ class Routers {
         return MaterialPageRoute(
             builder: (_) => AllClients(branchName: branch));
 
+      case '/filtered_clients':
+        List<String> args = settings.arguments;
+        return MaterialPageRoute(builder: (_) => FilteredClients(args: args));
+
       case '/employees':
         var branch = settings.arguments;
         return MaterialPageRoute(builder: (_) => Employees(branchName: branch));
@@ -68,12 +69,11 @@ class Routers {
         return MaterialPageRoute(
             builder: (_) => AllEmployees(branchName: branch));
 
-      case '/all_employees':
-        var branch = settings.arguments;
-        return MaterialPageRoute(
-            builder: (_) => AllEmployees(branchName: branch));
+      case '/filtered_employees':
+        List<String> args = settings.arguments;
+        return MaterialPageRoute(builder: (_) => FilteredEmployees(args: args));
 
-//      case '/dept_employees':
+//      case '/dept_employees':s
 //        var branch = settings.arguments;
 //        return MaterialPageRoute(
 //            builder: (_) => DeptEmployees(branchName: branch));
@@ -83,9 +83,6 @@ class Routers {
 //        return MaterialPageRoute(
 //            builder: (_) => CreditEmployees(branchName: branch));
 
-      case '/filtered_employees':
-        List<String> args = settings.arguments;
-        return MaterialPageRoute(builder: (_) => FilteredEmployees(args: args));
       // DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS
 
       //ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD

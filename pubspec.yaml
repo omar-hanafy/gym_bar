@@ -14,7 +14,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -36,6 +36,7 @@ dependencies:
   flutter_speed_dial: ^1.2.5
   search_widget: ^1.0.0
   cupertino_icons: ^0.1.3
+  mobile_sidebar: ^2.0.1
 
   #  unicorndial: ^1.1.5
 

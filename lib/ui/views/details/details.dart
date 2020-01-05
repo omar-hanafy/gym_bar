@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:gym_bar/ui/responsive/screen_type_layout.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';
@@ -92,99 +93,104 @@ class Details extends StatelessWidget {
       children: floatingButtons,
     );
     print(branchName);
-    bool notifOn = false;
-    return Scaffold(
-      floatingActionButton: floating,
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: notifOn
-                ? Icon(
-                    Icons.notification_important,
-                    color: Colors.amber,
-                    size: 30,
-                  )
-                : Icon(
-                    Icons.notifications,
-                    color: Colors.amber,
-                    size: 30,
-                  ),
-            onPressed: () {},
-          ),
-          SizedBox(width: 10)
-        ],
-        elevation: 0,
-        title: Text(branchName),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          quickReport(),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 6,
-                        crossAxisSpacing: 6),
-                    delegate: SliverChildListDelegate(
-                      [
-                        item(
-                          title: "المبيعات",
-                          assetImage: "assets/images/clients.jpeg",
-                          onPress: () {},
-                        ),
-                        item(
-                          title: "المشتريات",
-                          assetImage: "assets/images/employers.jpg",
-                          onPress: () {},
-                        ),
-                        item(
-                          title: "العملاء",
-                          assetImage: "assets/images/clients.jpeg",
-                          onPress: () {
-                            Navigator.pushNamed(context, '/clients',
-                                arguments: branchName);
-                          },
-                        ),
-                        item(
-                          title: "الموظفين",
-                          assetImage: "assets/images/employers.jpg",
-                          onPress: () {
-                            Navigator.pushNamed(context, '/employees',
-                                arguments: branchName);
-                          },
-                        ),
-                        item(
-                          title: "المنتجات",
-                          assetImage: "assets/images/products.jpg",
-                          onPress: () {
-                            Navigator.pushNamed(context, '/categories',
-                                arguments: branchName);
-                          },
-                        ),
-                        item(
-                          title: "التحميلات",
-                          assetImage: "assets/images/employers.jpg",
-                          onPress: () {},
-                        ),
-                      ],
+    bool notificationOn = false;
+    body() => Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            quickReport(),
+            Expanded(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 6,
+                          crossAxisSpacing: 6),
+                      delegate: SliverChildListDelegate(
+                        [
+                          item(
+                            title: "المبيعات",
+                            assetImage: "assets/images/clients.jpeg",
+                            onPress: () {},
+                          ),
+                          item(
+                            title: "المشتريات",
+                            assetImage: "assets/images/employers.jpg",
+                            onPress: () {},
+                          ),
+                          item(
+                            title: "العملاء",
+                            assetImage: "assets/images/clients.jpeg",
+                            onPress: () {
+                              Navigator.pushNamed(context, '/clients',
+                                  arguments: branchName);
+                            },
+                          ),
+                          item(
+                            title: "الموظفين",
+                            assetImage: "assets/images/employers.jpg",
+                            onPress: () {
+                              Navigator.pushNamed(context, '/employees',
+                                  arguments: branchName);
+                            },
+                          ),
+                          item(
+                            title: "المنتجات",
+                            assetImage: "assets/images/products.jpg",
+                            onPress: () {
+                              Navigator.pushNamed(context, '/categories',
+                                  arguments: branchName);
+                            },
+                          ),
+                          item(
+                            title: "التحميلات",
+                            assetImage: "assets/images/employers.jpg",
+                            onPress: () {},
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [],
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        );
+    return ScreenTypeLayout(
+      mobile: Scaffold(
+        floatingActionButton: floating,
+        appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: notificationOn
+                  ? Icon(
+                      Icons.notification_important,
+                      color: Colors.amber,
+                      size: 30,
+                    )
+                  : Icon(
+                      Icons.notifications,
+                      color: Colors.amber,
+                      size: 30,
+                    ),
+              onPressed: () {},
+            ),
+            SizedBox(width: 10)
+          ],
+          elevation: 0,
+          title: Text(branchName),
+        ),
+        body: body(),
       ),
+      tablet: body(),
     );
   }
 }
