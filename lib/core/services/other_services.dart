@@ -25,7 +25,7 @@ String convertToEnglishDigits(String value) {
 
 cashCalculations({cash, selectedType}) {
   String filterCash = convertToEnglishDigits(cash.text);
-  String _finalCash;
+  String _finalCash; // ignore: unused_local_variable
   print(filterCash);
   int cashInt = int.parse(filterCash);
   if (selectedType == "دائن") {

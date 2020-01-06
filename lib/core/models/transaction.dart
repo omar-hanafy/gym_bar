@@ -5,8 +5,7 @@ class Transaction {
       transactionType, // Buying, selling, withdraw and deposit
       date,
       branch,
-      incomeCash, //!update Treasury
-      outcomeCash, //!update Treasury
+      updateTreasury, //!update Treasury
 
       //info about selling only
       employeeName, // employee name filled only if he were the customer(buyer).
@@ -14,6 +13,7 @@ class Transaction {
       customerName,
       customerId,
       sellingProducts,
+
       total, //change could sent as debit if the paid is less than total.
       paid, //increase [$incomeCash].
       change, //change could be sent as deposit
@@ -39,8 +39,6 @@ class Transaction {
       this.transactionType,
       this.date,
       this.branch,
-      this.incomeCash,
-      this.outcomeCash,
       //
       this.employeeName,
       this.employeeId,
@@ -70,8 +68,6 @@ class Transaction {
         transactionType = snapshot['transactionType'] ?? '',
         date = snapshot['date'] ?? '',
         branch = snapshot['branch'] ?? '',
-        incomeCash = snapshot['incomeCash'] ?? '',
-        outcomeCash = snapshot['outcomeCash'] ?? '',
         //
         employeeName = snapshot['employeeName'] ?? '',
         employeeId = snapshot['employeeId'] ?? '',
@@ -101,8 +97,6 @@ class Transaction {
       "transactionType": transactionType,
       "date": date,
       "branch": branch,
-      "incomeCash": incomeCash,
-      "outcomeCash": outcomeCash,
       //
       "employeeName": employeeName,
       "employeeId": employeeId,
