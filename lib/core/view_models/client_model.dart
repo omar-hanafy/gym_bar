@@ -5,6 +5,7 @@ import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/services/api.dart';
 
 import '../../locator.dart';
+
 class ClientModel extends BaseModel {
   Api _api = locator<Api>();
 
@@ -25,12 +26,29 @@ class ClientModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
-  Future fetchFilteredClients({branchName, field, equalTo}) async {
+  Future fetchFilteredClients({
+    branchName,
+    field,
+    equalTo,
+    field2,
+    equalTo2,
+    field3,
+    equalTo3,
+    field4,
+    equalTo4,
+  }) async {
     setState(ViewState.Busy);
     var result = await _api.getCustomDataCollection(
-        path: "branches/$branchName/clients",
-        field: field,
-        equalTo: equalTo);
+      path: "branches/$branchName/clients",
+      field: field,
+      equalTo: equalTo,
+      field2: field2,
+      equalTo2: equalTo2,
+      field3: field3,
+      equalTo3: equalTo3,
+      field4: field4,
+      equalTo4: equalTo4,
+    );
     client = result.documents
         .map((doc) => Client.fromMap(doc.data, doc.documentID))
         .toList();

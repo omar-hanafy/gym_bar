@@ -22,8 +22,58 @@ class Api {
     return ref;
   }
 
-  Future<QuerySnapshot> getCustomDataCollection({path, field, equalTo}) {
-    ref = _db.collection(path).where(field, isEqualTo: equalTo);
+  Future<QuerySnapshot> getCustomDataCollection({
+    path,
+    field,
+    equalTo,
+    field2,
+    equalTo2,
+    field3,
+    equalTo3,
+    field4,
+    equalTo4,
+  }) {
+    if (field2 != null &&
+        equalTo2 != null &&
+        field3 != null &&
+        equalTo3 != null &&
+        field4 != null &&
+        equalTo4 != null) {
+      ref = _db
+          .collection(path)
+          .where(field, isEqualTo: equalTo)
+          .where(field2, isEqualTo: equalTo2)
+          .where(field3, isEqualTo: equalTo3)
+          .where(field4, isEqualTo: equalTo4);
+    } else if (field2 != null &&
+        equalTo2 != null &&
+        field3 != null &&
+        equalTo3 != null &&
+        field4 == null &&
+        equalTo4 == null) {
+      ref = _db
+          .collection(path)
+          .where(field, isEqualTo: equalTo)
+          .where(field2, isEqualTo: equalTo2)
+          .where(field3, isEqualTo: equalTo3);
+    } else if (field2 != null &&
+        equalTo2 != null &&
+        field3 == null &&
+        equalTo3 == null &&
+        field4 == null &&
+        equalTo4 == null) {
+      ref = _db
+          .collection(path)
+          .where(field, isEqualTo: equalTo)
+          .where(field2, isEqualTo: equalTo2);
+    } else if (field2 == null &&
+        equalTo2 == null &&
+        field3 == null &&
+        equalTo3 == null &&
+        field4 == null &&
+        equalTo4 == null) {
+      ref = _db.collection(path).where(field, isEqualTo: equalTo);
+    }
     return ref.getDocuments();
   }
 

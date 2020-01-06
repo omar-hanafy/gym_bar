@@ -89,19 +89,18 @@ class _FilteredClientsState extends State<FilteredClients> {
                   },
                   child: Center(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Name", style: tableTitleStyle),
-                          SizedBox(width: 10),
-                          Icon(sortNameIcon)
-                        ],
-                      )))),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Name", style: tableTitleStyle),
+                      SizedBox(width: 10),
+                      Icon(sortNameIcon)
+                    ],
+                  )))),
           Divider(height: 1, color: Colors.black),
           Expanded(
               child: ListView.builder(
                   itemCount: clients.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      Column(
+                  itemBuilder: (BuildContext context, int index) => Column(
                         children: <Widget>[
                           Container(
                               color: int.parse(clients[index].cash) > 0
@@ -110,11 +109,11 @@ class _FilteredClientsState extends State<FilteredClients> {
                               height: 50,
                               child: Center(
                                   child: Text(
-                                    clients[index].name == null
-                                        ? sendNull
-                                        : clients[index].name,
-                                    style: formTitleStyleLight,
-                                  ))),
+                                clients[index].name == null
+                                    ? sendNull
+                                    : clients[index].name,
+                                style: formTitleStyleLight,
+                              ))),
                           Divider(height: 1, color: Colors.black),
                         ],
                       ))),
@@ -135,19 +134,18 @@ class _FilteredClientsState extends State<FilteredClients> {
                   },
                   child: Center(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Cash", style: tableTitleStyle),
-                          SizedBox(width: 10),
-                          Icon(sortCashIcon)
-                        ],
-                      )))),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Cash", style: tableTitleStyle),
+                      SizedBox(width: 10),
+                      Icon(sortCashIcon)
+                    ],
+                  )))),
           Divider(height: 1, color: Colors.black),
           Expanded(
               child: ListView.builder(
                   itemCount: clients.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      Column(
+                  itemBuilder: (BuildContext context, int index) => Column(
                         children: <Widget>[
                           Container(
                               color: int.parse(clients[index].cash) > 0
@@ -156,11 +154,11 @@ class _FilteredClientsState extends State<FilteredClients> {
                               height: 50,
                               child: Center(
                                   child: Text(
-                                    clients[index].cash == null
-                                        ? sendNull
-                                        : clients[index].cash,
-                                    style: formTitleStyleLight,
-                                  ))),
+                                clients[index].cash == null
+                                    ? sendNull
+                                    : clients[index].cash,
+                                style: formTitleStyleLight,
+                              ))),
                           Divider(height: 1, color: Colors.black),
                         ],
                       )))

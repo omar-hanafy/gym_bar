@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/view_models/base_model.dart';
 import 'package:gym_bar/enums.dart';
@@ -21,12 +20,29 @@ class EmployeeModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
-  Future fetchFilteredEmployees({branchName, field, equalTo}) async {
+  Future fetchFilteredEmployees({
+    branchName,
+    field,
+    equalTo,
+    field2,
+    equalTo2,
+    field3,
+    equalTo3,
+    field4,
+    equalTo4,
+  }) async {
     setState(ViewState.Busy);
     var result = await _api.getCustomDataCollection(
-        path: "employees/branches/$branchName/",
-        field: field,
-        equalTo: equalTo);
+      path: "employees/branches/$branchName/",
+      field: field,
+      equalTo: equalTo,
+      field2: field2,
+      equalTo2: equalTo2,
+      field3: field3,
+      equalTo3: equalTo3,
+      field4: field4,
+      equalTo4: equalTo4,
+    );
     employees = result.documents
         .map((doc) => Employee.fromMap(doc.data, doc.documentID))
         .toList();
