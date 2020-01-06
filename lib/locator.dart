@@ -4,7 +4,6 @@ import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
-import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/core/view_models/user_model.dart';
 import 'core/services/api.dart';
 import 'core/services/authentication_service.dart';
@@ -25,6 +24,5 @@ void setupLocator() {
   locator.registerFactory(() => CategoryModel());
   locator.registerFactory(() => ClientModel());
   locator.registerFactory(() => EmployeeModel());
-  locator.registerFactory(() => TransactionModel());
   locator.registerFactory(() => UserModel());
 }
