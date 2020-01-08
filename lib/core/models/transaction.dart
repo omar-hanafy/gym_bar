@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Transaction {
   //information about transaction in general
   String id,
@@ -6,6 +8,7 @@ class Transaction {
       date,
       branch,
       updateTreasury, //!update Treasury
+      notes,
 
       //info about selling only
       employeeName, // employee name filled only if he were the customer(buyer).
@@ -13,32 +16,29 @@ class Transaction {
       customerName,
       customerId,
       sellingProducts,
-
       total, //change could sent as debit if the paid is less than total.
       paid, //increase [$incomeCash].
       change, //change could be sent as deposit
 
       //info about buying
-      buyType, //special withdraw or normal purchasing
       buyingProduct,
-      productCategory,
-      companyName,
-      cashAmount, //increase [$outcomeCash]
-      notes,
+      buyingProductCategory,
+      buyingCompanyName,
+      buyingCashAmount, //increase [$outcomeCash]
 
       //info about withdraw
       withdrawalName,
-      withdrawAmount, //increase [$outcomeCash]
+      withdrawCashAmount, //increase [$outcomeCash]
 
       //info about deposit
       depositorName,
-      depositAmount; //increase [$outcomeCash]
+      depositCashAmount; //increase [$outcomeCash]
   Transaction(
       {this.id,
-      this.transactorName,
-      this.transactionType,
-      this.date,
-      this.branch,
+      @required this.transactorName,
+      @required this.transactionType,
+      @required this.date,
+      @required this.branch,
       //
       this.employeeName,
       this.employeeId,
@@ -49,18 +49,17 @@ class Transaction {
       this.paid,
       this.change,
       //
-      this.buyType,
       this.buyingProduct,
-      this.productCategory,
-      this.companyName,
-      this.cashAmount,
+      this.buyingProductCategory,
+      this.buyingCompanyName,
+      this.buyingCashAmount,
       this.notes,
       //
       this.withdrawalName,
-      this.withdrawAmount,
+      this.withdrawCashAmount,
       //
       this.depositorName,
-      this.depositAmount});
+      this.depositCashAmount});
 
   Transaction.fromMap(Map snapshot, String id)
       : id = id ?? "",
@@ -78,18 +77,17 @@ class Transaction {
         paid = snapshot['paid'] ?? '',
         change = snapshot['change'] ?? '',
         //
-        buyType = snapshot['buyType,'] ?? '',
         buyingProduct = snapshot['buyingProduct'] ?? '',
-        productCategory = snapshot['productCategory'] ?? '',
-        companyName = snapshot['companyName'] ?? '',
-        cashAmount = snapshot['cashAmount,'] ?? '',
+        buyingProductCategory = snapshot['productCategory'] ?? '',
+        buyingCompanyName = snapshot['companyName'] ?? '',
+        buyingCashAmount = snapshot['cashAmount,'] ?? '',
         notes = snapshot['notes'] ?? '',
         //
         withdrawalName = snapshot['withdrawalName'] ?? '',
-        withdrawAmount = snapshot['withdrawAmount'] ?? '',
+        withdrawCashAmount = snapshot['withdrawAmount'] ?? '',
         //
         depositorName = snapshot['depositorName'] ?? '',
-        depositAmount = snapshot['depositAmount'] ?? '';
+        depositCashAmount = snapshot['depositAmount'] ?? '';
 
   toJson() {
     return {
@@ -107,18 +105,17 @@ class Transaction {
       "paid": paid,
       "change": change,
       //
-      "buyType": buyType,
       "buyingProduct": buyingProduct,
-      "productCategory": productCategory,
-      "companyName": companyName,
-      "cashAmount": cashAmount,
+      "productCategory": buyingProductCategory,
+      "companyName": buyingCompanyName,
+      "cashAmount": buyingCashAmount,
       "notes": notes,
       //
       "withdrawalName": withdrawalName,
-      "withdrawAmount": withdrawAmount,
+      "withdrawAmount": withdrawCashAmount,
       //
       "depositorName": depositorName,
-      "depositAmount": depositAmount,
+      "depositAmount": depositCashAmount,
     };
   }
 }

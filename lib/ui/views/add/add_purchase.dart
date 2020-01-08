@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_bar/core/models/transaction.dart';
+import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/enums.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
@@ -20,7 +22,7 @@ class AddPurchase extends StatefulWidget {
 class _AddPurchaseState extends State<AddPurchase> {
   String _selectedPurchaseType;
   String _selectedCategory;
-  List<String> _selectedProduct = ["", "", ""];
+  List<String> _selectedProduct = ["", "", ""]; //unit, wholesaleUnit, Name
   int _selectedUnit;
   TextEditingController quantity = TextEditingController();
   TextEditingController price = TextEditingController();
@@ -30,19 +32,56 @@ class _AddPurchaseState extends State<AddPurchase> {
   @override
   Widget build(BuildContext context) {
     actions() {
-      return Column(
-        children: <Widget>[
-          formButtonTemplate(
-              context: context, onTab: () {}, text: "إتمام العملية"),
-          UIHelper.verticalSpaceMedium(),
-          formButtonTemplate(
-              context: context,
-              onTab: () {},
-              text: "إلغاء",
-              color: Colors.grey),
-          UIHelper.verticalSpaceMedium(),
-        ],
-      );
+      return BaseView<TransactionModel>(
+          builder: (context, model, child) => Column(
+                children: <Widget>[
+                  formButtonTemplate(
+                      context: context,
+                      onTab: () {
+                        if (_selectedPurchaseType == "سحب شخصي") {
+                          print(_selectedPurchaseType);
+                          model.addTransaction(
+                              branchName: widget.branchName,
+                              transaction: Transaction(
+                                branch: widget.branchName,
+                                date: DateTime.now().toString(),
+                                transactorName: "Ms Amany",
+                                transactionType: "سحب شخصي",
+                                withdrawalName: "الخزينة",
+                                withdrawCashAmount: price.text,
+                                notes: notes.text,
+                              ));
+                        } else if (_selectedPurchaseType == "شراء عادي") {
+                          print(_selectedPurchaseType);
+                          model.addTransaction(
+                              branchName: widget.branchName,
+                              transaction: Transaction(
+                                branch: widget.branchName,
+                                date: DateTime.now().toString(),
+                                transactorName: "Ms Amany",
+                                transactionType: "شراء عادي",
+                                buyingProductCategory: _selectedCategory,
+                                buyingProduct: _selectedProduct[2],
+                                //todo: update the tresury.
+                                buyingCashAmount: price.text,
+                                //todo: get company name here from ProductModel
+                                buyingCompanyName: "اسم الشركه",
+                                notes: notes.text,
+                              ));
+                        }
+                      },
+                      text: "إتمام العملية"),
+                  UIHelper.verticalSpaceMedium(),
+                  formButtonTemplate(
+                      context: context,
+                      onTab: () {
+                        Navigator.pop(context);
+                      },
+                      text: "إلغاء",
+                      color: Colors.grey),
+                  UIHelper.verticalSpaceMedium(),
+                ],
+              ));
     }
 
     dropDownPurchaseType() {
