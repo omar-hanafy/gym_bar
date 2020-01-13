@@ -1,8 +1,7 @@
 import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_bar/enums.dart';
-import 'package:gym_bar/core/models/branch.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/category.dart';
 import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
@@ -26,7 +25,7 @@ class _AddProductState extends State<AddProduct> {
   final TextEditingController name = TextEditingController();
   final TextEditingController description = TextEditingController();
   final TextEditingController companyName = TextEditingController();
-  final TextEditingController quantity = TextEditingController();
+  final TextEditingController quantityOfWholesaleUnit = TextEditingController();
   final TextEditingController quantityLimit = TextEditingController();
   final TextEditingController unit = TextEditingController();
   final TextEditingController wholesaleQuantity = TextEditingController();
@@ -39,18 +38,16 @@ class _AddProductState extends State<AddProduct> {
   final TextEditingController theAmountOfSalesPerProduct =
       TextEditingController();
 
-  var _selectedBranch;
   var _selectedCategory;
   var downURL;
   var file;
   int _selectedRadio;
-  Widget _subForm = Container();
 
   netTotalQuantity() {
     if (wholesaleQuantity.text == null) {
       return 0;
     } else {
-      int quantityNumber = int.parse(quantity.text);
+      int quantityNumber = int.parse(quantityOfWholesaleUnit.text);
       int wholesaleQuantityNumber = int.parse(wholesaleQuantity.text);
       return quantityNumber * wholesaleQuantityNumber;
     }
@@ -61,7 +58,7 @@ class _AddProductState extends State<AddProduct> {
     category.clear();
     description.clear();
     companyName.clear();
-    quantity.clear();
+    quantityOfWholesaleUnit.clear();
     quantityLimit.clear();
     unit.clear();
     wholesaleQuantity.clear();
@@ -72,15 +69,11 @@ class _AddProductState extends State<AddProduct> {
     branch.clear();
     theAmountOfSalesPerProduct.clear();
     _selectedCategory = null;
-    _selectedBranch = null;
     _selectedRadio = null;
-    _subForm = Container();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("lgfsgdgnfsgnlknsdf" + widget.branchName);
-
     setSelectedRadio(int val) {
       setState(() {
         _selectedRadio = val;
@@ -198,7 +191,7 @@ class _AddProductState extends State<AddProduct> {
                         children: <Widget>[
                           Expanded(
                             child: formTextFieldTemplate(
-                              controller: quantity,
+                              controller: quantityOfWholesaleUnit,
                               hint: "كمية ال ${wholesaleUnit.text}",
                             ),
                           ),
@@ -240,7 +233,7 @@ class _AddProductState extends State<AddProduct> {
                             children: <Widget>[
                               Expanded(
                                 child: formTextFieldTemplate(
-                                  controller: quantity,
+                                  controller: quantityOfWholesaleUnit,
                                   hint: "كمية ال ${wholesaleUnit.text}",
                                 ),
                               ),
@@ -329,6 +322,7 @@ class _AddProductState extends State<AddProduct> {
       return file;
     }
 
+    // ignore: unused_element
     uploadImage() async {
       if (file != null) {
         int random = Random().nextInt(1000000000000);
@@ -379,22 +373,23 @@ class _AddProductState extends State<AddProduct> {
                                   name: name.text,
                                   category: _selectedCategory,
                                   description: description.text,
-                                  branch: _selectedBranch,
+                                  branch: widget.branchName,
                                   customerPrice: customerPrice.text,
                                   employeePrice: employeePrice.text,
                                   housePrice: housePrice.text,
-                                  quantity: quantity.text,
+                                  quantityOfWholesaleUnit:
+                                      quantityOfWholesaleUnit.text,
                                   quantityLimit: quantityLimit.text,
                                   unit: unit.text,
                                   wholesaleQuantity: wholesaleQuantity.text,
-                                  wholesaleUnit: wholesaleQuantity.text,
+                                  wholesaleUnit: wholesaleUnit.text,
                                   supplierName: companyName.text,
                                   netTotalQuantity:
                                       netTotalQuantity().toString(),
                                   photo: "photo"),
                               branchName: widget.branchName,
                               categoryName: _selectedCategory);
-                          clear();
+//                          clear();
                         },
                         text: "إضافة منتج"),
                   ),

@@ -1,9 +1,9 @@
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/attendance.dart';
 import 'package:gym_bar/core/services/api.dart';
 import 'package:gym_bar/core/view_models/base_model.dart';
 
-import '../../locator.dart';
+import '../locator.dart';
 
 class AttendanceModel extends BaseModel {
   Api _api = locator<Api>();

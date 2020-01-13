@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 
 DeviceScreenType getDeviceType(MediaQueryData mediaQuery) {
   double deviceWidth = mediaQuery.size.shortestSide;

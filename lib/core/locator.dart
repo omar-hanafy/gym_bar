@@ -6,9 +6,9 @@ import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
 import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/core/view_models/user_model.dart';
-import 'core/services/api.dart';
-import 'core/services/authentication_service.dart';
-import 'core/view_models/product_model.dart';
+import 'services/api.dart';
+import 'services/authentication_service.dart';
+import 'view_models/product_model.dart';
 
 GetIt locator = GetIt.I;
 

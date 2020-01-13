@@ -3,7 +3,7 @@ import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
@@ -189,21 +189,24 @@ class _FilteredClientsState extends State<FilteredClients> {
                 onPressed: () => getCsv(model.client))
           ],
         ),
-        body: model.state == ViewState.Busy
-            ? Center(child: CircularProgressIndicator())
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: model.state == ViewState.Busy
+              ? Center(child: CircularProgressIndicator())
 //              : alternativeTabel(model.clients)
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  UIHelper.verticalSpaceLarge(),
-                  Container(
-                    width: 200,
-                    child: Center(child: clientSearch(model.client, context)),
-                  ),
-                  UIHelper.verticalSpaceMedium(),
-                  Expanded(child: table(model.client)),
-                ],
-              ),
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    UIHelper.verticalSpaceLarge(),
+                    Container(
+                      width: 200,
+                      child: Center(child: clientSearch(model.client, context)),
+                    ),
+                    UIHelper.verticalSpaceMedium(),
+                    Expanded(child: table(model.client)),
+                  ],
+                ),
+        ),
       ),
     );
   }

@@ -1,11 +1,8 @@
-import 'package:gym_bar/enums.dart';
-import 'package:gym_bar/core/models/branch.dart';
-import 'package:gym_bar/core/models/category.dart';
-import 'package:gym_bar/core/models/employee.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/services/api.dart';
 import 'package:gym_bar/core/view_models/base_model.dart';
-import '../../locator.dart';
+import '../locator.dart';
 
 class ProductModel extends BaseModel {
   Api _api = locator<Api>();
@@ -42,10 +39,9 @@ class ProductModel extends BaseModel {
   Future<Product> getProductById(String id, String path) async {
     setState(ViewState.Busy);
     var doc = await _api.getDocumentById(id, path);
-    var prod = Product.fromMap(doc.data, doc.documentID);
+    Product product = Product.fromMap(doc.data, doc.documentID);
     setState(ViewState.Idle);
-
-    return prod;
+    return product;
   }
 
   Future<Product> getProductByBranch(String path) async {
@@ -61,12 +57,5 @@ class ProductModel extends BaseModel {
     return;
   }
 
-  Future updateProduct(Product data, String id, String path) async {
-    setState(ViewState.Busy);
 
-    await _api.updateDocument(data.toJson(), id, path);
-    setState(ViewState.Idle);
-
-    return;
-  }
 }

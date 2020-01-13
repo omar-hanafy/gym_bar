@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bar/locator.dart';
+import 'package:gym_bar/core/locator.dart';
 import 'package:provider/provider.dart';
 
 class BaseView<T extends ChangeNotifier> extends StatefulWidget {

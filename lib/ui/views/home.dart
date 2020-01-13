@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/ui/responsive/screen_type_layout.dart';
-import 'package:gym_bar/ui/responsive/ui_utils.dart';
-import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
 import 'package:gym_bar/ui/views/home_tablet.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';
@@ -12,13 +10,6 @@ import 'package:gym_bar/ui/widgets/home_item.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double omar = 0;
-    double width = Dimensions().width(context);
-
-    var mediaQuery = MediaQuery.of(context);
-    bool mobile = getDeviceType(mediaQuery) == DeviceScreenType.Mobile;
-    bool tablet = getDeviceType(mediaQuery) == DeviceScreenType.Tablet;
-
     return BaseView<BranchModel>(
       onModelReady: (model) => model.fetchBranches(),
       builder: (context, model, child) => model.state == ViewState.Busy
@@ -26,11 +17,10 @@ class Home extends StatelessWidget {
           : ScreenTypeLayout(
               mobile: Scaffold(
                   floatingActionButton: FloatingActionButton(
-                    child: Icon(Icons.business),
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/add_branch");
-                    },
-                  ),
+                      child: Icon(Icons.business),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/add_branch");
+                      }),
                   appBar: AppBar(title: Text("الفروع")),
                   body: model.branches.length > 0
                       ? ListView.builder(

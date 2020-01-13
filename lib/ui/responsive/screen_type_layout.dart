@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/ui/responsive/responsive_builder.dart';
 
 

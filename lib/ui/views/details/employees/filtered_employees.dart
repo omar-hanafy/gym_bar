@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
@@ -10,7 +10,6 @@ import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
 import 'package:gym_bar/ui/widgets/search.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:search_widget/search_widget.dart';
 
 class FilteredEmployees extends StatefulWidget {
   final List<String> args;
@@ -189,22 +188,25 @@ class _FilteredEmployeesState extends State<FilteredEmployees> {
                 onPressed: () => getCsv(model.employees))
           ],
         ),
-        body: model.state == ViewState.Busy
-            ? Center(child: CircularProgressIndicator())
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: model.state == ViewState.Busy
+              ? Center(child: CircularProgressIndicator())
 //              : alternativeTabel(model.employees)
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  UIHelper.verticalSpaceLarge(),
-                  Container(
-                    width: 200,
-                    child:
-                        Center(child: employeeSearch(model.employees, context)),
-                  ),
-                  UIHelper.verticalSpaceMedium(),
-                  Expanded(child: table(model.employees)),
-                ],
-              ),
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    UIHelper.verticalSpaceLarge(),
+                    Container(
+                      width: 200,
+                      child: Center(
+                          child: employeeSearch(model.employees, context)),
+                    ),
+                    UIHelper.verticalSpaceMedium(),
+                    Expanded(child: table(model.employees)),
+                  ],
+                ),
+        ),
       ),
     );
   }
@@ -248,39 +250,6 @@ getCsv(List<Employee> employees) async {
 // convert rows to String and write as csv file
 }
 
-employeeSearch(List<Employee> employee, context) {
-  return SearchWidget<Employee>(
-    dataList: employee,
-    hideSearchBoxWhenItemSelected: false,
-    listContainerHeight: MediaQuery.of(context).size.height / 4,
-    queryBuilder: (String query, List<Employee> employee) {
-      return employee
-          .where((Employee employee) =>
-              employee.name.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    },
-    popupListItemBuilder: (Employee employee) {
-      return Container(
-          padding: const EdgeInsets.all(12),
-          child: Text(
-            employee.name,
-            style: const TextStyle(fontSize: 16),
-          ));
-    },
-    selectedItemBuilder:
-        (Employee selectedItem, VoidCallback deleteSelectedItem) {
-      //TODO: navigate here to user profile
-      return null;
-    },
-    // widget customization
-    noItemsFoundWidget: Center(
-      child: Text("No item Found"),
-    ),
-    textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
-      return searchTextField(controller, focusNode, context);
-    },
-  );
-}
 //TODO: U CAN USE ALTERNATIVE TABLE
 //TODO: U CAN Use ALTERNATIVE TABLE
 //TODO: U CAN Use ALTERNATIVE TABLE

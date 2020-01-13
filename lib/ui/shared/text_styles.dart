@@ -31,6 +31,11 @@ const tableTitleStyle = TextStyle(
     fontSize: 20,
     fontFamily: 'Tajawal',
     color: Colors.black);
+const tableTitleStyleSmall = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 15,
+    fontFamily: 'Tajawal',
+    color: Colors.black);
 
 const formLabelsStyle = TextStyle(
   fontSize: 15,

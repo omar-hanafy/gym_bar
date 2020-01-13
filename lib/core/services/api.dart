@@ -82,9 +82,9 @@ class Api {
     return ref.snapshots();
   }
 
-  Future<DocumentSnapshot> getDocumentById(String id, String path) {
-    ref = _db.collection(path);
-    return ref.document(id).get();
+  Future<DocumentSnapshot> getDocumentById(String path, String id) {
+    ref = _db.collection(path).document(id).get();
+    return ref;
   }
 
   Future<void> removeDocument(String id, String path) {
@@ -97,9 +97,32 @@ class Api {
     return ref.add(data);
   }
 
-  Future<void> updateDocument(Map data, String id, String path) {
+  Future<DocumentReference> addDocumentCustomId(docID, Map data, String path) {
     ref = _db.collection(path);
+    return ref.document(docID).setData(data);
+  }
 
+  Future<void> updateDocument(
+    id,
+    Map<String, dynamic> data,
+    String path,
+  ) {
+    ref = _db.collection(path);
     return ref.document(id).updateData(data);
+  }
+
+  static Future<bool> checkDocExist(path, String userId) async {
+    bool exists = false;
+    try {
+      await Firestore.instance.document("$path/$userId").get().then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
   }
 }

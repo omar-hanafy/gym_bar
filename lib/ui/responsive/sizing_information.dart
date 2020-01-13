@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 
 class SizingInformation {
   final DeviceScreenType deviceScreenType;

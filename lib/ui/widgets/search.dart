@@ -1,4 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:gym_bar/core/models/client.dart';
+import 'package:gym_bar/core/models/employee.dart';
+import 'package:search_widget/search_widget.dart';
+
+employeeSearch(List<Employee> employee, context) {
+  return SearchWidget<Employee>(
+    dataList: employee,
+    hideSearchBoxWhenItemSelected: false,
+    listContainerHeight: MediaQuery.of(context).size.height / 4,
+    queryBuilder: (String query, List<Employee> employee) {
+      return employee
+          .where((Employee employee) =>
+              employee.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    },
+    popupListItemBuilder: (Employee employee) {
+      return Column(
+        children: <Widget>[
+          Container(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                employee.name,
+                style: const TextStyle(fontSize: 16),
+              )),
+        ],
+      );
+    },
+    selectedItemBuilder:
+        // ignore: missing_return
+        (Employee selectedItem, VoidCallback deleteSelectedItem) {},
+    onItemSelected: (Employee employee) {
+      Navigator.pushNamed(context, "/employee_profile", arguments: employee);
+    },
+    noItemsFoundWidget: Center(child   : Text("No item Found")),
+    textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+      return searchTextField(controller, focusNode, context);
+    },
+  );
+}
+
+clientSearch(List<Client> client, context) {
+  return SearchWidget<Client>(
+    dataList: client,
+    hideSearchBoxWhenItemSelected: false,
+    listContainerHeight: MediaQuery.of(context).size.height / 4,
+    queryBuilder: (String query, List<Client> client) {
+      return client
+          .where((Client client) =>
+              client.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    },
+    popupListItemBuilder: (Client client) {
+      return Column(
+        children: <Widget>[
+          Container(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                client.name,
+                style: const TextStyle(fontSize: 16),
+              )),
+        ],
+      );
+    },
+    selectedItemBuilder:
+        // ignore: missing_return
+        (Client selectedItem, VoidCallback deleteSelectedItem) {},
+    onItemSelected: (Client client) {
+      Navigator.pushNamed(context, "/client_profile", arguments: client);
+    },
+    noItemsFoundWidget: Center(child: Text("No item Found")),
+    textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+      return searchTextField(controller, focusNode, context);
+    },
+  );
+}
 
 searchTextField(controller, focusNode, context) {
   return Padding(

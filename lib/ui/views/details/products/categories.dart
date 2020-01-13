@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';

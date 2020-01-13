@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_bar/core/models/product.dart';
+import 'package:gym_bar/core/models/total.dart';
 import 'package:gym_bar/core/models/transaction.dart';
 import 'package:gym_bar/core/view_models/transaction_model.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
@@ -22,8 +24,14 @@ class AddPurchase extends StatefulWidget {
 class _AddPurchaseState extends State<AddPurchase> {
   String _selectedPurchaseType;
   String _selectedCategory;
-  List<String> _selectedProduct = ["", "", ""]; //unit, wholesaleUnit, Name
-  int _selectedUnit;
+  List<String> _selectedProduct = [
+    "", //unit
+    "", //wholesaleUnit
+    "", //name
+    "", //id
+    "", //wholeSaleQuantity
+  ];
+  int _selectedUnit; // if "1" it is unit if "2" it is wholesale unit
   TextEditingController quantity = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController notes = TextEditingController();
@@ -31,44 +39,107 @@ class _AddPurchaseState extends State<AddPurchase> {
 
   @override
   Widget build(BuildContext context) {
-    actions() {
+
+    updateTresurey(Total total) {
+      int newCash = int.parse(total.cash) - int.parse(price.text);
+      return newCash.toString();
+    }
+    // ignore: missing_return
+    calculateQuantity(Product product) {
+      // ignore: unused_local_variable
+      String newQuantity;
+      if (_selectedUnit == 1 /*unit*/) {
+        int quantityCalc =
+            int.parse(product.netTotalQuantity) + int.parse(quantity.text);
+
+        return newQuantity = quantityCalc.toString();
+      }
+      if (_selectedUnit == 2 /*wholesaleUnit*/) {
+        print(_selectedProduct[4]);
+        int quantityCalc = (int.parse(product.netTotalQuantity)) +
+            (int.parse(_selectedProduct[4]) * int.parse(quantity.text));
+        return newQuantity = quantityCalc.toString();
+      }
+    }
+
+    personalWithdrawActions() {
       return BaseView<TransactionModel>(
+          onModelReady: (model) => model.fetchTotal(docId: widget.branchName),
+          builder: (context, model, child) => Column(children: <Widget>[
+                formButtonTemplate(
+                    context: context,
+                    onTab: () {
+                      print(_selectedPurchaseType);
+                      model.addTransaction(
+                          branchName: widget.branchName,
+                          transaction: Transaction(
+                            transactorName: "Ms Amany",
+                            transactionType: "سحب شخصي",
+                            date: DateTime.now().toString(),
+                            branch: widget.branchName,
+                            notes: notes.text,
+                            withdrawCashAmount: price.text,
+                            transactionAmount: price.text,
+                          ));
+
+                      model.updateTotal(
+                          docId: "${widget.branchName}",
+                          data: {"cash": updateTresurey(model.total)});
+                    },
+                    text: "إتمام العملية"),
+                UIHelper.verticalSpaceMedium(),
+                formButtonTemplate(
+                    context: context,
+                    onTab: () {
+                      Navigator.pop(context);
+                    },
+                    text: "إلغاء",
+                    color: Colors.grey),
+                UIHelper.verticalSpaceMedium()
+              ]));
+    }
+
+    normalBuyActions() {
+      return BaseView<TransactionModel>(
+          onModelReady: (model) => model.fetchTotalAndProduct(
+              docId: widget.branchName,
+              branchName: widget.branchName,
+              categoryName: _selectedCategory,
+              productId: _selectedProduct[3]),
           builder: (context, model, child) => Column(
                 children: <Widget>[
                   formButtonTemplate(
                       context: context,
                       onTab: () {
-                        if (_selectedPurchaseType == "سحب شخصي") {
-                          print(_selectedPurchaseType);
-                          model.addTransaction(
-                              branchName: widget.branchName,
-                              transaction: Transaction(
-                                branch: widget.branchName,
-                                date: DateTime.now().toString(),
-                                transactorName: "Ms Amany",
-                                transactionType: "سحب شخصي",
-                                withdrawalName: "الخزينة",
-                                withdrawCashAmount: price.text,
-                                notes: notes.text,
-                              ));
-                        } else if (_selectedPurchaseType == "شراء عادي") {
-                          print(_selectedPurchaseType);
-                          model.addTransaction(
-                              branchName: widget.branchName,
-                              transaction: Transaction(
-                                branch: widget.branchName,
-                                date: DateTime.now().toString(),
-                                transactorName: "Ms Amany",
-                                transactionType: "شراء عادي",
-                                buyingProductCategory: _selectedCategory,
-                                buyingProduct: _selectedProduct[2],
-                                //todo: update the tresury.
-                                buyingCashAmount: price.text,
-                                //todo: get company name here from ProductModel
-                                buyingCompanyName: "اسم الشركه",
-                                notes: notes.text,
-                              ));
-                        }
+                        print(_selectedPurchaseType);
+                        model.addTransaction(
+                            branchName: widget.branchName,
+                            transaction: Transaction(
+                              transactorName: "Ms Amany",
+                              transactionType: "شراء عادي",
+                              date: DateTime.now().toString(),
+                              branch: widget.branchName,
+                              notes: notes.text,
+                              buyingProduct: _selectedProduct[2],
+                              buyingQuantity: calculateQuantity(model.product),
+                              buyingProductCategory: _selectedCategory,
+                              //todo: get company name here from ProductModel
+                              buyingCompanyName: "اسم الشركه",
+                              //todo: update the tresury.
+                              buyingCashAmount: price.text,
+                              transactionAmount: price.text,
+                            ));
+                        model.updateTotal(
+                            docId: "${widget.branchName}",
+                            data: {"cash": updateTresurey(model.total)});
+                        model.updateProducts(
+                            branchName: widget.branchName,
+                            categoryName: _selectedCategory,
+                            productId: _selectedProduct[3],
+                            data: {
+                              "netTotalQuantity":
+                                  calculateQuantity(model.product)
+                            });
                       },
                       text: "إتمام العملية"),
                   UIHelper.verticalSpaceMedium(),
@@ -100,7 +171,13 @@ class _AddPurchaseState extends State<AddPurchase> {
               setState(() {
                 _selectedPurchaseType = value;
                 _selectedCategory = null;
-                _selectedProduct = ["", "", ""];
+                _selectedProduct = [
+                  "", //unit
+                  "", //wholesaleUnit
+                  "", //name
+                  "", //id
+                  "", //wholeSaleQuantity
+                ];
                 _selectedUnit = null;
                 price.clear();
                 quantity.clear();
@@ -118,7 +195,7 @@ class _AddPurchaseState extends State<AddPurchase> {
       );
     }
 
-    Widget handlePersonalWithdrawals() {
+    personalWithdrawalForm() {
       return Column(
         children: <Widget>[
           UIHelper.verticalSpaceMedium(),
@@ -126,7 +203,9 @@ class _AddPurchaseState extends State<AddPurchase> {
           UIHelper.verticalSpaceMedium(),
           formTextFieldTemplate(hint: "ملاحظات", controller: notes),
           SizedBox(height: 300),
-          actions(),
+          price.text == null && notes.text == null
+              ? Container()
+              : personalWithdrawActions(),
         ],
       );
     }
@@ -141,63 +220,66 @@ class _AddPurchaseState extends State<AddPurchase> {
                   child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                           isExpanded: true,
-                          hint: Text(
-                            "اختر نوع المنتج",
-                            style: formLabelsStyle,
-                          ),
+                          hint: Text("اختر نوع المنتج", style: formLabelsStyle),
                           value: _selectedCategory,
                           isDense: true,
                           onChanged: (value) {
                             setState(() {
                               _selectedCategory = value;
-                              _selectedProduct = ["", "", ""];
+                              _selectedProduct = [
+                                "", //unit
+                                "", //wholesaleUnit
+                                "", //name
+                                "", //id
+                                "", //wholeSaleQuantity
+                              ];
                               _selectedUnit = null;
                               quantity.clear();
                             });
                           },
                           items: model.categories.map((category) {
                             return DropdownMenuItem<String>(
-                              value: "${category.name}",
-                              child: Text(
-                                "${category.name}",
-                              ),
-                            );
+                                value: "${category.name}",
+                                child: Text("${category.name}"));
                           }).toList()))));
     }
 
     // ignore: missing_return
-    handleDropDownCategory() {
+    handleChangeInPurchaseAndCategory() {
       if (_selectedPurchaseType == null) {
         return Container();
       } else if (_selectedPurchaseType == "سحب شخصي") {
-        return handlePersonalWithdrawals();
+        return personalWithdrawalForm();
       } else if (_selectedPurchaseType == "شراء عادي" &&
           _selectedCategory == null) {
-        return Column(
-          children: <Widget>[
-            UIHelper.verticalSpaceMedium(),
-            dropDownCategory(),
-          ],
-        );
+        return Column(children: <Widget>[
+          UIHelper.verticalSpaceMedium(),
+          dropDownCategory()
+        ]);
       } else if (_selectedPurchaseType != null && _selectedCategory != null) {
         return Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(_selectedCategory, style: dropDownLabelsStyle),
-                GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedCategory = null;
-                        _selectedProduct = ["", "", ""];
-                        _selectedUnit = null;
-                        quantity.clear();
-                      });
-                    },
-                    child: Icon(CupertinoIcons.clear_circled_solid)),
-              ],
-            ));
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(_selectedCategory, style: dropDownLabelsStyle),
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedCategory = null;
+                          _selectedProduct = [
+                            "", //unit
+                            "", //wholesaleUnit
+                            "", //name
+                            "", //id
+                            "", //wholeSaleQuantity
+                          ];
+                          _selectedUnit = null;
+                          quantity.clear();
+                        });
+                      },
+                      child: Icon(CupertinoIcons.clear_circled_solid))
+                ]));
       }
     }
 
@@ -212,85 +294,75 @@ class _AddPurchaseState extends State<AddPurchase> {
                   padding: EdgeInsets.only(left: 10, right: 10),
                   child: DropdownButtonHideUnderline(
                       child: DropdownButton<List<String>>(
-                    isExpanded: true,
-                    hint: _selectedProduct[2].length < 1
-                        ? Text(
-                            "اختر المنتج",
-                            style: dropDownLabelsStyle,
-                          )
-                        : Text(
-                            _selectedProduct[2],
-                            style: dropDownLabelsStyle,
-                          ),
-                    value: value2,
-                    isDense: true,
+                          isExpanded: true,
+                          hint: _selectedProduct[2].length < 1
+                              ? Text(
+                                  "اختر المنتج",
+                                  style: dropDownLabelsStyle,
+                                )
+                              : Text(
+                                  _selectedProduct[2],
+                                  style: dropDownLabelsStyle,
+                                ),
+                          value: value2,
+                          isDense: true,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedProduct = value;
+                              _selectedUnit = null;
+                              quantity.clear();
+                              print(_selectedProduct[3]);
+                            });
+                          },
+                          items: model.products.map((products) {
+                            return DropdownMenuItem<List<String>>(
+                              value: <String>[
+                                products.unit,
+                                products.wholesaleUnit,
+                                products.name,
+                                products.id,
+                                products.quantityOfWholesaleUnit
+                              ],
+                              child: Text(
+                                "${products.name}",
+                              ),
+                            );
+                          }).toList()))));
+    }
+
+    unitsRadioButtons() {
+      return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(children: <Widget>[
+              Expanded(
+                  child: Container(
+                      child: Row(children: <Widget>[
+                Radio(
+                    value: 1,
+                    groupValue: _selectedUnit,
                     onChanged: (value) {
                       setState(() {
-                        _selectedProduct = value;
-                        _selectedUnit = null;
-                        quantity.clear();
+                        _selectedUnit = value;
                       });
-                    },
-                    items: model.products.map((products) {
-                      return DropdownMenuItem<List<String>>(
-                        value: <String>[
-                          products.unit,
-                          products.wholesaleUnit,
-                          products.name,
-                        ],
-                        child: Text(
-                          "${products.name}",
-                        ),
-                      );
-                    }).toList(),
-                  ))));
-    }
-
-    setSelectedRadio(int val) {
-      setState(() {
-        _selectedUnit = val;
-      });
-    }
-
-    radioUnit() {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
+                    }),
+                Text(_selectedProduct[0]),
+              ]))),
               Expanded(
-                child: Container(
-                    child: Row(
-                  children: <Widget>[
-                    Radio(
-                      value: 1,
-                      groupValue: _selectedUnit,
-                      onChanged: (value) {
-                        setSelectedRadio(value);
-                      },
-                    ),
-                    Text(_selectedProduct[0]),
-                  ],
-                )),
-              ),
-              Expanded(
-                child: Container(
-                    child: Row(
-                  children: <Widget>[
-                    Radio(
-                        value: 2,
-                        groupValue: _selectedUnit,
-                        onChanged: (value) {
-                          setSelectedRadio(value);
-                        }),
-                    Text(_selectedProduct[1]),
-                  ],
-                )),
-              ),
-            ],
-          )
-        ],
-      );
+                  child: Container(
+                      child: Row(children: <Widget>[
+                Radio(
+                    value: 2,
+                    groupValue: _selectedUnit,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedUnit = value;
+                      });
+                    }),
+                Text(_selectedProduct[1])
+              ])))
+            ])
+          ]);
     }
 
     Widget forms() {
@@ -301,23 +373,21 @@ class _AddPurchaseState extends State<AddPurchase> {
             dropDownPurchaseType(),
             Column(
               children: <Widget>[
-                handleDropDownCategory(),
+                handleChangeInPurchaseAndCategory(),
                 UIHelper.verticalSpaceMedium(),
               ],
             ),
             _selectedCategory == null || _selectedCategory.length < 1
                 ? Container()
-                : Column(
-                    children: <Widget>[
-                      dropDownProduct(),
-                      UIHelper.verticalSpaceMedium(),
-                    ],
-                  ),
+                : Column(children: <Widget>[
+                    dropDownProduct(),
+                    UIHelper.verticalSpaceMedium(),
+                  ]),
             _selectedProduct[1].length < 1
                 ? Container()
                 : Column(
                     children: <Widget>[
-                      radioUnit(),
+                      unitsRadioButtons(),
                       UIHelper.verticalSpaceMedium(),
                     ],
                   ),
@@ -342,10 +412,8 @@ class _AddPurchaseState extends State<AddPurchase> {
                         controller: price,
                         hint: "السعر المدفوع",
                       ),
-                      SizedBox(
-                        height: 160,
-                      ),
-                      actions(),
+                      SizedBox(height: 160),
+                      normalBuyActions(),
                     ],
                   ),
           ],
@@ -359,13 +427,8 @@ class _AddPurchaseState extends State<AddPurchase> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text("اضافة عملية شراء" + " (${widget.branchName})"),
-        ),
-        body: ListView(
-          children: <Widget>[
-            forms(),
-          ],
-        ));
+        appBar:
+            AppBar(title: Text("اضافة عملية شراء" + " (${widget.branchName})")),
+        body: ListView(children: <Widget>[forms()]));
   }
 }

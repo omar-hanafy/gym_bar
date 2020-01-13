@@ -4,7 +4,7 @@ import 'package:gym_bar/ui/routers.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'core/view_models/product_model.dart';
-import 'locator.dart';
+import 'core/locator.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {

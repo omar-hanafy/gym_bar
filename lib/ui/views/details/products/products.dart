@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/widgets/home_item.dart';
 import '../../base_view.dart';
@@ -48,7 +48,7 @@ class Products extends StatelessWidget {
                           "customerPrice": model.products[index].customerPrice,
                           "employeePrice": model.products[index].employeePrice,
                           "housePrice": model.products[index].housePrice,
-                          "quantity": model.products[index].quantity,
+                          "quantity": model.products[index].quantityOfWholesaleUnit,
                           "quantityLimit": model.products[index].quantityLimit,
                           "wholesaleQuantity":
                               model.products[index].wholesaleQuantity,

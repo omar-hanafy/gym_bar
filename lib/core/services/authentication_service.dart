@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/models/user.dart';
-import '../../locator.dart';
+import '../locator.dart';
 import 'api.dart';
 
 class AuthenticationService {
@@ -37,7 +37,7 @@ class AuthenticationService {
   }
 
   static void addUserDB(User user) async {
-    checkUserExist(user.id).then((value) {
+    Api.checkDocExist("users", user.id).then((value) {
       if (!value) {
         print("user ${user.name} ${user.email} ${user.photo}added");
         Firestore.instance.document("users/${user.id}").setData(user.toJson());
@@ -48,7 +48,7 @@ class AuthenticationService {
   }
 
   static void addEmployeeDB(Employee employee, branchName) async {
-    checkUserExist(employee.id).then((value) {
+    Api.checkDocExist("employees", employee.id).then((value) {
       if (!value) {
         Firestore.instance
             .document("employees/branches/$branchName/${employee.id}")
@@ -57,21 +57,6 @@ class AuthenticationService {
         print("user ${employee.name} ${employee.email} exists");
       }
     });
-  }
-
-  static Future<bool> checkUserExist(String userId) async {
-    bool exists = false;
-    try {
-      await Firestore.instance.document("users/$userId").get().then((doc) {
-        if (doc.exists)
-          exists = true;
-        else
-          exists = false;
-      });
-      return exists;
-    } catch (e) {
-      return false;
-    }
   }
 
   static Future<bool> checkEmployeeExist(String employeeId) async {

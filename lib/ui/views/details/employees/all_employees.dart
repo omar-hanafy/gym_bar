@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gym_bar/enums.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
@@ -10,7 +10,6 @@ import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
 import 'package:gym_bar/ui/widgets/search.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:search_widget/search_widget.dart';
 
 class AllEmployees extends StatefulWidget {
   final String branchName;
@@ -74,101 +73,202 @@ class _AllEmployeesState extends State<AllEmployees> {
 
   @override
   Widget build(BuildContext context) {
-    firstColumn(List<Employee> employees) {
-      return Column(
-        children: <Widget>[
-          Container(
-              height: 50,
-              color: Colors.grey,
-              child: GestureDetector(
-                  onTap: () {
-                    changeNameAscendingState();
-                    onSortName(employees);
-                  },
-                  child: Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Name", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortNameIcon)
-                    ],
-                  )))),
-          Divider(height: 1, color: Colors.black),
-          Expanded(
-              child: ListView.builder(
-                  itemCount: employees.length,
-                  itemBuilder: (BuildContext context, int index) => Column(
-                        children: <Widget>[
-                          Container(
-                              color: int.parse(employees[index].cash) > 0
-                                  ? Colors.white
-                                  : Colors.red,
-                              height: 50,
-                              child: Center(
-                                  child: Text(
-                                employees[index].name == null
-                                    ? sendNull
-                                    : employees[index].name,
-                                style: formTitleStyleLight,
-                              ))),
-                          Divider(height: 1, color: Colors.black),
-                        ],
-                      ))),
-        ],
+//    firstColumn(List<Employee> employees) {
+//      return Column(
+//        children: <Widget>[
+//          Container(
+//              height: 50,
+//              color: Colors.grey,
+//              child: GestureDetector(
+//                  onTap: () {
+//                    changeNameAscendingState();
+//                    onSortName(employees);
+//                  },
+//                  child: Center(
+//                      child: Row(
+//                    mainAxisAlignment: MainAxisAlignment.center,
+//                    children: <Widget>[
+//                      Text("Name", style: tableTitleStyle),
+//                      SizedBox(width: 10),
+//                      Icon(sortNameIcon)
+//                    ],
+//                  )))),
+//          Divider(height: 1, color: Colors.black),
+//          Expanded(
+//              child: ListView.builder(
+//                  itemCount: employees.length,
+//                  itemBuilder: (BuildContext context, int index) => Column(
+//                        children: <Widget>[
+//                          //todo: handle null to not naviate;
+//                          employees[index].name == null
+//                              ? Container(
+//                                  height: 50,
+//                                  child: Center(
+//                                    child: Text(
+//                                      sendNull,
+//                                      style: formTitleStyleLight,
+//                                    ),
+//                                  ),
+//                                )
+//                              : GestureDetector(
+//                                  onTap: () {
+//                                    Navigator.pushNamed(
+//                                        context, "/employee_profile",
+//                                        arguments: employees[index]);
+//                                  },
+//                                  child: Container(
+//                                      color:
+//                                          int.parse(employees[index].cash) > 0
+//                                              ? Colors.white
+//                                              : Colors.red,
+//                                      height: 50,
+//                                      child: Center(
+//                                          child: Text(
+//                                        employees[index].name,
+//                                        style: formTitleStyleLight,
+//                                      ))),
+//                                ),
+//                          Divider(height: 1, color: Colors.black),
+//                        ],
+//                      ))),
+//        ],
+//      );
+//    }
+//
+//    secondColumn(List<Employee> employees) {
+//      return Column(
+//        children: <Widget>[
+//          Container(
+//              height: 50,
+//              color: Colors.grey,
+//              child: GestureDetector(
+//                  onTap: () {
+//                    changeCashAscendingState();
+//                    onSortCash(employees);
+//                  },
+//                  child: Center(
+//                      child: Row(
+//                    mainAxisAlignment: MainAxisAlignment.center,
+//                    children: <Widget>[
+//                      Text("Cash", style: tableTitleStyle),
+//                      SizedBox(width: 10),
+//                      Icon(sortCashIcon)
+//                    ],
+//                  )))),
+//          Divider(height: 1, color: Colors.black),
+//          Expanded(
+//              child: ListView.builder(
+//                  itemCount: employees.length,
+//                  itemBuilder: (BuildContext context, int index) => Column(
+//                        children: <Widget>[
+//                          Container(
+//                              color: int.parse(employees[index].cash) > 0
+//                                  ? Colors.white
+//                                  : Colors.red,
+//                              height: 50,
+//                              child: Center(
+//                                  child: Text(
+//                                employees[index].cash == null
+//                                    ? sendNull
+//                                    : employees[index].cash,
+//                                style: formTitleStyleLight,
+//                              ))),
+//                          Divider(height: 1, color: Colors.black),
+//                        ],
+//                      )))
+//        ],
+//      );
+//    }
+//
+//    table(List<Employee> employees) {
+//      return Row(
+//        children: <Widget>[
+//          Expanded(child: firstColumn(employees)),
+//          Expanded(child: secondColumn(employees)),
+//        ],
+//      );
+//    }
+
+    tableHead(employees) {
+      return Container(
+        height: 50,
+        color: Colors.grey,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            GestureDetector(
+                onTap: () {
+                  changeNameAscendingState();
+                  onSortName(employees);
+                },
+                child: Center(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Name", style: tableTitleStyle),
+                    SizedBox(width: 10),
+                    Icon(sortNameIcon)
+                  ],
+                ))),
+            GestureDetector(
+                onTap: () {
+                  changeCashAscendingState();
+                  onSortCash(employees);
+                },
+                child: Center(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Cash", style: tableTitleStyle),
+                    SizedBox(width: 10),
+                    Icon(sortCashIcon)
+                  ],
+                ))),
+          ],
+        ),
       );
     }
 
-    secondColumn(List<Employee> employees) {
-      return Column(
-        children: <Widget>[
-          Container(
-              height: 50,
-              color: Colors.grey,
-              child: GestureDetector(
-                  onTap: () {
-                    changeCashAscendingState();
-                    onSortCash(employees);
-                  },
-                  child: Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Cash", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortCashIcon)
-                    ],
-                  )))),
-          Divider(height: 1, color: Colors.black),
-          Expanded(
-              child: ListView.builder(
-                  itemCount: employees.length,
-                  itemBuilder: (BuildContext context, int index) => Column(
-                        children: <Widget>[
-                          Container(
-                              color: int.parse(employees[index].cash) > 0
-                                  ? Colors.white
-                                  : Colors.red,
-                              height: 50,
-                              child: Center(
-                                  child: Text(
-                                employees[index].cash == null
-                                    ? sendNull
-                                    : employees[index].cash,
-                                style: formTitleStyleLight,
-                              ))),
-                          Divider(height: 1, color: Colors.black),
-                        ],
-                      )))
-        ],
-      );
+    tableBuilder(List<Employee> employees) {
+      return ListView.builder(
+          itemCount: employees.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Column(
+              children: <Widget>[
+                Container(
+                  color: int.parse(employees[index].cash) > 0
+                      ? Colors.white
+                      : Colors.red,
+                  height: 50,
+                  child: GestureDetector(
+                    onTap: () => Navigator.pushNamed(
+                        context, "/employee_profile",
+                        arguments: employees[index]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Text(employees[index].name, style: formTitleStyleLight),
+                        Text(employees[index].cash, style: formTitleStyleLight),
+                      ],
+                    ),
+                  ),
+                ),
+                Divider(height: 1, color: Colors.black),
+              ],
+            );
+          });
     }
 
-    table(List<Employee> employees) {
-      return Row(
+    table(employees) {
+      return Column(
         children: <Widget>[
-          Expanded(child: firstColumn(employees)),
-          Expanded(child: secondColumn(employees)),
+          tableHead(employees),
+          Divider(
+            thickness: 3,
+            color: Colors.black54,
+            height: 3,
+          ),
+          Expanded(child: tableBuilder(employees)),
         ],
       );
     }
@@ -185,33 +285,28 @@ class _AllEmployeesState extends State<AllEmployees> {
                 onPressed: () => getCsv(model.employees))
           ],
         ),
-        body: model.state == ViewState.Busy
-            ? Center(child: CircularProgressIndicator())
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: model.state == ViewState.Busy
+              ? Center(child: CircularProgressIndicator())
 //              : alternativeTabel(model.employees)
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  UIHelper.verticalSpaceLarge(),
-                  Container(
-                    width: 200,
-                    child:
-                        Center(child: employeeSearch(model.employees, context)),
-                  ),
-                  UIHelper.verticalSpaceMedium(),
-                  Expanded(child: table(model.employees)),
-                ],
-              ),
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    UIHelper.verticalSpaceLarge(),
+                    Container(
+                      width: 200,
+                      child: Center(
+                          child: employeeSearch(model.employees, context)),
+                    ),
+                    UIHelper.verticalSpaceMedium(),
+                    Expanded(child: table(model.employees)),
+                  ],
+                ),
+        ),
       ),
     );
   }
-}
-
-list(employees) {
-  List<String> row = List();
-  for (int i = 0; i < employees.length; i++) {
-    row.add("${employees[i].name}");
-  }
-  return row;
 }
 
 getCsv(List<Employee> employees) async {
@@ -244,39 +339,6 @@ getCsv(List<Employee> employees) async {
 // convert rows to String and write as csv file
 }
 
-employeeSearch(List<Employee> employee, context) {
-  return SearchWidget<Employee>(
-    dataList: employee,
-    hideSearchBoxWhenItemSelected: false,
-    listContainerHeight: MediaQuery.of(context).size.height / 4,
-    queryBuilder: (String query, List<Employee> employee) {
-      return employee
-          .where((Employee employee) =>
-              employee.name.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    },
-    popupListItemBuilder: (Employee employee) {
-      return Container(
-          padding: const EdgeInsets.all(12),
-          child: Text(
-            employee.name,
-            style: const TextStyle(fontSize: 16),
-          ));
-    },
-    selectedItemBuilder:
-        (Employee selectedItem, VoidCallback deleteSelectedItem) {
-      //TODO: navigate here to user profile
-      return null;
-    },
-    // widget customization
-    noItemsFoundWidget: Center(
-      child: Text("No item Found"),
-    ),
-    textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
-      return searchTextField(controller, focusNode, context);
-    },
-  );
-}
 //TODO: U CAN USE ALTERNATIVE TABLE
 //TODO: U CAN Use ALTERNATIVE TABLE
 //TODO: U CAN Use ALTERNATIVE TABLE
