@@ -325,7 +325,7 @@ getCsv(List<Employee> employees) async {
 //store file in documents folder
   String csv = const ListToCsvConverter().convert(rows);
 
-  await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+  await Permission.storage.request();
 
 //  Directory appDocDir = await getApplicationDocumentsDirectory();
 //  String appPath = appDocDir.path;

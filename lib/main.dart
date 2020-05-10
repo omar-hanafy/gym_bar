@@ -9,9 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  permission() async {
-    await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-  }
+  permission() async => await Permission.storage.request();
 
   permission();
   SystemChrome.setPreferredOrientations(
@@ -24,12 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          builder: (_) => locator<ProductModel>(),
-          create: (BuildContext context) {},
-        ),
-      ],
+      providers: [ChangeNotifierProvider(create: (_) => ProductModel())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
