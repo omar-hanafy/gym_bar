@@ -71,189 +71,91 @@ class _AllClientsState extends State<AllClients> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-//    firstColumn(List<Client> clients) {
-//      return Column(
-//        children: <Widget>[
-//          Container(
-//              height: 50,
-//              color: Colors.grey,
-//              child: GestureDetector(
-//                  onTap: () {
-//                    changeNameAscendingState();
-//                    onSortName(clients);
-//                  },
-//                  child: Center(
-//                      child: Row(
-//                    mainAxisAlignment: MainAxisAlignment.center,
-//                    children: <Widget>[
-//                      Text("Name", style: tableTitleStyle),
-//                      SizedBox(width: 10),
-//                      Icon(sortNameIcon)
-//                    ],
-//                  )))),
-//          Divider(height: 1, color: Colors.black),
-//          Expanded(
-//              child: ListView.builder(
-//                  itemCount: clients.length,
-//                  itemBuilder: (BuildContext context, int index) => Column(
-//                        children: <Widget>[
-//                          Container(
-//                              color: int.parse(clients[index].cash) > 0
-//                                  ? Colors.white
-//                                  : Colors.red,
-//                              height: 50,
-//                              child: Center(
-//                                  child: Text(
-//                                clients[index].name == null
-//                                    ? sendNull
-//                                    : clients[index].name,
-//                                style: formTitleStyleLight,
-//                              ))),
-//                          Divider(height: 1, color: Colors.black),
-//                        ],
-//                      ))),
-//        ],
-//      );
-//    }
-//
-//    secondColumn(List<Client> clients) {
-//      return Column(
-//        children: <Widget>[
-//          Container(
-//              height: 50,
-//              color: Colors.grey,
-//              child: GestureDetector(
-//                  onTap: () {
-//                    changeCashAscendingState();
-//                    onSortCash(clients);
-//                  },
-//                  child: Center(
-//                      child: Row(
-//                    mainAxisAlignment: MainAxisAlignment.center,
-//                    children: <Widget>[
-//                      Text("Cash", style: tableTitleStyle),
-//                      SizedBox(width: 10),
-//                      Icon(sortCashIcon)
-//                    ],
-//                  )))),
-//          Divider(height: 1, color: Colors.black),
-//          Expanded(
-//              child: ListView.builder(
-//                  itemCount: clients.length,
-//                  itemBuilder: (BuildContext context, int index) => Column(
-//                        children: <Widget>[
-//                          Container(
-//                              color: int.parse(clients[index].cash) > 0
-//                                  ? Colors.white
-//                                  : Colors.red,
-//                              height: 50,
-//                              child: Center(
-//                                  child: Text(
-//                                clients[index].cash == null
-//                                    ? sendNull
-//                                    : clients[index].cash,
-//                                style: formTitleStyleLight,
-//                              ))),
-//                          Divider(height: 1, color: Colors.black),
-//                        ],
-//                      )))
-//        ],
-//      );
-//    }
-//
-//    table(List<Client> clients) {
-//      return Row(
-//        children: <Widget>[
-//          Expanded(child: firstColumn(clients)),
-//          Expanded(child: secondColumn(clients)),
-//        ],
-//      );
-//    }
-    tableHead(clients) {
-      return Container(
-        height: 50,
-        color: Colors.grey,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            GestureDetector(
-                onTap: () {
-                  changeNameAscendingState();
-                  onSortName(clients);
-                },
-                child: Center(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Name", style: tableTitleStyle),
-                    SizedBox(width: 10),
-                    Icon(sortNameIcon)
-                  ],
-                ))),
-            GestureDetector(
-                onTap: () {
-                  changeCashAscendingState();
-                  onSortCash(clients);
-                },
-                child: Center(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Cash", style: tableTitleStyle),
-                    SizedBox(width: 10),
-                    Icon(sortCashIcon)
-                  ],
-                ))),
-          ],
-        ),
-      );
-    }
+  tableHead(clients) {
+    return Container(
+      height: 50,
+      color: Colors.grey,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          GestureDetector(
+              onTap: () {
+                changeNameAscendingState();
+                onSortName(clients);
+              },
+              child: Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Name", style: tableTitleStyle),
+                  SizedBox(width: 10),
+                  Icon(sortNameIcon)
+                ],
+              ))),
+          GestureDetector(
+              onTap: () {
+                changeCashAscendingState();
+                onSortCash(clients);
+              },
+              child: Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Cash", style: tableTitleStyle),
+                  SizedBox(width: 10),
+                  Icon(sortCashIcon)
+                ],
+              ))),
+        ],
+      ),
+    );
+  }
 
-    tableBuilder(List<Client> clients) {
-      return ListView.builder(
-          itemCount: clients.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Column(
-              children: <Widget>[
-                Container(
-                  color: int.parse(clients[index].cash) > 0
-                      ? Colors.white
-                      : Colors.red,
-                  height: 50,
-                  child: GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, "/client_profile",
-                        arguments: clients[index]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Text(clients[index].name, style: formTitleStyleLight),
-                        Text(clients[index].cash, style: formTitleStyleLight),
-                      ],
-                    ),
+  tableBuilder(List<Client> clients) {
+    return ListView.builder(
+        itemCount: clients.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            children: <Widget>[
+              Container(
+                color: int.parse(clients[index].cash) > 0
+                    ? Colors.white
+                    : Colors.red,
+                height: 50,
+                child: GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, "/client_profile",
+                      arguments: clients[index]),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text(clients[index].name, style: formTitleStyleLight),
+                      Text(clients[index].cash, style: formTitleStyleLight),
+                    ],
                   ),
                 ),
-                Divider(height: 1, color: Colors.black),
-              ],
-            );
-          });
-    }
+              ),
+              Divider(height: 1, color: Colors.black),
+            ],
+          );
+        });
+  }
 
-    table(clients) {
-      return Column(
-        children: <Widget>[
-          tableHead(clients),
-          Divider(
-            thickness: 3,
-            color: Colors.black54,
-            height: 3,
-          ),
-          Expanded(child: tableBuilder(clients)),
-        ],
-      );
-    }
+  table(clients) {
+    return Column(
+      children: <Widget>[
+        tableHead(clients),
+        Divider(
+          thickness: 3,
+          color: Colors.black54,
+          height: 3,
+        ),
+        Expanded(child: tableBuilder(clients)),
+      ],
+    );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return BaseView<ClientModel>(
       onModelReady: (model) => model.fetchClients(widget.branchName),
       builder: (context, model, child) => Scaffold(

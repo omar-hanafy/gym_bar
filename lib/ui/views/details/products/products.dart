@@ -13,7 +13,7 @@ class Products extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseView<ProductModel>(
       onModelReady: (model) =>
-          model.fetchProducts(branchName: args[0], categoryName: args[1]),
+          model.fetchProductByCategory(branchName: args[0], categoryName: args[1]),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("أختر نوع المنتج"),
@@ -48,7 +48,7 @@ class Products extends StatelessWidget {
                           "customerPrice": model.products[index].customerPrice,
                           "employeePrice": model.products[index].employeePrice,
                           "housePrice": model.products[index].housePrice,
-                          "quantity": model.products[index].quantityOfWholesaleUnit,
+                          "quantityOfWholesaleUnit": model.products[index].quantityOfWholesaleUnit,
                           "quantityLimit": model.products[index].quantityLimit,
                           "wholesaleQuantity":
                               model.products[index].wholesaleQuantity,

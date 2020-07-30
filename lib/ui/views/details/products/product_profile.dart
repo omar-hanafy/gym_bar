@@ -66,9 +66,9 @@ class ProductProfile extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
                 child: Text(
-                  productDetails['details'] == null
+                  productDetails['description'] == null
                       ? handleNull
-                      : productDetails['details'],
+                      : productDetails['description'],
                   style: formTitleStyleLight,
                 ),
               ),
@@ -80,7 +80,7 @@ class ProductProfile extends StatelessWidget {
             Divider(),
             data(title: "للعامل", value: productDetails['housePrice']),
             header("الكمية"),
-            data(title: "الكمية", value: productDetails['quantity']),
+            data(title: "الكمية", value: productDetails['netTotalQuantity']),
             Divider(),
             data(title: "الحد الادنى", value: productDetails['quantityLimit']),
           ],

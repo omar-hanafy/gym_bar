@@ -32,15 +32,14 @@ class Home extends StatelessWidget {
                                     padding: EdgeInsets.symmetric(
                                         vertical: 4, horizontal: 10),
                                     child: item(
-                                        networkImage:
-                                            model.branches[index].photo,
-                                        onPress: () {
-                                          Navigator.pushNamed(
-                                              context, '/details',
-                                              arguments:
-                                                  model.branches[index].name);
-                                        },
-                                        title: (model.branches[index].name)),
+                                      title: (model.branches[index].name),
+                                      networkImage: model.branches[index].photo,
+                                      onPress: () {
+                                        Navigator.pushNamed(context, '/details',
+                                            arguments:
+                                                model.branches[index].name);
+                                      },
+                                    ),
                                   );
                           })
                       : Center(

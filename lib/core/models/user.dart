@@ -4,7 +4,9 @@ class User {
   String id, name, photo, email;
 
   User({this.id, this.name, this.photo, this.email});
-
+  User.initial()
+      : id = '0',
+        name = '';
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         name: json["name"],

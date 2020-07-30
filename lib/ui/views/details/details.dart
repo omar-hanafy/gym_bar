@@ -8,58 +8,60 @@ import 'package:gym_bar/ui/widgets/home_item.dart';
 
 class Details extends StatelessWidget {
   final String branchName;
-
+  final bool notificationOn = false;
   Details({this.branchName});
-
+  quickReport() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 10, top: 5),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Text(
+              ": الشهر الحالي",
+              style: formTitleStyle,
+            ),
+            UIHelper.verticalSpaceSmall(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    //todo: calculate revenue here!!
+                    "2000",
+                    style: dropDownLabelsStyle,
+                  ),
+                  Text(
+                    "الربح",
+                    style: formTitleStyleSmall,
+                  ),
+                ],
+              ),
+            ),
+            UIHelper.verticalSpaceSmall(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    //todo: calculate السحب الشخصي !!
+                    "2000",
+                    style: dropDownLabelsStyle,
+                  ),
+                  Text(
+                    "السحب الشخصي",
+                    style: formTitleStyleSmall,
+                  ),
+                ],
+              ),
+            )
+          ]),
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    quickReport() {
-      return Padding(
-        padding: const EdgeInsets.only(right: 10, top: 5),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Text(
-                ": الشهر الحالي",
-                style: formTitleStyle,
-              ),
-              UIHelper.verticalSpaceSmall(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "2000",
-                      style: dropDownLabelsStyle,
-                    ),
-                    Text(
-                      "الربح",
-                      style: formTitleStyleSmall,
-                    ),
-                  ],
-                ),
-              ),
-              UIHelper.verticalSpaceSmall(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "2000",
-                      style: dropDownLabelsStyle,
-                    ),
-                    Text(
-                      "السحب الشخصي",
-                      style: formTitleStyleSmall,
-                    ),
-                  ],
-                ),
-              )
-            ]),
-      );
-    }
+
 
     var floatingButtons = [
       SpeedDialChild(
@@ -83,7 +85,6 @@ class Details extends StatelessWidget {
     var floating = SpeedDial(
       overlayColor: Colors.black,
       animatedIcon: AnimatedIcons.menu_close,
-      closeManually: false,
       onOpen: () => print('OPENING DIAL'),
       onClose: () => print('DIAL CLOSED'),
       tooltip: 'إضافة',
@@ -92,8 +93,6 @@ class Details extends StatelessWidget {
       elevation: 8.0,
       children: floatingButtons,
     );
-    print(branchName);
-    bool notificationOn = false;
     body() => Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[

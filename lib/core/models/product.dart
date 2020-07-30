@@ -34,7 +34,9 @@ class Product {
     this.quantityLimit,
     this.photo,
   });
-
+  Product.initial()
+      : id = '0',
+        name = '';
   Product.fromMap(Map snapshot, String id)
       : id = id ?? "",
         name = snapshot['name'] ?? '',
@@ -45,7 +47,7 @@ class Product {
         customerPrice = snapshot['customerPrice'] ?? '',
         employeePrice = snapshot['employeePrice'] ?? '',
         housePrice = snapshot['housePrice'] ?? '',
-        quantityOfWholesaleUnit = snapshot['quantity'],
+        quantityOfWholesaleUnit = snapshot['quantityOfWholesaleUnit'],
         quantityLimit = snapshot['quantityLimit'],
         wholesaleQuantity = snapshot['wholesaleQuantity'],
         wholesaleUnit = snapshot['wholesaleUnit'],
@@ -63,7 +65,7 @@ class Product {
       "customerPrice": customerPrice,
       "employeePrice": employeePrice,
       "housePrice": housePrice,
-      "quantity": quantityOfWholesaleUnit,
+      "quantityOfWholesaleUnit": quantityOfWholesaleUnit,
       "quantityLimit": quantityLimit,
       "wholesaleQuantity": wholesaleQuantity,
       "wholesaleUnit": wholesaleUnit,

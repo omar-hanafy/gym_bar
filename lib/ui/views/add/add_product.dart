@@ -346,9 +346,7 @@ class _AddProductState extends State<AddProduct> {
 
     return BaseView<ProductModel>(
       builder: (context, model, child) => Scaffold(
-        appBar: AppBar(
-          title: Text("إضافة منتج"),
-        ),
+        appBar: AppBar(title: Text("إضافة منتج")),
         body: model.state == ViewState.Busy
             ? Center(child: CircularProgressIndicator())
             : ListView(
@@ -365,7 +363,7 @@ class _AddProductState extends State<AddProduct> {
                     child: formButtonTemplate(
                         context: context,
                         onTab: () {
-                          print("dataaaaa2aaaaaah");
+                          print("dataaaaa2aaaaaah in my as");
                           print("{name is: ${name.text} }");
                           print("{branch is: ${branch.text} }");
                           model.addProduct(
@@ -388,7 +386,7 @@ class _AddProductState extends State<AddProduct> {
                                       netTotalQuantity().toString(),
                                   photo: "photo"),
                               branchName: widget.branchName,
-                              categoryName: _selectedCategory);
+                              );
 //                          clear();
                         },
                         text: "إضافة منتج"),

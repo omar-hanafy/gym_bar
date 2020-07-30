@@ -71,109 +71,92 @@ class _FilteredEmployeesState extends State<FilteredEmployees> {
     });
   }
 
+  tableHead(employees) {
+    return Container(
+      height: 50,
+      color: Colors.grey,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          GestureDetector(
+              onTap: () {
+                changeNameAscendingState();
+                onSortName(employees);
+              },
+              child: Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Name", style: tableTitleStyle),
+                  SizedBox(width: 10),
+                  Icon(sortNameIcon)
+                ],
+              ))),
+          GestureDetector(
+              onTap: () {
+                changeCashAscendingState();
+                onSortCash(employees);
+              },
+              child: Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Cash", style: tableTitleStyle),
+                  SizedBox(width: 10),
+                  Icon(sortCashIcon)
+                ],
+              ))),
+        ],
+      ),
+    );
+  }
+
+  tableBuilder(List<Employee> employees) {
+    return ListView.builder(
+        itemCount: employees.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            children: <Widget>[
+              Container(
+                color: int.parse(employees[index].cash) > 0
+                    ? Colors.white
+                    : Colors.red,
+                height: 50,
+                child: GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, "/employee_profile",
+                      arguments: employees[index]),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text(employees[index].name, style: formTitleStyleLight),
+                      Text(employees[index].cash, style: formTitleStyleLight),
+                    ],
+                  ),
+                ),
+              ),
+              Divider(height: 1, color: Colors.black),
+            ],
+          );
+        });
+  }
+
+  table(employees) {
+    return Column(
+      children: <Widget>[
+        tableHead(employees),
+        Divider(
+          thickness: 3,
+          color: Colors.black54,
+          height: 3,
+        ),
+        Expanded(child: tableBuilder(employees)),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     print("dept employee brannnnnnnsh ${widget.args[1]}");
-
-    firstColumn(List<Employee> employees) {
-      return Column(
-        children: <Widget>[
-          Container(
-              height: 50,
-              color: Colors.grey,
-              child: GestureDetector(
-                  onTap: () {
-                    changeNameAscendingState();
-                    onSortName(employees);
-                  },
-                  child: Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Name", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortNameIcon)
-                    ],
-                  )))),
-          Divider(height: 1, color: Colors.black),
-          Expanded(
-              child: ListView.builder(
-                  itemCount: employees.length,
-                  itemBuilder: (BuildContext context, int index) => Column(
-                        children: <Widget>[
-                          Container(
-                              color: int.parse(employees[index].cash) > 0
-                                  ? Colors.white
-                                  : Colors.red,
-                              height: 50,
-                              child: Center(
-                                  child: Text(
-                                employees[index].name == null
-                                    ? sendNull
-                                    : employees[index].name,
-                                style: formTitleStyleLight,
-                              ))),
-                          Divider(height: 1, color: Colors.black),
-                        ],
-                      ))),
-        ],
-      );
-    }
-
-    secondColumn(List<Employee> employees) {
-      return Column(
-        children: <Widget>[
-          Container(
-              height: 50,
-              color: Colors.grey,
-              child: GestureDetector(
-                  onTap: () {
-                    changeCashAscendingState();
-                    onSortCash(employees);
-                  },
-                  child: Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Cash", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortCashIcon)
-                    ],
-                  )))),
-          Divider(height: 1, color: Colors.black),
-          Expanded(
-              child: ListView.builder(
-                  itemCount: employees.length,
-                  itemBuilder: (BuildContext context, int index) => Column(
-                        children: <Widget>[
-                          Container(
-                              color: int.parse(employees[index].cash) > 0
-                                  ? Colors.white
-                                  : Colors.red,
-                              height: 50,
-                              child: Center(
-                                  child: Text(
-                                employees[index].cash == null
-                                    ? sendNull
-                                    : employees[index].cash,
-                                style: formTitleStyleLight,
-                              ))),
-                          Divider(height: 1, color: Colors.black),
-                        ],
-                      )))
-        ],
-      );
-    }
-
-    table(List<Employee> employees) {
-      return Row(
-        children: <Widget>[
-          Expanded(child: firstColumn(employees)),
-          Expanded(child: secondColumn(employees)),
-        ],
-      );
-    }
-
     return BaseView<EmployeeModel>(
       onModelReady: (model) => model.fetchFilteredEmployees(
           branchName: widget.args[0],

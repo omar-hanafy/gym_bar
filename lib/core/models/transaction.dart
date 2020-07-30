@@ -107,6 +107,7 @@ class Transaction {
       "paid": paid,
       "change": change,
       //
+
       "buyingProduct": buyingProduct,
       "buyingQuantity": buyingQuantity,
       "buyingProductCategory": buyingProductCategory,
@@ -114,8 +115,10 @@ class Transaction {
       "buyingCashAmount": buyingCashAmount,
       "notes": notes,
       //
+
       "withdrawCashAmount": withdrawCashAmount,
       //
+
       "depositCashAmount": depositCashAmount,
     };
   }

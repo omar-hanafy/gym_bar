@@ -9,10 +9,9 @@ class ProductModel extends BaseModel {
 
   List<Product> products;
 
-  Future<List<Product>> fetchProducts({categoryName, branchName}) async {
+  Future<List<Product>> fetchProducts({branchName}) async {
     setState(ViewState.Busy);
-    var result = await _api.getDataCollection(
-        "products/branches/$branchName/categories/$categoryName");
+    var result = await _api.getDataCollection("products/branches/$branchName");
     products = result.documents
         .map((doc) => Product.fromMap(doc.data, doc.documentID))
         .toList();
@@ -28,11 +27,9 @@ class ProductModel extends BaseModel {
   //   return api;
   // }
 
-  Future addProduct(
-      {Product product, String branchName, String categoryName}) async {
+  Future addProduct({Product product, String branchName}) async {
     setState(ViewState.Busy);
-    await _api.addDocument(product.toJson(),
-        "products/branches/$branchName/categories/$categoryName");
+    await _api.addDocument(product.toJson(), "products/branches/$branchName");
     setState(ViewState.Idle);
   }
 
@@ -42,6 +39,18 @@ class ProductModel extends BaseModel {
     Product product = Product.fromMap(doc.data, doc.documentID);
     setState(ViewState.Idle);
     return product;
+  }
+
+  Future fetchProductByCategory({String branchName, categoryName}) async {
+    setState(ViewState.Busy);
+    var result = await _api.getCustomDataCollection(
+        path: "products/branches/$branchName",
+        field: 'category',
+        equalTo: categoryName);
+    products = result.documents
+        .map((doc) => Product.fromMap(doc.data, doc.documentID))
+        .toList();
+    setState(ViewState.Idle);
   }
 
   Future<Product> getProductByBranch(String path) async {
@@ -56,6 +65,4 @@ class ProductModel extends BaseModel {
 
     return;
   }
-
-
 }

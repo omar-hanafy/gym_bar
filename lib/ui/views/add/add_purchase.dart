@@ -25,13 +25,13 @@ class _AddPurchaseState extends State<AddPurchase> {
   String _selectedPurchaseType;
   String _selectedCategory;
   List<String> _selectedProduct = [
-    "", //unit
-    "", //wholesaleUnit
-    "", //name
-    "", //id
-    "", //wholeSaleQuantity
+    "unitNull", //unit
+    "wholesaleUnitNull", //wholesaleUnit
+    "nameNull", //name
+    "idNull", //id
+    "wholeSaleQuantityNull", //wholeSaleQuantity
   ];
-  int _selectedUnit; // if "1" it is unit if "2" it is wholesale unit
+  int _selectedUnitType; // if "1" it is unit if "2" it is wholesale unit
   TextEditingController quantity = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController notes = TextEditingController();
@@ -39,22 +39,22 @@ class _AddPurchaseState extends State<AddPurchase> {
 
   @override
   Widget build(BuildContext context) {
-
-    updateTresurey(Total total) {
+    updateTreasury(Total total) {
       int newCash = int.parse(total.cash) - int.parse(price.text);
       return newCash.toString();
     }
+
     // ignore: missing_return
     calculateQuantity(Product product) {
       // ignore: unused_local_variable
       String newQuantity;
-      if (_selectedUnit == 1 /*unit*/) {
+      if (_selectedUnitType == 1 /*unit*/) {
         int quantityCalc =
             int.parse(product.netTotalQuantity) + int.parse(quantity.text);
 
         return newQuantity = quantityCalc.toString();
       }
-      if (_selectedUnit == 2 /*wholesaleUnit*/) {
+      if (_selectedUnitType == 2 /*wholesaleUnit*/) {
         print(_selectedProduct[4]);
         int quantityCalc = (int.parse(product.netTotalQuantity)) +
             (int.parse(_selectedProduct[4]) * int.parse(quantity.text));
@@ -84,7 +84,7 @@ class _AddPurchaseState extends State<AddPurchase> {
 
                       model.updateTotal(
                           docId: "${widget.branchName}",
-                          data: {"cash": updateTresurey(model.total)});
+                          data: {"cash": updateTreasury(model.total)});
                     },
                     text: "إتمام العملية"),
                 UIHelper.verticalSpaceMedium(),
@@ -131,7 +131,7 @@ class _AddPurchaseState extends State<AddPurchase> {
                             ));
                         model.updateTotal(
                             docId: "${widget.branchName}",
-                            data: {"cash": updateTresurey(model.total)});
+                            data: {"cash": updateTreasury(model.total)});
                         model.updateProducts(
                             branchName: widget.branchName,
                             categoryName: _selectedCategory,
@@ -172,13 +172,13 @@ class _AddPurchaseState extends State<AddPurchase> {
                 _selectedPurchaseType = value;
                 _selectedCategory = null;
                 _selectedProduct = [
-                  "", //unit
-                  "", //wholesaleUnit
-                  "", //name
-                  "", //id
-                  "", //wholeSaleQuantity
+                  "unitNull", //unit
+                  "wholesaleUnitNull", //wholesaleUnit
+                  "nameNull", //name
+                  "idNull", //id
+                  "wholeSaleQuantityNull", //wholeSaleQuantity
                 ];
-                _selectedUnit = null;
+                _selectedUnitType = null;
                 price.clear();
                 quantity.clear();
               });
@@ -227,13 +227,13 @@ class _AddPurchaseState extends State<AddPurchase> {
                             setState(() {
                               _selectedCategory = value;
                               _selectedProduct = [
-                                "", //unit
-                                "", //wholesaleUnit
-                                "", //name
-                                "", //id
-                                "", //wholeSaleQuantity
+                                "unitNull", //unit
+                                "wholesaleUnitNull", //wholesaleUnit
+                                "nameNull", //name
+                                "idNull", //id
+                                "wholeSaleQuantityNull", //wholeSaleQuantity
                               ];
-                              _selectedUnit = null;
+                              _selectedUnitType = null;
                               quantity.clear();
                             });
                           },
@@ -264,28 +264,36 @@ class _AddPurchaseState extends State<AddPurchase> {
                 children: <Widget>[
                   Text(_selectedCategory, style: dropDownLabelsStyle),
                   GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedCategory = null;
-                          _selectedProduct = [
-                            "", //unit
-                            "", //wholesaleUnit
-                            "", //name
-                            "", //id
-                            "", //wholeSaleQuantity
-                          ];
-                          _selectedUnit = null;
-                          quantity.clear();
-                        });
-                      },
-                      child: Icon(CupertinoIcons.clear_circled_solid))
+                    child: Icon(CupertinoIcons.clear_circled_solid),
+                    onTap: () {
+                      setState(() {
+                        _selectedCategory = null;
+                        _selectedProduct = [
+                          "unitNull", //unit
+                          "wholesaleUnitNull", //wholesaleUnit
+                          "nameNull", //name
+                          "idNull", //id
+                          "wholeSaleQuantityNull", //wholeSaleQuantity
+                        ];
+                        _selectedUnitType = null;
+                        quantity.clear();
+                      });
+                    },
+                  )
                 ]));
       }
     }
+//    _selectedProduct = [
+//     0 "unitNull", //unit
+//     1 "wholesaleUnitNull", //wholesaleUnit
+//     2 "nameNull", //name
+//     3 "idNull", //id
+//     4 "wholeSaleQuantityNull", //wholeSaleQuantity
+//    ];
 
     dropDownProduct() {
       return BaseView<ProductModel>(
-          onModelReady: (model) => model.fetchProducts(
+          onModelReady: (model) => model.fetchProductByCategory(
               branchName: "${widget.branchName}",
               categoryName: _selectedCategory),
           builder: (context, model, child) => model.state == ViewState.Busy
@@ -295,7 +303,7 @@ class _AddPurchaseState extends State<AddPurchase> {
                   child: DropdownButtonHideUnderline(
                       child: DropdownButton<List<String>>(
                           isExpanded: true,
-                          hint: _selectedProduct[2].length < 1
+                          hint: _selectedProduct[2]=="nameNull"
                               ? Text(
                                   "اختر المنتج",
                                   style: dropDownLabelsStyle,
@@ -309,7 +317,7 @@ class _AddPurchaseState extends State<AddPurchase> {
                           onChanged: (value) {
                             setState(() {
                               _selectedProduct = value;
-                              _selectedUnit = null;
+                              _selectedUnitType = null;
                               quantity.clear();
                               print(_selectedProduct[3]);
                             });
@@ -340,10 +348,10 @@ class _AddPurchaseState extends State<AddPurchase> {
                       child: Row(children: <Widget>[
                 Radio(
                     value: 1,
-                    groupValue: _selectedUnit,
+                    groupValue: _selectedUnitType,
                     onChanged: (value) {
                       setState(() {
-                        _selectedUnit = value;
+                        _selectedUnitType = value;
                       });
                     }),
                 Text(_selectedProduct[0]),
@@ -353,10 +361,10 @@ class _AddPurchaseState extends State<AddPurchase> {
                       child: Row(children: <Widget>[
                 Radio(
                     value: 2,
-                    groupValue: _selectedUnit,
+                    groupValue: _selectedUnitType,
                     onChanged: (value) {
                       setState(() {
-                        _selectedUnit = value;
+                        _selectedUnitType = value;
                       });
                     }),
                 Text(_selectedProduct[1])
@@ -383,7 +391,7 @@ class _AddPurchaseState extends State<AddPurchase> {
                     dropDownProduct(),
                     UIHelper.verticalSpaceMedium(),
                   ]),
-            _selectedProduct[1].length < 1
+            _selectedProduct[1] == "wholesaleUnitNull"
                 ? Container()
                 : Column(
                     children: <Widget>[
@@ -391,20 +399,20 @@ class _AddPurchaseState extends State<AddPurchase> {
                       UIHelper.verticalSpaceMedium(),
                     ],
                   ),
-            _selectedProduct[1].length < 1
+            _selectedProduct[1] == "wholesaleUnitNull"
                 ? Container()
                 : Column(
                     children: <Widget>[
                       formTextFieldTemplate(
                         controller: quantity,
-                        hint: _selectedUnit == 1
+                        hint: _selectedUnitType == 1
                             ? "كمية ال ${_selectedProduct[0]}"
                             : "كمية ال ${_selectedProduct[1]}",
                       ),
                       UIHelper.verticalSpaceMedium(),
                     ],
                   ),
-            _selectedProduct[1].length < 1
+            _selectedProduct[1] == "wholesaleUnitNull"
                 ? Container()
                 : Column(
                     children: <Widget>[
