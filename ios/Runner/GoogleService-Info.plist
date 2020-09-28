@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>9077594640-3fvtrtddrakgbqmsf5m8if1vqbpn5cb7.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.9077594640-3fvtrtddrakgbqmsf5m8if1vqbpn5cb7</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>9077594640-afh2qbcdi9oksbpd75jmj04jusuk7iam.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAeIMbN0d6npEI33_Z5SwRS7ZJPXadU-zg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>9077594640</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>handledexception.gymBar</string>
+	<key>PROJECT_ID</key>
+	<string>gymbar-5f006</string>
+	<key>STORAGE_BUCKET</key>
+	<string>gymbar-5f006.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:9077594640:ios:805e0e843c7afe42318895</string>
+	<key>DATABASE_URL</key>
+	<string>https://gymbar-5f006.firebaseio.com</string>
+</dict>
+</plist>

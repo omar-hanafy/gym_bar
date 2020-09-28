@@ -19,8 +19,8 @@ class AttendanceModel extends BaseModel {
   Future<List<Attendance>> fetchAttendance(String path) async {
     setState(ViewState.Busy);
     var result = await _api.getDataCollection(path);
-    attendance = result.documents
-        .map((doc) => Attendance.fromMap(doc.data, doc.documentID))
+    attendance = result.docs
+        .map((doc) => Attendance.fromMap(doc.data(), doc.id))
         .toList();
     setState(ViewState.Idle);
     return attendance;

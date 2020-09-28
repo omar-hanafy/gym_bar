@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class UserProfile {
   String id, name, photo, email;
 
-  User({this.id, this.name, this.photo, this.email});
-  User.initial()
+  UserProfile({this.id, this.name, this.photo, this.email});
+
+  UserProfile.initial()
       : id = '0',
         name = '';
-  factory User.fromJson(Map<String, dynamic> json) => User(
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         id: json["id"],
         name: json["name"],
         photo: json["photo"],
@@ -21,7 +23,7 @@ class User {
         "email": email,
       };
 
-  factory User.fromDocument(DocumentSnapshot doc) {
-    return User.fromJson(doc.data);
+  factory UserProfile.fromDocument(DocumentSnapshot doc) {
+    return UserProfile.fromJson(doc.data());
   }
 }

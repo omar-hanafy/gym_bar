@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/widgets/form_widgets.dart';
 
 class ProductProfile extends StatelessWidget {
-  final Map productDetails;
+//  final Map productDetails;
+  final Product product;
 
-  ProductProfile({this.productDetails});
+  ProductProfile({this.product});
 
   final String handleNull = "لا يوجد";
 
@@ -56,33 +58,34 @@ class ProductProfile extends StatelessWidget {
               ),
             ),
             UIHelper.verticalSpaceMedium(),
-            Center(child: Text(productDetails['name'],style: headerStyle,)),
+            Center(
+                child: Text(
+              product.name,
+              style: headerStyle,
+            )),
             UIHelper.verticalSpaceMedium(),
             header("الوصف"),
             Container(
               height: 50,
               alignment: Alignment.centerRight,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
                 child: Text(
-                  productDetails['description'] == null
-                      ? handleNull
-                      : productDetails['description'],
+                  product.description == null ? handleNull : product.description,
                   style: formTitleStyleLight,
                 ),
               ),
             ),
             header("السعر"),
-            data(title: "للعميل", value: productDetails['customerPrice']),
+            data(title: "للعميل", value: product.customerPrice),
             Divider(),
-            data(title: "للموظف", value: productDetails['employeePrice']),
+            data(title: "للموظف", value: product.employeePrice),
             Divider(),
-            data(title: "للعامل", value: productDetails['housePrice']),
+            data(title: "للعامل", value: product.housePrice),
             header("الكمية"),
-            data(title: "الكمية", value: productDetails['netTotalQuantity']),
+            data(title: "الكمية", value: product.netTotalQuantity),
             Divider(),
-            data(title: "الحد الادنى", value: productDetails['quantityLimit']),
+            data(title: "الحد الادنى", value: product.quantityLimit),
           ],
         ),
       )),

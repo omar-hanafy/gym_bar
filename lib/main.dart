@@ -1,28 +1,33 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gym_bar/core/view_models/product_category_model.dart';
 import 'package:gym_bar/ui/routers.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'core/view_models/product_model.dart';
 import 'core/locator.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+
   permission() async => await Permission.storage.request();
 
-  permission();
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+
   runApp(MyApp());
   setupLocator();
+  permission();
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => ProductModel())],
+      providers: [ChangeNotifierProvider(create: (_) => ProductCategoryModel())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: '/',

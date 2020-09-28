@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/services/other_services.dart';
-import 'package:gym_bar/core/view_models/client_model.dart';
+import 'package:gym_bar/core/view_models/employee_client_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
@@ -23,9 +23,7 @@ class AddClient extends StatefulWidget {
 class _AddClientState extends State<AddClient> {
   var downURL;
   var file;
-  var _selectedBranch;
   var _selectedType;
-  var _finalCash;
   Widget _subForm = Container();
 
   final TextEditingController name = TextEditingController();
@@ -146,8 +144,7 @@ class _AddClientState extends State<AddClient> {
     uploadImage() async {
       if (file != null) {
         int random = Random().nextInt(1000000000000);
-        StorageReference ref =
-            FirebaseStorage.instance.ref().child("image_$random.jpg");
+        StorageReference ref = FirebaseStorage.instance.ref().child("image_$random.jpg");
         StorageUploadTask uploadTask = ref.putFile(file);
         downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
         print(downURL.toString());
@@ -159,12 +156,11 @@ class _AddClientState extends State<AddClient> {
     Widget addPhoto() {
       return GestureDetector(
           onTap: () => getImage(""),
-          child: file == null
-              ? logo(Image.asset("assets/images/add.jpg"))
-              : logo(Image.file(file)));
+          child:
+              file == null ? logo(Image.asset("assets/images/add.jpg")) : logo(Image.file(file)));
     }
 
-    return BaseView<ClientModel>(
+    return BaseView<EmployeeClientModel>(
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("إضافة عميل"),
@@ -181,14 +177,17 @@ class _AddClientState extends State<AddClient> {
                         context: context,
                         onTab: () {
                           print("dataaaaa2aaaaaah");
+                          print("location is ${widget.branchName}");
                           print("{name is: ${name.text} }");
-                          print("{branch is: "
-                              "${cashCalculations(selectedType: _selectedType, cash: cash)} }");
+                          print('selected type is: $_selectedType');
+                          print('selected cash is: ${cash.text}');
+
                           model.addClient(
                               client: Client(
                                 name: name.text,
                                 cash: cashCalculations(
-                                    selectedType: _selectedType, cash: cash),
+                                    selectedType: _selectedType,
+                                    cash: cash.text.isNotEmpty ? cash.text : "0"),
                                 branch: widget.branchName,
                                 type: _selectedType,
                                 category: number.text,

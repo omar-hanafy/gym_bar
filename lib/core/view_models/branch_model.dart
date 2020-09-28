@@ -19,8 +19,8 @@ class BranchModel extends BaseModel {
   Future fetchBranches() async {
     setState(ViewState.Busy);
     var result = await _api.getDataCollection("branches");
-    branches = result.documents
-        .map((doc) => Branch.fromMap(doc.data, doc.documentID))
+    branches = result.docs
+        .map((doc) => Branch.fromMap(doc.data(), doc.id))
         .toList();
     setState(ViewState.Idle);
   }

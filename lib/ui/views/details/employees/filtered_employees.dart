@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/employee.dart';
-import 'package:gym_bar/core/view_models/employee_model.dart';
+import 'package:gym_bar/core/view_models/employee_client_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
@@ -118,7 +118,7 @@ class _FilteredEmployeesState extends State<FilteredEmployees> {
           return Column(
             children: <Widget>[
               Container(
-                color: int.parse(employees[index].cash) > 0
+                color: double.parse(employees[index].cash) > 0
                     ? Colors.white
                     : Colors.red,
                 height: 50,
@@ -157,7 +157,7 @@ class _FilteredEmployeesState extends State<FilteredEmployees> {
   @override
   Widget build(BuildContext context) {
     print("dept employee brannnnnnnsh ${widget.args[1]}");
-    return BaseView<EmployeeModel>(
+    return BaseView<EmployeeClientModel>(
       onModelReady: (model) => model.fetchFilteredEmployees(
           branchName: widget.args[0],
           field: widget.args[1],

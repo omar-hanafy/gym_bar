@@ -2,23 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gym_bar/core/models/user.dart';
 
 class Api {
-  final Firestore _db = Firestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   var ref;
 
-  Future<User> getUserProfile(userId) async {
-    User user;
+  Future<UserProfile> getUserProfile(userId) async {
+    UserProfile user;
     if (userId != null) {
-      user = await Firestore.instance
+      user = await _db
           .collection('users')
-          .document(userId)
+          .doc(userId)
           .get()
-          .then((documentSnapshot) => User.fromDocument(documentSnapshot));
+          .then((documentSnapshot) => UserProfile.fromDocument(documentSnapshot));
     }
     return user;
   }
 
   Future<QuerySnapshot> getDataCollection(String path) {
-    ref = _db.collection(path).getDocuments();
+    ref = _db.collection(path).get();
     return ref;
   }
 
@@ -44,7 +44,8 @@ class Api {
           .where(field, isEqualTo: equalTo)
           .where(field2, isEqualTo: equalTo2)
           .where(field3, isEqualTo: equalTo3)
-          .where(field4, isEqualTo: equalTo4);
+          .where(field4, isEqualTo: equalTo4)
+          .get();
     } else if (field2 != null &&
         equalTo2 != null &&
         field3 != null &&
@@ -55,7 +56,8 @@ class Api {
           .collection(path)
           .where(field, isEqualTo: equalTo)
           .where(field2, isEqualTo: equalTo2)
-          .where(field3, isEqualTo: equalTo3);
+          .where(field3, isEqualTo: equalTo3)
+          .get();
     } else if (field2 != null &&
         equalTo2 != null &&
         field3 == null &&
@@ -65,16 +67,17 @@ class Api {
       ref = _db
           .collection(path)
           .where(field, isEqualTo: equalTo)
-          .where(field2, isEqualTo: equalTo2);
+          .where(field2, isEqualTo: equalTo2)
+          .get();
     } else if (field2 == null &&
         equalTo2 == null &&
         field3 == null &&
         equalTo3 == null &&
         field4 == null &&
         equalTo4 == null) {
-      ref = _db.collection(path).where(field, isEqualTo: equalTo);
+      ref = _db.collection(path).where(field, isEqualTo: equalTo).get();
     }
-    return ref.getDocuments();
+    return ref;
   }
 
   Stream<QuerySnapshot> streamDataCollection(String path) {
@@ -83,7 +86,7 @@ class Api {
   }
 
   Future<DocumentSnapshot> getDocumentById(String path, String id) {
-    ref = _db.collection(path).document(id).get();
+    ref = _db.collection(path).doc(id).get();
     return ref;
   }
 
@@ -114,7 +117,7 @@ class Api {
   static Future<bool> checkDocExist(path, String userId) async {
     bool exists = false;
     try {
-      await Firestore.instance.document("$path/$userId").get().then((doc) {
+      await FirebaseFirestore.instance.doc("$path/$userId").get().then((doc) {
         if (doc.exists)
           exists = true;
         else

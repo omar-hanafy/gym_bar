@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/client.dart';
+import 'package:gym_bar/core/view_models/employee_client_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
@@ -71,6 +71,7 @@ class _FilteredClientsState extends State<FilteredClients> {
       cashAscending = !cashAscending;
     });
   }
+
   tableHead(clients) {
     return Container(
       height: 50,
@@ -85,13 +86,13 @@ class _FilteredClientsState extends State<FilteredClients> {
               },
               child: Center(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Name", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortNameIcon)
-                    ],
-                  ))),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Name", style: tableTitleStyle),
+                  SizedBox(width: 10),
+                  Icon(sortNameIcon)
+                ],
+              ))),
           GestureDetector(
               onTap: () {
                 changeCashAscendingState();
@@ -99,13 +100,13 @@ class _FilteredClientsState extends State<FilteredClients> {
               },
               child: Center(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Cash", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortCashIcon)
-                    ],
-                  ))),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Cash", style: tableTitleStyle),
+                  SizedBox(width: 10),
+                  Icon(sortCashIcon)
+                ],
+              ))),
         ],
       ),
     );
@@ -118,13 +119,11 @@ class _FilteredClientsState extends State<FilteredClients> {
           return Column(
             children: <Widget>[
               Container(
-                color: int.parse(clients[index].cash) > 0
-                    ? Colors.white
-                    : Colors.red,
+                color: double.parse(clients[index].cash) > 0 ? Colors.white : Colors.red,
                 height: 50,
                 child: GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, "/client_profile",
-                      arguments: clients[index]),
+                  onTap: () =>
+                      Navigator.pushNamed(context, "/client_profile", arguments: clients[index]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -158,18 +157,14 @@ class _FilteredClientsState extends State<FilteredClients> {
   Widget build(BuildContext context) {
     print("dept client brannnnnnnsh ${widget.args[1]}");
 
-    return BaseView<ClientModel>(
+    return BaseView<EmployeeClientModel>(
       onModelReady: (model) => model.fetchFilteredClients(
-          branchName: widget.args[0],
-          field: widget.args[1],
-          equalTo: widget.args[2]),
+          branchName: widget.args[0], field: widget.args[1], equalTo: widget.args[2]),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("${widget.args[2]}"),
           actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.file_download),
-                onPressed: () => getCsv(model.client))
+            IconButton(icon: Icon(Icons.file_download), onPressed: () => getCsv(model.clients))
           ],
         ),
         body: GestureDetector(
@@ -183,10 +178,10 @@ class _FilteredClientsState extends State<FilteredClients> {
                     UIHelper.verticalSpaceLarge(),
                     Container(
                       width: 200,
-                      child: Center(child: clientSearch(model.client, context)),
+                      child: Center(child: clientSearch(model.clients, context)),
                     ),
                     UIHelper.verticalSpaceMedium(),
-                    Expanded(child: table(model.client)),
+                    Expanded(child: table(model.clients)),
                   ],
                 ),
         ),
@@ -230,8 +225,7 @@ clientSearch(List<Client> client, context) {
     listContainerHeight: MediaQuery.of(context).size.height / 4,
     queryBuilder: (String query, List<Client> client) {
       return client
-          .where((Client client) =>
-              client.name.toLowerCase().contains(query.toLowerCase()))
+          .where((Client client) => client.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
     },
     popupListItemBuilder: (Client client) {
@@ -242,8 +236,7 @@ clientSearch(List<Client> client, context) {
             style: const TextStyle(fontSize: 16),
           ));
     },
-    selectedItemBuilder:
-        (Client selectedItem, VoidCallback deleteSelectedItem) {
+    selectedItemBuilder: (Client selectedItem, VoidCallback deleteSelectedItem) {
       //TODO: navigate here to user profile
       return null;
     },

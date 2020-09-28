@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/models/category.dart';
-import 'package:gym_bar/core/view_models/category_model.dart';
+import 'package:gym_bar/core/view_models/product_category_model.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
 import 'package:gym_bar/ui/widgets/form_widgets.dart';
@@ -76,7 +76,7 @@ class _AddCategoryState extends State<AddCategory> {
               : logo(Image.file(file)));
     }
 
-    return BaseView<CategoryModel>(
+    return BaseView<ProductCategoryModel>(
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("إضافة نوع المنتج"),

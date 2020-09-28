@@ -12,7 +12,7 @@ class TotalModel extends BaseModel {
   Future fetchTotal({docId}) async {
     setState(ViewState.Busy);
     var doc = await _api.getDocumentById('total', docId);
-    oneTotal = Total.fromMap(doc.data, doc.documentID);
+    oneTotal = Total.fromMap(doc.data(), doc.id);
     setState(ViewState.Idle);
     return total;
   }

@@ -23,9 +23,13 @@ String convertToEnglishDigits(String value) {
   return newValue;
 }
 
-cashCalculations({cash, selectedType}) {
-  String filterCash = convertToEnglishDigits(cash.text);
+cashCalculations({String cash, selectedType}) {
+  print('caaaaaashhhhh');
+  print(cash);
+  String filterCash = convertToEnglishDigits(cash);
+  print(filterCash);
   String _finalCash; // ignore: unused_local_variable
+  print('filterrrd caaaaaashhhhh');
   print(filterCash);
   int cashInt = int.parse(filterCash);
   if (selectedType == "دائن") {
@@ -37,4 +41,8 @@ cashCalculations({cash, selectedType}) {
   if (selectedType == "مدين") {
     return _finalCash = filterCash;
   }
+}
+
+calculateTheTotalBill({totalNo, wholesaleUnit}){
+
 }

@@ -12,9 +12,12 @@ class Product {
       unit,
       wholesaleQuantity,
       wholesaleUnit,
+      theAmountOfSalesPerProduct,
       supplierName,
       netTotalQuantity,
       photo;
+  int selectionNo = 0;
+  int theTotalBillPerProduct = 0;
 
   Product({
     this.id,
@@ -29,14 +32,19 @@ class Product {
     this.unit,
     this.wholesaleQuantity,
     this.wholesaleUnit,
+    this.theAmountOfSalesPerProduct,
     this.supplierName,
     this.netTotalQuantity,
     this.quantityLimit,
     this.photo,
+    this.selectionNo = 0,
+    this.theTotalBillPerProduct = 0,
   });
+
   Product.initial()
       : id = '0',
         name = '';
+
   Product.fromMap(Map snapshot, String id)
       : id = id ?? "",
         name = snapshot['name'] ?? '',
@@ -52,6 +60,7 @@ class Product {
         wholesaleQuantity = snapshot['wholesaleQuantity'],
         wholesaleUnit = snapshot['wholesaleUnit'],
         unit = snapshot['unit'] ?? '',
+        theAmountOfSalesPerProduct = snapshot['theAmountOfSalesPerProduct'],
         supplierName = snapshot['supplierName'] ?? '',
         photo = snapshot['photo'] ?? '';
 
@@ -70,6 +79,7 @@ class Product {
       "wholesaleQuantity": wholesaleQuantity,
       "wholesaleUnit": wholesaleUnit,
       "unit": unit,
+      "theAmountOfSalesPerProduct": theAmountOfSalesPerProduct,
       "supplierName": supplierName,
       "photo": photo,
     };

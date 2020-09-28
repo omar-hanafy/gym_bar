@@ -3,8 +3,8 @@ import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gym_bar/core/models/client.dart';
-import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/core/enums.dart';
+import 'package:gym_bar/core/view_models/employee_client_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
@@ -118,13 +118,11 @@ class _AllClientsState extends State<AllClients> {
           return Column(
             children: <Widget>[
               Container(
-                color: int.parse(clients[index].cash) > 0
-                    ? Colors.white
-                    : Colors.red,
+                color: double.parse(clients[index].cash) > 0 ? Colors.white : Colors.red,
                 height: 50,
                 child: GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, "/client_profile",
-                      arguments: clients[index]),
+                  onTap: () =>
+                      Navigator.pushNamed(context, "/client_profile", arguments: clients[index]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -156,15 +154,13 @@ class _AllClientsState extends State<AllClients> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<ClientModel>(
+    return BaseView<EmployeeClientModel>(
       onModelReady: (model) => model.fetchClients(widget.branchName),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("كل العملاء"),
           actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.file_download),
-                onPressed: () => getCsv(model.client))
+            IconButton(icon: Icon(Icons.file_download), onPressed: () => getCsv(model.clients))
           ],
         ),
         body: GestureDetector(
@@ -178,10 +174,10 @@ class _AllClientsState extends State<AllClients> {
                     UIHelper.verticalSpaceLarge(),
                     Container(
                       width: 200,
-                      child: Center(child: clientSearch(model.client, context)),
+                      child: Center(child: clientSearch(model.clients, context)),
                     ),
                     UIHelper.verticalSpaceMedium(),
-                    Expanded(child: table(model.client)),
+                    Expanded(child: table(model.clients)),
                   ],
                 ),
         ),

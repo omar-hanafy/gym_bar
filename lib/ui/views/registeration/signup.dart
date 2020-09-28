@@ -32,18 +32,18 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     signUp(email, password, name) async {
       await AuthenticationService().signUp(email, password).then((uID) {
-        AuthenticationService.addUserDB(
-            User(email: email, name: name, id: uID));
-        print("created");
-//      flushBar("Done :)", "User added");
+        if (uID != null) {
+          AuthenticationService.addUserDB(UserProfile(email: email, name: name, id: uID));
+          print("created");
+        } else
+          print('check the error message');
       });
     }
 
     uploadImage() async {
       if (image != null && profilePic == null) {
         int random = Random().nextInt(100000000);
-        StorageReference ref =
-            FirebaseStorage.instance.ref().child("image_$random.jpg");
+        StorageReference ref = FirebaseStorage.instance.ref().child("image_$random.jpg");
         StorageUploadTask uploadTask = ref.putFile(image);
         downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
         print(downURL.toString());
@@ -62,23 +62,19 @@ class _SignupState extends State<Signup> {
             UIHelper.verticalSpaceMedium(),
             formTextFieldTemplate(controller: emailController, hint: "Email"),
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(
-                controller: passwordController, hint: "Password"),
+            formTextFieldTemplate(controller: passwordController, hint: "Password"),
             UIHelper.verticalSpaceMedium(),
             formButtonTemplate(
               context: context,
               text: "Create Account",
               onTab: () {
-                signUp(emailController.text, passwordController.text,
-                    nameController.text);
+                signUp(emailController.text, passwordController.text, nameController.text);
                 uploadImage();
               },
             ),
             Row(
               children: <Widget>[
-                Container(
-                    margin: EdgeInsets.only(
-                        top: 10, bottom: 5, left: 100, right: 2)),
+                Container(margin: EdgeInsets.only(top: 10, bottom: 5, left: 100, right: 2)),
                 Text("Already a user?", style: signLogHintStyle),
                 Text("LogIn", style: signLogHintButtonStyle),
               ],
@@ -104,9 +100,8 @@ class _SignupState extends State<Signup> {
     Widget addPhoto() {
       return GestureDetector(
           onTap: () => getImage(""),
-          child: image == null
-              ? logo(AssetImage("assets/images/add.jpg"))
-              : logo(FileImage(image)));
+          child:
+              image == null ? logo(AssetImage("assets/images/add.jpg")) : logo(FileImage(image)));
     }
 
     return Scaffold(

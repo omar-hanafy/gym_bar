@@ -5,6 +5,7 @@ import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/services/authentication_service.dart';
+import 'package:gym_bar/core/services/other_services.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
@@ -157,20 +158,23 @@ class _AddEmployeeState extends State<AddEmployee> {
 
     signUp({email, password, name, cash, type, number, branch, photo}) async {
       await AuthenticationService().signUp(email, password).then((uID) {
-        AuthenticationService.addEmployeeDB(
-            Employee(
-              id: uID,
-              name: name,
-              cash: cash,
-              branch: branch,
-              type: type,
-              email: email,
-              number: number,
-              photo: photo,
-            ),
-            branchName);
-        print("created");
+        if (uID != null) {
+          AuthenticationService.addEmployeeDB(
+              Employee(
+                id: uID,
+                name: name,
+                cash: cash,
+                branch: branch,
+                type: type,
+                email: email,
+                number: number,
+                photo: photo,
+              ),
+              branchName);
+          print("created");
 //      flushBar("Done :)", "User added");
+        } else
+          print('please see the log error');
       });
     }
 
@@ -219,8 +223,7 @@ class _AddEmployeeState extends State<AddEmployee> {
     uploadImage() async {
       if (file != null) {
         int random = Random().nextInt(1000000000000);
-        StorageReference ref =
-            FirebaseStorage.instance.ref().child("image_$random.jpg");
+        StorageReference ref = FirebaseStorage.instance.ref().child("image_$random.jpg");
         StorageUploadTask uploadTask = ref.putFile(file);
         downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
         print(downURL.toString());
@@ -232,9 +235,8 @@ class _AddEmployeeState extends State<AddEmployee> {
     Widget addPhoto() {
       return GestureDetector(
           onTap: () => getImage(""),
-          child: file == null
-              ? logo(Image.asset("assets/images/add.jpg"))
-              : logo(Image.file(file)));
+          child:
+              file == null ? logo(Image.asset("assets/images/add.jpg")) : logo(Image.file(file)));
     }
 
     return BaseView<BranchModel>(
@@ -261,13 +263,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   email: email.text,
                                   password: password.text,
                                   name: name.text,
-                                  cash: cash.text == null ? "0" : cash.text,
+                                  cash: cashCalculations(
+                                      selectedType: _selectedType,
+                                      cash: cash.text.isNotEmpty ? cash.text : "0"),
                                   branch: _selectedBranch,
                                   type: _selectedType,
                                   number: number.text,
                                   photo: "photo",
                                 );
-                                clean();
+//                                clean();
                               },
                               text: "إضافة موظف"),
                         ),
@@ -277,3 +281,4 @@ class _AddEmployeeState extends State<AddEmployee> {
             ));
   }
 }
+//add cash calculations here
