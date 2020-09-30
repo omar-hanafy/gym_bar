@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/models/category.dart';
@@ -35,7 +36,8 @@ class _AddCategoryState extends State<AddCategory> {
         child: Column(
           children: <Widget>[
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(hint: "اسم نوع المنتج", controller: name),
+            formTextFieldTemplate(
+                hint: "اسم نوع المنتج", controller: name),
             UIHelper.verticalSpaceMedium(),
           ],
         ),
@@ -60,7 +62,8 @@ class _AddCategoryState extends State<AddCategory> {
           StorageReference ref =
               FirebaseStorage.instance.ref().child("image_$random.jpg");
           StorageUploadTask uploadTask = ref.putFile(file);
-          downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
+          downURL =
+              await (await uploadTask.onComplete).ref.getDownloadURL();
           print(downURL.toString());
           return downURL;
         } catch (e) {

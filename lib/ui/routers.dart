@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/models/employee.dart';
@@ -10,19 +9,22 @@ import 'package:gym_bar/ui/views/add/add_client.dart';
 import 'package:gym_bar/ui/views/add/add_employee.dart';
 import 'package:gym_bar/ui/views/add/add_product.dart';
 import 'package:gym_bar/ui/views/add/add_purchase.dart';
+import 'package:gym_bar/ui/views/details/Purchases_and_sales/choose_date.dart';
+import 'package:gym_bar/ui/views/details/Purchases_and_sales/purchases.dart';
+import 'package:gym_bar/ui/views/details/Purchases_and_sales/sells.dart';
 import 'package:gym_bar/ui/views/details/clients/all_clients.dart';
 import 'package:gym_bar/ui/views/details/clients/client_profile.dart';
+import 'package:gym_bar/ui/views/details/clients/clients.dart';
 import 'package:gym_bar/ui/views/details/clients/filtered_clients.dart';
 import 'package:gym_bar/ui/views/details/details.dart';
 import 'package:gym_bar/ui/views/details/employees/all_employees.dart';
 import 'package:gym_bar/ui/views/details/employees/employee_profile.dart';
+import 'package:gym_bar/ui/views/details/employees/emplyees.dart';
 import 'package:gym_bar/ui/views/details/employees/filtered_employees.dart';
+import 'package:gym_bar/ui/views/details/products/categories.dart';
 import 'package:gym_bar/ui/views/details/products/product_profile.dart';
 import 'package:gym_bar/ui/views/details/products/products.dart';
-import 'package:gym_bar/ui/views/details/clients/clients.dart';
-import 'package:gym_bar/ui/views/details/employees/emplyees.dart';
 import 'package:gym_bar/ui/views/home.dart';
-import 'package:gym_bar/ui/views/details/products/categories.dart';
 
 class Routers {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -37,11 +39,31 @@ class Routers {
       // DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS
       case '/details':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => Details(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => Details(branchName: branch));
 
       case '/categories':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => Categories(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => Categories(branchName: branch));
+
+      case '/choose_date':
+        Map<String, dynamic> args = settings.arguments;
+        return MaterialPageRoute(
+            builder: (_) => ChooseDate(
+                  args: args,
+                ));
+      case '/purchases':
+        Map<String, dynamic> args = settings.arguments;
+
+        return MaterialPageRoute(builder: (_) => Purchases(args: args));
+      case '/sells':
+        Map<String, dynamic> args = settings.arguments;
+
+        return MaterialPageRoute(
+            builder: (_) => Sells(
+                  args: args,
+                ));
 
       case '/products':
         Map<String, dynamic> args = settings.arguments;
@@ -49,38 +71,47 @@ class Routers {
 
       case '/product_profile':
         Product product = settings.arguments;
-        return MaterialPageRoute(builder: (_) => ProductProfile(product: product));
+        return MaterialPageRoute(
+            builder: (_) => ProductProfile(product: product));
 
       case '/clients':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => Clients(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => Clients(branchName: branch));
 
       case '/all_clients':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => AllClients(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => AllClients(branchName: branch));
 
       case '/filtered_clients':
         List<String> args = settings.arguments;
-        return MaterialPageRoute(builder: (_) => FilteredClients(args: args));
+        return MaterialPageRoute(
+            builder: (_) => FilteredClients(args: args));
 
       case '/client_profile':
         Client clients = settings.arguments;
-        return MaterialPageRoute(builder: (_) => ClientProfile(client: clients));
+        return MaterialPageRoute(
+            builder: (_) => ClientProfile(client: clients));
 
       case '/employees':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => Employees(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => Employees(branchName: branch));
 
       case '/all_employees':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => AllEmployees(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => AllEmployees(branchName: branch));
 
       case '/filtered_employees':
         List<String> args = settings.arguments;
-        return MaterialPageRoute(builder: (_) => FilteredEmployees(args: args));
+        return MaterialPageRoute(
+            builder: (_) => FilteredEmployees(args: args));
       case '/employee_profile':
         Employee employees = settings.arguments;
-        return MaterialPageRoute(builder: (_) => EmployeeProfile(employees: employees));
+        return MaterialPageRoute(
+            builder: (_) => EmployeeProfile(employees: employees));
 
 //      case '/dept_employees':s
 //        var branch = settings.arguments;
@@ -101,33 +132,41 @@ class Routers {
 
       case '/add_product':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => AddProduct(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => AddProduct(branchName: branch));
 
       case '/add_client':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => AddClient(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => AddClient(branchName: branch));
 
       case '/add_purchase':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => AddPurchase(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => AddPurchase(branchName: branch));
 
       case '/add_employee':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => AddEmployee(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => AddEmployee(branchName: branch));
 
       case '/add_branch':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => AddBranch(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => AddBranch(branchName: branch));
 
       case '/add_category':
         var branch = settings.arguments;
-        return MaterialPageRoute(builder: (_) => AddCategory(branchName: branch));
+        return MaterialPageRoute(
+            builder: (_) => AddCategory(branchName: branch));
       //ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD
 
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
-                  body: Center(child: Text('No route defined for ${settings.name}')),
+                  body: Center(
+                      child:
+                          Text('No route defined for ${settings.name}')),
                 ));
     }
   }

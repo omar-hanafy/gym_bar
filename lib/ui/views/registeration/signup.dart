@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/models/user.dart';
@@ -33,7 +34,8 @@ class _SignupState extends State<Signup> {
     signUp(email, password, name) async {
       await AuthenticationService().signUp(email, password).then((uID) {
         if (uID != null) {
-          AuthenticationService.addUserDB(UserProfile(email: email, name: name, id: uID));
+          AuthenticationService.addUserDB(
+              UserProfile(email: email, name: name, id: uID));
           print("created");
         } else
           print('check the error message');
@@ -43,7 +45,8 @@ class _SignupState extends State<Signup> {
     uploadImage() async {
       if (image != null && profilePic == null) {
         int random = Random().nextInt(100000000);
-        StorageReference ref = FirebaseStorage.instance.ref().child("image_$random.jpg");
+        StorageReference ref =
+            FirebaseStorage.instance.ref().child("image_$random.jpg");
         StorageUploadTask uploadTask = ref.putFile(image);
         downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
         print(downURL.toString());
@@ -58,23 +61,29 @@ class _SignupState extends State<Signup> {
         child: Column(
           children: <Widget>[
             Text("Sign up", style: formTitleStyle),
-            formTextFieldTemplate(controller: nameController, hint: "Name"),
+            formTextFieldTemplate(
+                controller: nameController, hint: "Name"),
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(controller: emailController, hint: "Email"),
+            formTextFieldTemplate(
+                controller: emailController, hint: "Email"),
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(controller: passwordController, hint: "Password"),
+            formTextFieldTemplate(
+                controller: passwordController, hint: "Password"),
             UIHelper.verticalSpaceMedium(),
             formButtonTemplate(
               context: context,
               text: "Create Account",
               onTab: () {
-                signUp(emailController.text, passwordController.text, nameController.text);
+                signUp(emailController.text, passwordController.text,
+                    nameController.text);
                 uploadImage();
               },
             ),
             Row(
               children: <Widget>[
-                Container(margin: EdgeInsets.only(top: 10, bottom: 5, left: 100, right: 2)),
+                Container(
+                    margin: EdgeInsets.only(
+                        top: 10, bottom: 5, left: 100, right: 2)),
                 Text("Already a user?", style: signLogHintStyle),
                 Text("LogIn", style: signLogHintButtonStyle),
               ],
@@ -100,8 +109,9 @@ class _SignupState extends State<Signup> {
     Widget addPhoto() {
       return GestureDetector(
           onTap: () => getImage(""),
-          child:
-              image == null ? logo(AssetImage("assets/images/add.jpg")) : logo(FileImage(image)));
+          child: image == null
+              ? logo(AssetImage("assets/images/add.jpg"))
+              : logo(FileImage(image)));
     }
 
     return Scaffold(

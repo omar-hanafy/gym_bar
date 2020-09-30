@@ -34,7 +34,8 @@ class ProductProfile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(value == null ? handleNull : value, style: formTitleStyleLight),
+          Text(value == null ? handleNull : value,
+              style: formTitleStyleLight),
           Text(title, style: formTitleStyleLight),
         ],
       ),
@@ -43,52 +44,53 @@ class ProductProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: Center(
-        child: ListView(
-          children: <Widget>[
-            UIHelper.verticalSpaceMedium(),
-            logo(
-              Image.asset(
-                "assets/images/banana.jpg",
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.contain,
+    return Scaffold(
+        body: Center(
+      child: ListView(
+        children: <Widget>[
+          UIHelper.verticalSpaceMedium(),
+          logo(
+            Image.asset(
+              "assets/images/banana.jpg",
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.contain,
+            ),
+          ),
+          UIHelper.verticalSpaceMedium(),
+          Center(
+              child: Text(
+            product.name,
+            style: headerStyle,
+          )),
+          UIHelper.verticalSpaceMedium(),
+          header("الوصف"),
+          Container(
+            height: 50,
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 15, horizontal: 8),
+              child: Text(
+                product.description == null
+                    ? handleNull
+                    : product.description,
+                style: formTitleStyleLight,
               ),
             ),
-            UIHelper.verticalSpaceMedium(),
-            Center(
-                child: Text(
-              product.name,
-              style: headerStyle,
-            )),
-            UIHelper.verticalSpaceMedium(),
-            header("الوصف"),
-            Container(
-              height: 50,
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
-                child: Text(
-                  product.description == null ? handleNull : product.description,
-                  style: formTitleStyleLight,
-                ),
-              ),
-            ),
-            header("السعر"),
-            data(title: "للعميل", value: product.customerPrice),
-            Divider(),
-            data(title: "للموظف", value: product.employeePrice),
-            Divider(),
-            data(title: "للعامل", value: product.housePrice),
-            header("الكمية"),
-            data(title: "الكمية", value: product.netTotalQuantity),
-            Divider(),
-            data(title: "الحد الادنى", value: product.quantityLimit),
-          ],
-        ),
-      )),
-    );
+          ),
+          header("السعر"),
+          data(title: "للعميل", value: product.customerPrice),
+          Divider(),
+          data(title: "للموظف", value: product.employeePrice),
+          Divider(),
+          data(title: "للعامل", value: product.housePrice),
+          header("الكمية"),
+          data(title: "الكمية", value: product.netTotalQuantity),
+          Divider(),
+          data(title: "الحد الادنى", value: product.quantityLimit),
+        ],
+      ),
+    ));
   }
 }

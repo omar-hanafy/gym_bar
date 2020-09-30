@@ -30,10 +30,12 @@ employeeSearch(List<Employee> employee, context) {
         // ignore: missing_return
         (Employee selectedItem, VoidCallback deleteSelectedItem) {},
     onItemSelected: (Employee employee) {
-      Navigator.pushNamed(context, "/employee_profile", arguments: employee);
+      Navigator.pushNamed(context, "/employee_profile",
+          arguments: employee);
     },
-    noItemsFoundWidget: Center(child   : Text("No item Found")),
-    textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+    noItemsFoundWidget: Center(child: Text("No item Found")),
+    textFieldBuilder:
+        (TextEditingController controller, FocusNode focusNode) {
       return searchTextField(controller, focusNode, context);
     },
   );
@@ -69,7 +71,8 @@ clientSearch(List<Client> client, context) {
       Navigator.pushNamed(context, "/client_profile", arguments: client);
     },
     noItemsFoundWidget: Center(child: Text("No item Found")),
-    textFieldBuilder: (TextEditingController controller, FocusNode focusNode) {
+    textFieldBuilder:
+        (TextEditingController controller, FocusNode focusNode) {
       return searchTextField(controller, focusNode, context);
     },
   );
@@ -89,7 +92,8 @@ searchTextField(controller, focusNode, context) {
             ),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+                borderSide:
+                    BorderSide(color: Theme.of(context).primaryColor)),
             suffixIcon: Icon(Icons.search),
             border: InputBorder.none,
             hintText: "Search here...",

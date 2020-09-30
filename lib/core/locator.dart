@@ -1,10 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:gym_bar/core/view_models/attendance_model.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
-import 'package:gym_bar/core/view_models/product_category_model.dart';
 import 'package:gym_bar/core/view_models/employee_client_model.dart';
+import 'package:gym_bar/core/view_models/product_category_model.dart';
 import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/core/view_models/user_model.dart';
+
 import 'services/api.dart';
 import 'services/authentication_service.dart';
 

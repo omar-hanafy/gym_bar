@@ -8,11 +8,9 @@ class Api {
   Future<UserProfile> getUserProfile(userId) async {
     UserProfile user;
     if (userId != null) {
-      user = await _db
-          .collection('users')
-          .doc(userId)
-          .get()
-          .then((documentSnapshot) => UserProfile.fromDocument(documentSnapshot));
+      user = await _db.collection('users').doc(userId).get().then(
+          (documentSnapshot) =>
+              UserProfile.fromDocument(documentSnapshot));
     }
     return user;
   }
@@ -100,7 +98,8 @@ class Api {
     return ref.add(data);
   }
 
-  Future<DocumentReference> addDocumentCustomId(docID, Map data, String path) {
+  Future<DocumentReference> addDocumentCustomId(
+      docID, Map data, String path) {
     ref = _db.collection(path);
     return ref.document(docID).setData(data);
   }
@@ -117,7 +116,10 @@ class Api {
   static Future<bool> checkDocExist(path, String userId) async {
     bool exists = false;
     try {
-      await FirebaseFirestore.instance.doc("$path/$userId").get().then((doc) {
+      await FirebaseFirestore.instance
+          .doc("$path/$userId")
+          .get()
+          .then((doc) {
         if (doc.exists)
           exists = true;
         else

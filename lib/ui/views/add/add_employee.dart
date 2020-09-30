@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/enums.dart';
@@ -95,7 +96,9 @@ class _AddEmployeeState extends State<AddEmployee> {
               } else if (value == "خالص") {
                 setState(() {
                   _subForm = Column(
-                    children: <Widget>[Text("رصيد العميل خالص (يساوي صفر)")],
+                    children: <Widget>[
+                      Text("رصيد العميل خالص (يساوي صفر)")
+                    ],
                   );
                 });
               }
@@ -156,7 +159,8 @@ class _AddEmployeeState extends State<AddEmployee> {
       );
     }
 
-    signUp({email, password, name, cash, type, number, branch, photo}) async {
+    signUp(
+        {email, password, name, cash, type, number, branch, photo}) async {
       await AuthenticationService().signUp(email, password).then((uID) {
         if (uID != null) {
           AuthenticationService.addEmployeeDB(
@@ -223,7 +227,8 @@ class _AddEmployeeState extends State<AddEmployee> {
     uploadImage() async {
       if (file != null) {
         int random = Random().nextInt(1000000000000);
-        StorageReference ref = FirebaseStorage.instance.ref().child("image_$random.jpg");
+        StorageReference ref =
+            FirebaseStorage.instance.ref().child("image_$random.jpg");
         StorageUploadTask uploadTask = ref.putFile(file);
         downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
         print(downURL.toString());
@@ -235,8 +240,9 @@ class _AddEmployeeState extends State<AddEmployee> {
     Widget addPhoto() {
       return GestureDetector(
           onTap: () => getImage(""),
-          child:
-              file == null ? logo(Image.asset("assets/images/add.jpg")) : logo(Image.file(file)));
+          child: file == null
+              ? logo(Image.asset("assets/images/add.jpg"))
+              : logo(Image.file(file)));
     }
 
     return BaseView<BranchModel>(
@@ -265,7 +271,9 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   name: name.text,
                                   cash: cashCalculations(
                                       selectedType: _selectedType,
-                                      cash: cash.text.isNotEmpty ? cash.text : "0"),
+                                      cash: cash.text.isNotEmpty
+                                          ? cash.text
+                                          : "0"),
                                   branch: _selectedBranch,
                                   type: _selectedType,
                                   number: number.text,

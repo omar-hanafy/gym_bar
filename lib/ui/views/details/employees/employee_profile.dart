@@ -217,30 +217,29 @@ class _EmployeeProfileState extends State<EmployeeProfile> {
             branchName: "بيفرلي",
             field: "clientName",
             equalTo: widget.employees.name),
-        builder: (context, model, child) => SafeArea(
-              child: Scaffold(
-                  body: GestureDetector(
-                onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-                child: model.state == ViewState.Busy
-                    ? Center(child: CircularProgressIndicator())
-                    : Center(
-                        child: Column(
-                          children: <Widget>[
-                            UIHelper.verticalSpaceMedium(),
-                            head(context),
-                            UIHelper.verticalSpaceMedium(),
-                            Center(
-                                child: Text(widget.employees.name,
-                                    style: headerStyle)),
-                            UIHelper.verticalSpaceMedium(),
-                            details(),
-                            UIHelper.verticalSpaceMedium(),
-                            Expanded(child: table(model.transaction)),
-                          ],
-                        ),
-                      ),
-              )),
-            ));
+        builder: (context, model, child) => Scaffold(
+            body: GestureDetector(
+          onTap: () =>
+              FocusScope.of(context).requestFocus(FocusNode()),
+          child: model.state == ViewState.Busy
+              ? Center(child: CircularProgressIndicator())
+              : Center(
+                  child: Column(
+                    children: <Widget>[
+                      UIHelper.verticalSpaceMedium(),
+                      head(context),
+                      UIHelper.verticalSpaceMedium(),
+                      Center(
+                          child: Text(widget.employees.name,
+                              style: headerStyle)),
+                      UIHelper.verticalSpaceMedium(),
+                      details(),
+                      UIHelper.verticalSpaceMedium(),
+                      Expanded(child: table(model.transaction)),
+                    ],
+                  ),
+                ),
+        )));
   }
 }
 

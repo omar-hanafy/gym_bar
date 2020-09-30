@@ -43,6 +43,4 @@ cashCalculations({String cash, selectedType}) {
   }
 }
 
-calculateTheTotalBill({totalNo, wholesaleUnit}){
-
-}
+calculateTheTotalBill({totalNo, wholesaleUnit}) {}

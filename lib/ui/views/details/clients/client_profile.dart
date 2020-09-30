@@ -12,51 +12,49 @@ class ClientProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-        child: Center(
-          child: ListView(
-            children: <Widget>[
-              UIHelper.verticalSpaceMedium(),
-              logo(
-                Image.asset(
-                  "assets/images/banana.jpg",
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.contain,
-                ),
+    return Scaffold(
+        body: GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      child: Center(
+        child: ListView(
+          children: <Widget>[
+            UIHelper.verticalSpaceMedium(),
+            logo(
+              Image.asset(
+                "assets/images/banana.jpg",
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.contain,
               ),
-              UIHelper.verticalSpaceMedium(),
-              Center(
-                  child: Text(
-                client.name,
-                style: headerStyle,
-              )),
-              UIHelper.verticalSpaceMedium(),
+            ),
+            UIHelper.verticalSpaceMedium(),
+            Center(
+                child: Text(
+              client.name,
+              style: headerStyle,
+            )),
+            UIHelper.verticalSpaceMedium(),
 //                header("الوصف"),
-              RaisedButton(
-                onPressed: () {
-                  dialogue(context, "سحب", () {
-                    print("سحب");
-                  });
-                },
-                child: Text("سحب"),
-              ),
-              RaisedButton(
-                onPressed: () {
-                  dialogue(context, "ايداع", () {
-                    print("ايداع");
-                  });
-                },
-                child: Text("ايداع"),
-              ),
-            ],
-          ),
+            RaisedButton(
+              onPressed: () {
+                dialogue(context, "سحب", () {
+                  print("سحب");
+                });
+              },
+              child: Text("سحب"),
+            ),
+            RaisedButton(
+              onPressed: () {
+                dialogue(context, "ايداع", () {
+                  print("ايداع");
+                });
+              },
+              child: Text("ايداع"),
+            ),
+          ],
         ),
-      )),
-    );
+      ),
+    ));
 //      SafeArea(
 //      child: Scaffold(
 //        appBar: AppBar(

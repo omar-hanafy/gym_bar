@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/models/total.dart';
 import 'package:gym_bar/core/models/transaction.dart';
-import 'package:gym_bar/core/view_models/transaction_model.dart';
-import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/view_models/product_category_model.dart';
+import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/views/base_view.dart';
 import 'package:gym_bar/ui/widgets/form_widgets.dart';
+import 'package:intl/intl.dart';
 
 class AddPurchase extends StatefulWidget {
   final String branchName;
@@ -38,11 +39,14 @@ class _AddPurchaseState extends State<AddPurchase> {
   var value2;
 
   filterProducts(List<Product> products, String categoryName) {
-    _filteredProducts = products.where((product) => product.category == categoryName).toList();
+    _filteredProducts = products
+        .where((product) => product.category == categoryName)
+        .toList();
   }
 
-  updateTreasury(Total total) {
-    int newCash = int.parse(total.cash) - int.parse(price.text);
+  updateTreasury(List<Total> total) {
+    double newCash =
+        double.parse(total[0].cash) - double.parse(price.text);
     return newCash.toString();
   }
 
@@ -51,14 +55,16 @@ class _AddPurchaseState extends State<AddPurchase> {
     // ignore: unused_local_variable
     String newQuantity;
     if (_selectedUnitType == 1 /*unit*/) {
-      int quantityCalc = int.parse(product.netTotalQuantity) + int.parse(quantity.text);
+      double quantityCalc = double.parse(product.netTotalQuantity) +
+          double.parse(quantity.text);
 
       return newQuantity = quantityCalc.toString();
     }
     if (_selectedUnitType == 2 /*wholesaleUnit*/) {
       print(_selectedProduct[4]);
-      int quantityCalc = (int.parse(product.netTotalQuantity)) +
-          (int.parse(_selectedProduct[4]) * int.parse(quantity.text));
+      double quantityCalc = (double.parse(product.netTotalQuantity)) +
+          (double.parse(_selectedProduct[4]) *
+              double.parse(quantity.text));
       return newQuantity = quantityCalc.toString();
     }
   }
@@ -67,7 +73,7 @@ class _AddPurchaseState extends State<AddPurchase> {
   Widget build(BuildContext context) {
     personalWithdrawActions() {
       return BaseView<TransactionModel>(
-          onModelReady: (model) => model.fetchTotal(docId: widget.branchName),
+          onModelReady: (model) => model.fetchTotal(),
           builder: (context, model, child) => Column(children: <Widget>[
                 formButtonTemplate(
                     context: context,
@@ -77,8 +83,11 @@ class _AddPurchaseState extends State<AddPurchase> {
                           branchName: widget.branchName,
                           transaction: Transaction(
                             transactorName: "Ms Amany",
-                            transactionType: "سحب شخصي",
-                            date: DateTime.now().toString(),
+                            transactionType: "personalBuying",
+                            date: DateFormat('yyyy-MM-dd')
+                                .format(DateTime.now()),
+                            hour: DateFormat('h:mm a')
+                                .format(DateTime.now()),
                             branch: widget.branchName,
                             notes: notes.text,
                             withdrawCashAmount: price.text,
@@ -105,7 +114,6 @@ class _AddPurchaseState extends State<AddPurchase> {
     normalBuyActions() {
       return BaseView<TransactionModel>(
           onModelReady: (model) => model.fetchTotalAndProduct(
-              docId: widget.branchName,
               branchName: widget.branchName,
               productId: _selectedProduct[3]),
           builder: (context, model, child) => Column(
@@ -118,12 +126,16 @@ class _AddPurchaseState extends State<AddPurchase> {
                             branchName: widget.branchName,
                             transaction: Transaction(
                               transactorName: "Ms Amany",
-                              transactionType: "شراء عادي",
-                              date: DateTime.now().toString(),
+                              transactionType: "productBuying",
+                              date: DateFormat('yyyy-MM-dd')
+                                  .format(DateTime.now()),
+                              hour: DateFormat('h:mm a')
+                                  .format(DateTime.now()),
                               branch: widget.branchName,
                               notes: notes.text,
                               buyingProduct: _selectedProduct[2],
-                              buyingQuantity: calculateQuantity(model.product),
+                              buyingQuantity:
+                                  calculateQuantity(model.product),
                               buyingProductCategory: _selectedCategory,
                               //todo: get company name here from ProductModel
                               buyingCompanyName: "اسم الشركه",
@@ -137,7 +149,10 @@ class _AddPurchaseState extends State<AddPurchase> {
                         model.updateProducts(
                             branchName: widget.branchName,
                             productId: _selectedProduct[3],
-                            data: {"netTotalQuantity": calculateQuantity(model.product)});
+                            data: {
+                              "netTotalQuantity":
+                                  calculateQuantity(model.product)
+                            });
                       },
                       text: "إتمام العملية"),
                   UIHelper.verticalSpaceMedium(),
@@ -201,14 +216,17 @@ class _AddPurchaseState extends State<AddPurchase> {
           UIHelper.verticalSpaceMedium(),
           formTextFieldTemplate(hint: "ملاحظات", controller: notes),
           SizedBox(height: 300),
-          price.text == null && notes.text == null ? Container() : personalWithdrawActions(),
+          price.text == null && notes.text == null
+              ? Container()
+              : personalWithdrawActions(),
         ],
       );
     }
 
     dropDownCategory() {
       return BaseView<ProductCategoryModel>(
-          onModelReady: (model) => model.fetchCategoriesAndProducts(branchName: widget.branchName),
+          onModelReady: (model) => model.fetchCategoriesAndProducts(
+              branchName: widget.branchName),
           builder: (context, model, child) => model.state == ViewState.Busy
               ? Center(child: CircularProgressIndicator())
               : Padding(
@@ -216,7 +234,8 @@ class _AddPurchaseState extends State<AddPurchase> {
                   child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                           isExpanded: true,
-                          hint: Text("اختر نوع المنتج", style: formLabelsStyle),
+                          hint: Text("اختر نوع المنتج",
+                              style: formLabelsStyle),
                           value: _selectedCategory,
                           isDense: true,
                           onChanged: (value) {
@@ -231,12 +250,14 @@ class _AddPurchaseState extends State<AddPurchase> {
                               ];
                               _selectedUnitType = null;
                               quantity.clear();
-                              filterProducts(model.products, _selectedCategory);
+                              filterProducts(
+                                  model.products, _selectedCategory);
                             });
                           },
                           items: model.categories.map((category) {
                             return DropdownMenuItem<String>(
-                                value: "${category.name}", child: Text("${category.name}"));
+                                value: "${category.name}",
+                                child: Text("${category.name}"));
                           }).toList()))));
     }
 
@@ -246,31 +267,38 @@ class _AddPurchaseState extends State<AddPurchase> {
         return Container();
       } else if (_selectedPurchaseType == "سحب شخصي") {
         return personalWithdrawalForm();
-      } else if (_selectedPurchaseType == "شراء عادي" && _selectedCategory == null) {
-        return Column(children: <Widget>[UIHelper.verticalSpaceMedium(), dropDownCategory()]);
-      } else if (_selectedPurchaseType != null && _selectedCategory != null) {
+      } else if (_selectedPurchaseType == "شراء عادي" &&
+          _selectedCategory == null) {
+        return Column(children: <Widget>[
+          UIHelper.verticalSpaceMedium(),
+          dropDownCategory()
+        ]);
+      } else if (_selectedPurchaseType != null &&
+          _selectedCategory != null) {
         return Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-              Text(_selectedCategory, style: dropDownLabelsStyle),
-              GestureDetector(
-                child: Icon(CupertinoIcons.clear_circled_solid),
-                onTap: () {
-                  setState(() {
-                    _selectedCategory = null;
-                    _selectedProduct = [
-                      "unitNull", //unit
-                      "wholesaleUnitNull", //wholesaleUnit
-                      "nameNull", //name
-                      "idNull", //id
-                      "wholeSaleQuantityNull", //wholeSaleQuantity
-                    ];
-                    _selectedUnitType = null;
-                    quantity.clear();
-                  });
-                },
-              )
-            ]));
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(_selectedCategory, style: dropDownLabelsStyle),
+                  GestureDetector(
+                    child: Icon(CupertinoIcons.clear_circled_solid),
+                    onTap: () {
+                      setState(() {
+                        _selectedCategory = null;
+                        _selectedProduct = [
+                          "unitNull", //unit
+                          "wholesaleUnitNull", //wholesaleUnit
+                          "nameNull", //name
+                          "idNull", //id
+                          "wholeSaleQuantityNull", //wholeSaleQuantity
+                        ];
+                        _selectedUnitType = null;
+                        quantity.clear();
+                      });
+                    },
+                  )
+                ]));
       }
     }
 //    _selectedProduct = [
@@ -323,36 +351,38 @@ class _AddPurchaseState extends State<AddPurchase> {
     }
 
     unitsRadioButtons() {
-      return Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-        Row(children: <Widget>[
-          Expanded(
-              child: Container(
-                  child: Row(children: <Widget>[
-            Radio(
-                value: 1,
-                groupValue: _selectedUnitType,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedUnitType = value;
-                  });
-                }),
-            Text(_selectedProduct[0]),
-          ]))),
-          Expanded(
-              child: Container(
-                  child: Row(children: <Widget>[
-            Radio(
-                value: 2,
-                groupValue: _selectedUnitType,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedUnitType = value;
-                  });
-                }),
-            Text(_selectedProduct[1])
-          ])))
-        ])
-      ]);
+      return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(children: <Widget>[
+              Expanded(
+                  child: Container(
+                      child: Row(children: <Widget>[
+                Radio(
+                    value: 1,
+                    groupValue: _selectedUnitType,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedUnitType = value;
+                      });
+                    }),
+                Text(_selectedProduct[0]),
+              ]))),
+              Expanded(
+                  child: Container(
+                      child: Row(children: <Widget>[
+                Radio(
+                    value: 2,
+                    groupValue: _selectedUnitType,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedUnitType = value;
+                      });
+                    }),
+                Text(_selectedProduct[1])
+              ])))
+            ])
+          ]);
     }
 
     Widget forms() {
@@ -417,7 +447,8 @@ class _AddPurchaseState extends State<AddPurchase> {
     }
 
     return Scaffold(
-        appBar: AppBar(title: Text("اضافة عملية شراء" + " (${widget.branchName})")),
+        appBar: AppBar(
+            title: Text("اضافة عملية شراء" + " (${widget.branchName})")),
         body: ListView(children: <Widget>[forms()]));
   }
 }

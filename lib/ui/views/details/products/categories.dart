@@ -15,14 +15,16 @@ class Categories extends StatelessWidget {
     Map<String, dynamic> args;
 
     filterProducts(List<Product> products, String categoryName) {
-
-      var filterList = products.where((product) => product.category == categoryName).toList();
+      var filterList = products
+          .where((product) => product.category == categoryName)
+          .toList();
 
       return filterList;
     }
 
     return BaseView<ProductCategoryModel>(
-      onModelReady: (model) => model.fetchCategoriesAndProducts(branchName: branchName),
+      onModelReady: (model) =>
+          model.fetchCategoriesAndProducts(branchName: branchName),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text("أختر نوع المنتج"),
@@ -33,8 +35,11 @@ class Categories extends StatelessWidget {
                 padding: const EdgeInsets.all(6),
                 child: GridView.builder(
                   itemCount: model.categories.length,
-                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, mainAxisSpacing: 6, crossAxisSpacing: 6),
+                  gridDelegate:
+                      new SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 6,
+                          crossAxisSpacing: 6),
                   itemBuilder: (BuildContext context, int index) {
                     return item(
                       title: model.categories[index].name,
@@ -43,10 +48,12 @@ class Categories extends StatelessWidget {
                       onPress: () {
                         args = {
                           'branchName': branchName,
-                          'filteredProducts':
-                              filterProducts(model.products, model.categories[index].name),
+                          'filteredProducts': filterProducts(
+                              model.products,
+                              model.categories[index].name),
                         };
-                        Navigator.pushNamed(context, "/products", arguments: args);
+                        Navigator.pushNamed(context, "/products",
+                            arguments: args);
                       },
                     );
                   },

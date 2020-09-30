@@ -25,7 +25,8 @@ class _HomeTabletState extends State<HomeTablet> {
     for (int i = 0; i < widget.branches.length; i++) {
       print(widget.branches[i].name);
       tabChild.add(TabChild(
-          builder: (context) => Details(branchName: widget.branches[i].name),
+          builder: (context) =>
+              Details(branchName: widget.branches[i].name),
           title: widget.branches[i].name,
           icon: Icon(Icons.business)));
       print(tabChild[i].toString());
@@ -36,24 +37,25 @@ class _HomeTabletState extends State<HomeTablet> {
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
-      tablet: SafeArea(
-        child: Scaffold(
-          body: MobileSidebar(
-              currentIndex: index,
-              onTabChanged: (val) {
-                if (mounted)
-                  setState(() {
-                    index = val;
-                    currentBranch = widget.branches[index].name;
-                  });
-              },
-              titleBuilder: (context) {
-                return Row(children: <Widget>[Text("الفروع")]);
-              },
-              tabs: buildTabChild()),
-          floatingActionButton: floating(context,
-              currentBranch == null ? widget.branches[0].name : currentBranch),
-        ),
+      tablet: Scaffold(
+        body: MobileSidebar(
+            currentIndex: index,
+            onTabChanged: (val) {
+              if (mounted)
+                setState(() {
+                  index = val;
+                  currentBranch = widget.branches[index].name;
+                });
+            },
+            titleBuilder: (context) {
+              return Row(children: <Widget>[Text("الفروع")]);
+            },
+            tabs: buildTabChild()),
+        floatingActionButton: floating(
+            context,
+            currentBranch == null
+                ? widget.branches[0].name
+                : currentBranch),
       ),
       mobile: Center(child: Text("NO config for mobile")),
     );

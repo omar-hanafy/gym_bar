@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const headerStyle =
-    TextStyle(fontSize: 35, fontWeight: FontWeight.w900, fontFamily: 'Tajawal');
+const headerStyle = TextStyle(
+    fontSize: 35, fontWeight: FontWeight.w900, fontFamily: 'Tajawal');
 
 const signLogHintButtonStyle = TextStyle(
     fontSize: 15.0,
@@ -15,10 +15,10 @@ const signLogHintStyle = TextStyle(
     color: Colors.grey,
     fontFamily: 'Tajawal');
 
-const formTitleStyle =
-    TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: 'Tajawal');
-const formTitleStyleSmall =
-    TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Tajawal');
+const formTitleStyle = TextStyle(
+    fontWeight: FontWeight.bold, fontSize: 20, fontFamily: 'Tajawal');
+const formTitleStyleSmall = TextStyle(
+    fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Tajawal');
 const formTitleStyleWhite = TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.bold,

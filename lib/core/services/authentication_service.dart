@@ -1,15 +1,18 @@
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/models/user.dart';
+
 import '../locator.dart';
 import 'api.dart';
 
 class AuthenticationService {
   Api _api = locator<Api>();
-  StreamController<UserProfile> userController = StreamController<UserProfile>();
+  StreamController<UserProfile> userController =
+      StreamController<UserProfile>();
 
   Future<bool> login(String email, String password) async {
     final UserCredential userCredential =
@@ -46,7 +49,10 @@ class AuthenticationService {
     Api.checkDocExist("users", user.id).then((value) {
       if (!value) {
         print("user ${user.name} ${user.email} ${user.photo}added");
-        FirebaseFirestore.instance.collection("users").doc(user.id).set(user.toJson());
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(user.id)
+            .set(user.toJson());
       } else {
         print("user ${user.name} ${user.email} exists");
       }
@@ -54,7 +60,8 @@ class AuthenticationService {
   }
 
   static void addEmployeeDB(Employee employee, branchName) async {
-    Api.checkDocExist("employees/branches/$branchName", employee.id).then((value) {
+    Api.checkDocExist("employees/branches/$branchName", employee.id)
+        .then((value) {
       if (!value) {
         FirebaseFirestore.instance
             .collection("employees/branches/$branchName")

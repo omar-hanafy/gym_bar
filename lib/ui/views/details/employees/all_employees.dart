@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -85,13 +86,13 @@ class _AllEmployeesState extends State<AllEmployees> {
               },
               child: Center(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Name", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortNameIcon)
-                    ],
-                  ))),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Name", style: tableTitleStyle),
+                  SizedBox(width: 10),
+                  Icon(sortNameIcon)
+                ],
+              ))),
           GestureDetector(
               onTap: () {
                 changeCashAscendingState();
@@ -99,19 +100,20 @@ class _AllEmployeesState extends State<AllEmployees> {
               },
               child: Center(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Cash", style: tableTitleStyle),
-                      SizedBox(width: 10),
-                      Icon(sortCashIcon)
-                    ],
-                  ))),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Cash", style: tableTitleStyle),
+                  SizedBox(width: 10),
+                  Icon(sortCashIcon)
+                ],
+              ))),
         ],
       ),
     );
   }
 
   tableBuilder(List<Employee> employees) {
+    print(employees[0].name);
     return ListView.builder(
         itemCount: employees.length,
         itemBuilder: (BuildContext context, int index) {
@@ -129,8 +131,10 @@ class _AllEmployeesState extends State<AllEmployees> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Text(employees[index].name, style: formTitleStyleLight),
-                      Text(employees[index].cash, style: formTitleStyleLight),
+                      Text(employees[index].name,
+                          style: formTitleStyleLight),
+                      Text(employees[index].cash,
+                          style: formTitleStyleLight),
                     ],
                   ),
                 ),
@@ -157,6 +161,7 @@ class _AllEmployeesState extends State<AllEmployees> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.branchName);
     return BaseView<EmployeeClientModel>(
       onModelReady: (model) =>
           model.fetchEmployees(branchName: widget.branchName),
@@ -192,6 +197,7 @@ class _AllEmployeesState extends State<AllEmployees> {
     );
   }
 }
+
 //todo: use excel new pack in pub.dev
 getCsv(List<Employee> employees) async {
   List<List<dynamic>> rows = List<List<dynamic>>();
@@ -216,7 +222,8 @@ getCsv(List<Employee> employees) async {
 //  print(appPath);
 
   String appPath = "/storage/emulated/0/GymBar/Downloads";
-  final Directory directory = await Directory(appPath).create(recursive: true);
+  final Directory directory =
+      await Directory(appPath).create(recursive: true);
   print("The directory $directory is created");
   final file = File("$appPath/allEmployees.csv");
   await file.writeAsString(csv); // Page

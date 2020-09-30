@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/enums.dart';
@@ -24,7 +25,8 @@ class _AddProductState extends State<AddProduct> {
   final TextEditingController name = TextEditingController();
   final TextEditingController description = TextEditingController();
   final TextEditingController companyName = TextEditingController();
-  final TextEditingController quantityOfWholesaleUnit = TextEditingController();
+  final TextEditingController quantityOfWholesaleUnit =
+      TextEditingController();
   final TextEditingController quantityLimit = TextEditingController();
   final TextEditingController unit = TextEditingController();
   final TextEditingController wholesaleQuantity = TextEditingController();
@@ -34,7 +36,8 @@ class _AddProductState extends State<AddProduct> {
   final TextEditingController housePrice = TextEditingController();
   final TextEditingController branch = TextEditingController();
   final TextEditingController category = TextEditingController();
-  final TextEditingController theAmountOfSalesPerProduct = TextEditingController();
+  final TextEditingController theAmountOfSalesPerProduct =
+      TextEditingController();
 
   var _selectedCategory;
   var downURL;
@@ -159,7 +162,8 @@ class _AddProductState extends State<AddProduct> {
             UIHelper.verticalSpaceMedium(),
             formTextFieldTemplate(hint: "الوصف", controller: description),
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(hint: "اسم الشركه", controller: companyName),
+            formTextFieldTemplate(
+                hint: "اسم الشركه", controller: companyName),
             UIHelper.verticalSpaceMedium(),
             radioButtons(),
             UIHelper.verticalSpaceMedium(),
@@ -285,11 +289,14 @@ class _AddProductState extends State<AddProduct> {
               ),
             ),
             UIHelper.verticalSpaceSmall(),
-            formTextFieldTemplate(hint: "سعر العميل", controller: customerPrice, left: 80),
+            formTextFieldTemplate(
+                hint: "سعر العميل", controller: customerPrice, left: 80),
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(hint: "سعر الموظف", controller: employeePrice, left: 80),
+            formTextFieldTemplate(
+                hint: "سعر الموظف", controller: employeePrice, left: 80),
             UIHelper.verticalSpaceMedium(),
-            formTextFieldTemplate(hint: "سعر العامل", controller: housePrice, left: 80),
+            formTextFieldTemplate(
+                hint: "سعر العامل", controller: housePrice, left: 80),
             UIHelper.verticalSpaceMedium(),
             UIHelper.verticalSpaceSmall(),
             Padding(
@@ -321,7 +328,8 @@ class _AddProductState extends State<AddProduct> {
     uploadImage() async {
       if (file != null) {
         int random = Random().nextInt(1000000000000);
-        StorageReference ref = FirebaseStorage.instance.ref().child("image_$random.jpg");
+        StorageReference ref =
+            FirebaseStorage.instance.ref().child("image_$random.jpg");
         StorageUploadTask uploadTask = ref.putFile(file);
         downURL = await (await uploadTask.onComplete).ref.getDownloadURL();
         print(downURL.toString());
@@ -333,8 +341,9 @@ class _AddProductState extends State<AddProduct> {
     Widget addPhoto() {
       return GestureDetector(
           onTap: () => getImage(""),
-          child:
-              file == null ? logo(Image.asset("assets/images/add.jpg")) : logo(Image.file(file)));
+          child: file == null
+              ? logo(Image.asset("assets/images/add.jpg"))
+              : logo(Image.file(file)));
     }
 
     return BaseView<ProductCategoryModel>(
@@ -348,7 +357,8 @@ class _AddProductState extends State<AddProduct> {
                   forms(
                     categoryWidget: BaseView<ProductCategoryModel>(
                         onModelReady: (model) => model.fetchCategories(),
-                        builder: (context, model, child) => dropDownCategories(model.categories)),
+                        builder: (context, model, child) =>
+                            dropDownCategories(model.categories)),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -367,14 +377,17 @@ class _AddProductState extends State<AddProduct> {
                                 customerPrice: customerPrice.text,
                                 employeePrice: employeePrice.text,
                                 housePrice: housePrice.text,
-                                quantityOfWholesaleUnit: quantityOfWholesaleUnit.text,
+                                quantityOfWholesaleUnit:
+                                    quantityOfWholesaleUnit.text,
                                 quantityLimit: quantityLimit.text,
                                 unit: unit.text,
                                 wholesaleQuantity: wholesaleQuantity.text,
                                 wholesaleUnit: wholesaleUnit.text,
-                                theAmountOfSalesPerProduct: theAmountOfSalesPerProduct.text,
+                                theAmountOfSalesPerProduct:
+                                    theAmountOfSalesPerProduct.text,
                                 supplierName: companyName.text,
-                                netTotalQuantity: netTotalQuantity().toString(),
+                                netTotalQuantity:
+                                    netTotalQuantity().toString(),
                                 photo: "photo"),
                             branchName: widget.branchName,
                           );

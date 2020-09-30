@@ -27,17 +27,20 @@ class Home extends StatelessWidget {
                           itemCount: model.branches.length,
                           itemBuilder: (BuildContext context, int index) {
                             return model.branches == null
-                                ? Navigator.pushNamed(context, "/add_branch")
+                                ? Navigator.pushNamed(
+                                    context, "/add_branch")
                                 : Container(
                                     padding: EdgeInsets.symmetric(
                                         vertical: 4, horizontal: 10),
                                     child: item(
                                       title: (model.branches[index].name),
-                                      networkImage: model.branches[index].photo,
+                                      networkImage:
+                                          model.branches[index].photo,
                                       onPress: () {
-                                        Navigator.pushNamed(context, '/details',
-                                            arguments:
-                                                model.branches[index].name);
+                                        Navigator.pushNamed(
+                                            context, '/details',
+                                            arguments: model
+                                                .branches[index].name);
                                       },
                                     ),
                                   );

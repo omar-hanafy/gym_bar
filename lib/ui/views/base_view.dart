@@ -3,7 +3,8 @@ import 'package:gym_bar/core/locator.dart';
 import 'package:provider/provider.dart';
 
 class BaseView<T extends ChangeNotifier> extends StatefulWidget {
-  final Widget Function(BuildContext context, T value, Widget child) builder;
+  final Widget Function(BuildContext context, T value, Widget child)
+      builder;
   final Function(T) onModelReady;
 
   BaseView({@required this.builder, this.onModelReady});

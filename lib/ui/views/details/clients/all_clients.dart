@@ -1,9 +1,10 @@
 import 'dart:io';
+
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/enums.dart';
+import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/view_models/employee_client_model.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/shared/ui_helpers.dart';
@@ -118,16 +119,21 @@ class _AllClientsState extends State<AllClients> {
           return Column(
             children: <Widget>[
               Container(
-                color: double.parse(clients[index].cash) > 0 ? Colors.white : Colors.red,
+                color: double.parse(clients[index].cash) > 0
+                    ? Colors.white
+                    : Colors.red,
                 height: 50,
                 child: GestureDetector(
-                  onTap: () =>
-                      Navigator.pushNamed(context, "/client_profile", arguments: clients[index]),
+                  onTap: () => Navigator.pushNamed(
+                      context, "/client_profile",
+                      arguments: clients[index]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Text(clients[index].name, style: formTitleStyleLight),
-                      Text(clients[index].cash, style: formTitleStyleLight),
+                      Text(clients[index].name,
+                          style: formTitleStyleLight),
+                      Text(clients[index].cash,
+                          style: formTitleStyleLight),
                     ],
                   ),
                 ),
@@ -160,7 +166,9 @@ class _AllClientsState extends State<AllClients> {
         appBar: AppBar(
           title: Text("كل العملاء"),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.file_download), onPressed: () => getCsv(model.clients))
+            IconButton(
+                icon: Icon(Icons.file_download),
+                onPressed: () => getCsv(model.clients))
           ],
         ),
         body: GestureDetector(
@@ -174,7 +182,8 @@ class _AllClientsState extends State<AllClients> {
                     UIHelper.verticalSpaceLarge(),
                     Container(
                       width: 200,
-                      child: Center(child: clientSearch(model.clients, context)),
+                      child: Center(
+                          child: clientSearch(model.clients, context)),
                     ),
                     UIHelper.verticalSpaceMedium(),
                     Expanded(child: table(model.clients)),
@@ -207,7 +216,8 @@ getCsv(List<Client> clients) async {
 //  print(appPath);
 
   String appPath = "/storage/emulated/0/GymBar/Downloads";
-  final Directory directory = await Directory(appPath).create(recursive: true);
+  final Directory directory =
+      await Directory(appPath).create(recursive: true);
   print("The directory $directory is created");
   final file = File("$appPath/allClients.csv");
   await file.writeAsString(csv); // Page

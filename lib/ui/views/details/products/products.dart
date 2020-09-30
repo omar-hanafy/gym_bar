@@ -20,14 +20,18 @@ class Products extends StatelessWidget {
                 padding: const EdgeInsets.all(6),
                 child: GridView.builder(
                   itemCount: filteredProducts.length,
-                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, mainAxisSpacing: 6, crossAxisSpacing: 6),
+                  gridDelegate:
+                      new SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 6,
+                          crossAxisSpacing: 6),
                   itemBuilder: (BuildContext context, int index) {
                     return item(
                       topSpace: SizedBox(height: 50),
                       betweenSpace: SizedBox(height: 20),
                       title: filteredProducts[index].name,
-                      statistics: "${filteredProducts[index].netTotalQuantity}"
+                      statistics:
+                          "${filteredProducts[index].netTotalQuantity}"
                           "${filteredProducts[index].unit} ",
                       assetImage: "",
                       backGround: Colors.lightBlue,

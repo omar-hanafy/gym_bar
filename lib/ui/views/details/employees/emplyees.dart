@@ -20,7 +20,8 @@ class Employees extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
               child: item(
                 title: "كل الموظفين",
                 statistics: '155',
@@ -33,7 +34,8 @@ class Employees extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
               child: item(
                 title: "دائن",
                 statistics: '155',
@@ -48,7 +50,8 @@ class Employees extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
               child: item(
                 title: "مدين",
                 statistics: '155',

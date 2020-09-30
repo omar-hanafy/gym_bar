@@ -8,14 +8,15 @@ class Transaction {
       transactionType, // Buying, selling, withdraw and deposit]
       transactionAmount, //EX: قيمة الفاتورة و قيمة عمليات السحب والايداع ...اي قيمة
       date,
+      hour,
       branch,
-      notes,
       //info about selling only
       customerName, //الشخص اللي اتعمل عليه العمليه ويمكن ان يكون عميل او موظف حسب العمليه
       customerId,
       customerType;
-  Map sellingProducts;
-  String total, //change could sent as debit if the paid is less than total.
+  var sellingProducts;
+  String
+      total, //change could sent as debit if the paid is less than total.
       paid, //increase [$incomeCash].
       change, //change could be sent as deposit
 
@@ -26,6 +27,7 @@ class Transaction {
       buyingProductCategory,
       buyingCompanyName,
       buyingCashAmount, //increase [$outcomeCash]
+      notes,
 
       //info about withdraw
       withdrawCashAmount, //increase [$outcomeCash]
@@ -39,6 +41,7 @@ class Transaction {
       @required this.transactionType,
       @required this.transactionAmount,
       @required this.date,
+      @required this.hour,
       @required this.branch,
       //
       this.customerName,
@@ -67,16 +70,17 @@ class Transaction {
         transactionType = snapshot['transactionType'] ?? '',
         transactionAmount = snapshot['transactionAmount'] ?? '',
         date = snapshot['date'] ?? '',
+        hour = snapshot['hour'] ?? '',
         branch = snapshot['branch'] ?? '',
         //
-        customerName = snapshot['clientName'] ?? '',
+        customerName = snapshot['customerName'] ?? '',
         customerId = snapshot['customerId'] ?? '',
+        customerType = snapshot['customerType'] ?? '',
         sellingProducts = snapshot['sellingProducts'] ?? '',
         total = snapshot['total'] ?? '',
         paid = snapshot['paid'] ?? '',
         change = snapshot['change'] ?? '',
         //
-        customerType = snapshot['buyerType'] ?? '',
         buyingProduct = snapshot['buyingProduct'] ?? '',
         buyingQuantity = snapshot['buyingQuantity'] ?? '',
         buyingProductCategory = snapshot['buyingProductCategory'] ?? '',
@@ -93,15 +97,16 @@ class Transaction {
     return {
       "transactorName": transactorName,
       "transactorId": transactorId,
-      "clientName": customerName,
-      "clientId": customerId,
       "transactionType": transactionType,
       "transactionAmount": transactionAmount,
       "date": date,
+      "hour": hour,
       "branch": branch,
       //
 
+      "customerName": customerName,
       "customerId": customerId,
+      "customerType": customerType,
       "sellingProducts": sellingProducts,
       "total": total,
       "paid": paid,

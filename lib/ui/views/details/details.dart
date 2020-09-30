@@ -9,7 +9,9 @@ import 'package:gym_bar/ui/widgets/home_item.dart';
 class Details extends StatelessWidget {
   final String branchName;
   final bool notificationOn = false;
+
   Details({this.branchName});
+
   quickReport() {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 5),
@@ -59,10 +61,9 @@ class Details extends StatelessWidget {
           ]),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-
-
     var floatingButtons = [
       SpeedDialChild(
           child: Icon(Icons.library_add),
@@ -99,26 +100,42 @@ class Details extends StatelessWidget {
             quickReport(),
             Expanded(
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10, horizontal: 6),
                 child: CustomScrollView(
                   slivers: <Widget>[
                     SliverGrid(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 6,
-                          crossAxisSpacing: 6),
+                      gridDelegate:
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 6,
+                              crossAxisSpacing: 6),
                       delegate: SliverChildListDelegate(
                         [
                           item(
                             title: "المبيعات",
                             assetImage: "assets/images/clients.jpeg",
-                            onPress: () {},
+                            onPress: () {
+                              print("branch is $branchName");
+                              Map<String, dynamic> args = {
+                                "isSells": true,
+                                "branchName": branchName
+                              };
+                              Navigator.pushNamed(context, '/choose_date',
+                                  arguments: args);
+                            },
                           ),
                           item(
                             title: "المشتريات",
                             assetImage: "assets/images/employers.jpg",
-                            onPress: () {},
+                            onPress: () {
+                              Map<String, dynamic> args = {
+                                "isSells": false,
+                                "branchName": branchName
+                              };
+                              Navigator.pushNamed(context, '/choose_date',
+                                  arguments: args);
+                            },
                           ),
                           item(
                             title: "العملاء",

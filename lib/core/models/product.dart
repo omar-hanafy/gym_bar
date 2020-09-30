@@ -60,7 +60,8 @@ class Product {
         wholesaleQuantity = snapshot['wholesaleQuantity'],
         wholesaleUnit = snapshot['wholesaleUnit'],
         unit = snapshot['unit'] ?? '',
-        theAmountOfSalesPerProduct = snapshot['theAmountOfSalesPerProduct'],
+        theAmountOfSalesPerProduct =
+            snapshot['theAmountOfSalesPerProduct'],
         supplierName = snapshot['supplierName'] ?? '',
         photo = snapshot['photo'] ?? '';
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -123,13 +124,16 @@ class _FilteredEmployeesState extends State<FilteredEmployees> {
                     : Colors.red,
                 height: 50,
                 child: GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, "/employee_profile",
+                  onTap: () => Navigator.pushNamed(
+                      context, "/employee_profile",
                       arguments: employees[index]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Text(employees[index].name, style: formTitleStyleLight),
-                      Text(employees[index].cash, style: formTitleStyleLight),
+                      Text(employees[index].name,
+                          style: formTitleStyleLight),
+                      Text(employees[index].cash,
+                          style: formTitleStyleLight),
                     ],
                   ),
                 ),
@@ -226,7 +230,8 @@ getCsv(List<Employee> employees) async {
 //  print(appPath);
 
   String appPath = "/storage/emulated/0/GymBar/Downloads";
-  final Directory directory = await Directory(appPath).create(recursive: true);
+  final Directory directory =
+      await Directory(appPath).create(recursive: true);
   print("The directory $directory is created");
   final file = File("$appPath/allEmployees.csv");
   await file.writeAsString(csv); // Page

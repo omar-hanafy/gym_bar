@@ -31,7 +31,8 @@ formTextFieldTemplate({
   double top = 0,
 }) {
   return Container(
-    margin: EdgeInsets.only(left: left, right: right, bottom: bottom, top: top),
+    margin: EdgeInsets.only(
+        left: left, right: right, bottom: bottom, top: top),
     child: Directionality(
       textDirection: TextDirection.rtl,
       child: Container(
@@ -65,9 +66,9 @@ formTitle(title) {
 }
 
 Widget formButtonTemplate({
-  context,
-  text,
-  onTab,
+  @required context,
+  @required text,
+  @required onTab,
   color = Colors.blueAccent,
 }) {
   return ButtonTheme(
@@ -80,7 +81,8 @@ Widget formButtonTemplate({
         style: formButtonStyle,
       ),
       onPressed: onTab,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
   );
 }

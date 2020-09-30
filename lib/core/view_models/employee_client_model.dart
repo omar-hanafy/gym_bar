@@ -1,9 +1,9 @@
+import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/locator.dart';
 import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/models/employee.dart';
-import 'package:gym_bar/core/view_models/base_model.dart';
-import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/services/api.dart';
+import 'package:gym_bar/core/view_models/base_model.dart';
 
 class EmployeeClientModel extends BaseModel {
   Api _api = locator<Api>();
@@ -15,37 +15,53 @@ class EmployeeClientModel extends BaseModel {
 
   Future addClient({Client client, String branchName}) async {
     setState(ViewState.Busy);
-    await _api.addDocument(client.toJson(), "clients/branches/$branchName/");
+    await _api.addDocument(
+        client.toJson(), "clients/branches/$branchName/");
     setState(ViewState.Idle);
   }
 
   Future addEmployee({Employee employee, String branchName}) async {
     setState(ViewState.Busy);
-    await _api.addDocument(employee.toJson(), "employees/branches/$branchName/");
+    await _api.addDocument(
+        employee.toJson(), "employees/branches/$branchName/");
     setState(ViewState.Idle);
   }
 
   Future fetchClients(branchName) async {
     setState(ViewState.Busy);
-    var result = await _api.getDataCollection("clients/branches/$branchName/");
-    clients = result.docs.map((doc) => Client.fromMap(doc.data(), doc.id)).toList();
+    var result =
+        await _api.getDataCollection("clients/branches/$branchName/");
+    clients = result.docs
+        .map((doc) => Client.fromMap(doc.data(), doc.id))
+        .toList();
     setState(ViewState.Idle);
   }
 
   Future fetchEmployees({branchName}) async {
     setState(ViewState.Busy);
-    var result = await _api.getDataCollection("employees/branches/$branchName/");
-    employees = result.docs.map((doc) => Employee.fromMap(doc.data(), doc.id)).toList();
-    print("employee first name is: ${employees[1].name}");
+    print("getting");
+    var result =
+        await _api.getDataCollection("employees/branches/$branchName/");
+    print("adding to employees...");
+    employees = result.docs
+        .map((doc) => Employee.fromMap(doc.data(), doc.id))
+        .toList();
+    // print("employee first name is: ${employees[1].name}");
     setState(ViewState.Idle);
   }
 
   fetchClientsAndEmployees({branchName}) async {
     setState(ViewState.Busy);
-    var clientResult = await _api.getDataCollection("clients/branches/$branchName/");
-    clients = clientResult.docs.map((doc) => Client.fromMap(doc.data(), doc.id)).toList();
-    var employeeResult = await _api.getDataCollection("employees/branches/$branchName/");
-    employees = employeeResult.docs.map((doc) => Employee.fromMap(doc.data(), doc.id)).toList();
+    var clientResult =
+        await _api.getDataCollection("clients/branches/$branchName/");
+    clients = clientResult.docs
+        .map((doc) => Client.fromMap(doc.data(), doc.id))
+        .toList();
+    var employeeResult =
+        await _api.getDataCollection("employees/branches/$branchName/");
+    employees = employeeResult.docs
+        .map((doc) => Employee.fromMap(doc.data(), doc.id))
+        .toList();
     setState(ViewState.Idle);
   }
 
@@ -72,7 +88,9 @@ class EmployeeClientModel extends BaseModel {
       field4: field4,
       equalTo4: equalTo4,
     );
-    clients = result.docs.map((doc) => Client.fromMap(doc.data(), doc.id)).toList();
+    clients = result.docs
+        .map((doc) => Client.fromMap(doc.data(), doc.id))
+        .toList();
     setState(ViewState.Idle);
   }
 
@@ -99,33 +117,40 @@ class EmployeeClientModel extends BaseModel {
       field4: field4,
       equalTo4: equalTo4,
     );
-    employees = result.docs.map((doc) => Employee.fromMap(doc.data(), doc.id)).toList();
+    employees = result.docs
+        .map((doc) => Employee.fromMap(doc.data(), doc.id))
+        .toList();
     setState(ViewState.Idle);
   }
 
   Future fetchClientById({id, branchName}) async {
     setState(ViewState.Busy);
-    var result = await _api.getDocumentById("clients/branches/$branchName/", id);
+    var result =
+        await _api.getDocumentById("clients/branches/$branchName/", id);
     oneClient = Client.fromMap(result.data(), result.id);
     setState(ViewState.Idle);
   }
 
   Future fetchEmployeeById({id, branchName}) async {
     setState(ViewState.Busy);
-    var result = await _api.getDocumentById("clients/branches/$branchName/", id);
+    var result =
+        await _api.getDocumentById("clients/branches/$branchName/", id);
     oneEmployee = Employee.fromMap(result.data(), result.id);
     setState(ViewState.Idle);
   }
 
   updateClient({branchName, Map<String, dynamic> data, clientId}) async {
     setState(ViewState.Busy);
-    await _api.updateDocument(clientId, data, "clients/branches/$branchName/");
+    await _api.updateDocument(
+        clientId, data, "clients/branches/$branchName/");
     setState(ViewState.Idle);
   }
 
-  updateEmployee({branchName, Map<String, dynamic> data, employeeId}) async {
+  updateEmployee(
+      {branchName, Map<String, dynamic> data, employeeId}) async {
     setState(ViewState.Busy);
-    await _api.updateDocument(employeeId, data, "employees/branches/$branchName/");
+    await _api.updateDocument(
+        employeeId, data, "employees/branches/$branchName/");
     setState(ViewState.Idle);
   }
 }
