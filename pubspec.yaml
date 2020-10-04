@@ -68,7 +68,6 @@ flutter:
     - assets/images/products.jpg
     - assets/images/logo.jpg
     - assets/images/add.jpg
-    - assets/images/myprofile.jpg
     - assets/images/banana.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see

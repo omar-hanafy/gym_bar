@@ -42,6 +42,7 @@ class _AddProductState extends State<AddProduct> {
   var _selectedCategory;
   var downURL;
   var file;
+  String newCategoryName;
   int _selectedRadio;
 
   netTotalQuantity() {
@@ -153,7 +154,39 @@ class _AddProductState extends State<AddProduct> {
       );
     }
 
-    Widget forms({categoryWidget}) {
+    _addCategoryDialog(Function onPressed) {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        // false = user must tap button, true = tap outside dialog
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            title: Text('اضافه نوع منتج جديد'),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  setState(() {
+                    newCategoryName = value;
+                  });
+                });
+              },
+              decoration:
+                  InputDecoration(labelText: 'اكتب نوع المنتج هنا'),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text('اتمام'),
+                  onPressed: () {
+                    onPressed();
+                    Navigator.of(dialogContext).pop();
+                  }),
+            ],
+          );
+        },
+      );
+    }
+
+    Widget forms({categoryWidget, onPressed}) {
       return Card(
         child: Column(
           children: <Widget>[
@@ -306,7 +339,16 @@ class _AddProductState extends State<AddProduct> {
               ),
             ),
             UIHelper.verticalSpaceSmall(),
-            categoryWidget,
+            Row(
+              children: [
+                Expanded(child: categoryWidget),
+                IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      _addCategoryDialog(onPressed);
+                    }),
+              ],
+            ),
             UIHelper.verticalSpaceMedium(),
           ],
         ),
@@ -347,6 +389,7 @@ class _AddProductState extends State<AddProduct> {
     }
 
     return BaseView<ProductCategoryModel>(
+      onModelReady: (model) => model.fetchCategories(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(title: Text("إضافة منتج")),
         body: model.state == ViewState.Busy
@@ -355,11 +398,16 @@ class _AddProductState extends State<AddProduct> {
                 children: <Widget>[
                   addPhoto(),
                   forms(
-                    categoryWidget: BaseView<ProductCategoryModel>(
-                        onModelReady: (model) => model.fetchCategories(),
-                        builder: (context, model, child) =>
-                            dropDownCategories(model.categories)),
-                  ),
+                      categoryWidget: dropDownCategories(model.categories),
+                      onPressed: () {
+                        print("dataaaaa2aaaaaah");
+                        print("{name is: ${name.text} }");
+                        model.addCategory(Category(
+                          photo: "photo",
+                          name: newCategoryName,
+                        ));
+                        // Dismiss alert dialog
+                      }),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: formButtonTemplate(
