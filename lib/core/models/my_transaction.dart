@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Transaction {
+class MyTransaction {
   //information about transaction in general
   String id,
       transactorName, //الشخص اللي عمل العملية
@@ -10,60 +10,44 @@ class Transaction {
       date,
       hour,
       branch,
-      //info about selling only
       customerName, //الشخص اللي اتعمل عليه العمليه ويمكن ان يكون عميل او موظف حسب العمليه
+
+  //info about selling only
       customerId,
-      customerType;
-  var sellingProducts;
-  String
-      total, //change could sent as debit if the paid is less than total.
+      customerType,
       paid, //increase [$incomeCash].
-      change, //change could be sent as deposit
+      change; //change could be sent as deposit
 
-      //info about buying
+  var sellingProducts;
 
-      buyingProduct,
-      buyingQuantity,
-      buyingProductCategory,
-      buyingCompanyName,
-      buyingCashAmount, //increase [$outcomeCash]
-      notes,
+  //info about buying
 
-      //info about withdraw
-      withdrawCashAmount, //increase [$outcomeCash]
+  var buyingProducts;
+  String buyingProductCategory, buyingCompanyName, notes;
 
-      //info about deposit
-      depositCashAmount; //increase [$outcomeCash]
-  Transaction(
+  MyTransaction(
       {this.id,
-      @required this.transactorName,
-      this.transactorId,
-      @required this.transactionType,
-      @required this.transactionAmount,
-      @required this.date,
-      @required this.hour,
-      @required this.branch,
-      //
-      this.customerName,
-      this.customerId,
-      this.customerType,
-      this.sellingProducts,
-      this.total,
-      this.paid,
-      this.change,
-      //
-      this.buyingProduct,
-      this.buyingQuantity,
-      this.buyingProductCategory,
-      this.buyingCompanyName,
-      this.buyingCashAmount,
-      this.notes,
-      //
-      this.withdrawCashAmount,
-      //
-      this.depositCashAmount});
+        @required this.transactorName,
+        this.transactorId,
+        @required this.transactionType,
+        @required this.transactionAmount,
+        @required this.date,
+        @required this.hour,
+        @required this.branch,
+        //
+        this.customerName,
+        this.customerId,
+        this.customerType,
+        this.sellingProducts,
+        this.paid,
+        this.change,
+        //
+        this.buyingProducts,
+        this.buyingProductCategory,
+        this.buyingCompanyName,
+        this.notes});
 
-  Transaction.fromMap(Map snapshot, String id)
+  MyTransaction.fromMap(Map snapshot, String id)
       : id = id ?? "",
         transactorName = snapshot['transactorName'] ?? '',
         transactorId = snapshot['transactorId'] ?? '',
@@ -72,26 +56,18 @@ class Transaction {
         date = snapshot['date'] ?? '',
         hour = snapshot['hour'] ?? '',
         branch = snapshot['branch'] ?? '',
-        //
+  //
         customerName = snapshot['customerName'] ?? '',
         customerId = snapshot['customerId'] ?? '',
         customerType = snapshot['customerType'] ?? '',
         sellingProducts = snapshot['sellingProducts'] ?? '',
-        total = snapshot['total'] ?? '',
         paid = snapshot['paid'] ?? '',
         change = snapshot['change'] ?? '',
-        //
-        buyingProduct = snapshot['buyingProduct'] ?? '',
-        buyingQuantity = snapshot['buyingQuantity'] ?? '',
+  //
+        buyingProducts = snapshot['buyingProducts'] ?? '',
         buyingProductCategory = snapshot['buyingProductCategory'] ?? '',
         buyingCompanyName = snapshot['buyingCompanyName'] ?? '',
-        buyingCashAmount = snapshot['buyingCashAmount,'] ?? '',
-        notes = snapshot['notes'] ?? '',
-        //
-        withdrawCashAmount = snapshot['withdrawCashAmount'] ?? '',
-        //
-
-        depositCashAmount = snapshot['depositCashAmount'] ?? '';
+        notes = snapshot['notes'] ?? '';
 
   toJson() {
     return {
@@ -108,23 +84,14 @@ class Transaction {
       "customerId": customerId,
       "customerType": customerType,
       "sellingProducts": sellingProducts,
-      "total": total,
       "paid": paid,
       "change": change,
       //
 
-      "buyingProduct": buyingProduct,
-      "buyingQuantity": buyingQuantity,
+      "buyingProducts": buyingProducts,
       "buyingProductCategory": buyingProductCategory,
       "buyingCompanyName": buyingCompanyName,
-      "buyingCashAmount": buyingCashAmount,
-      "notes": notes,
-      //
-
-      "withdrawCashAmount": withdrawCashAmount,
-      //
-
-      "depositCashAmount": depositCashAmount,
+      "notes": notes
     };
   }
 }

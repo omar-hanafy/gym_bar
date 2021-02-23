@@ -1,48 +1,1 @@
-import 'package:flutter/material.dart';
-import 'package:gym_bar/core/models/product.dart';
-import 'package:gym_bar/ui/widgets/home_item.dart';
-
-class Products extends StatelessWidget {
-  final Map<String, dynamic> args;
-
-  Products({this.args});
-
-  @override
-  Widget build(BuildContext context) {
-    List<Product> filteredProducts = args['filteredProducts'];
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("أختر نوع المنتج"),
-        ),
-        body: filteredProducts.isEmpty
-            ? Center(child: Text('لا يوجد منتجات هنا'))
-            : Container(
-                padding: const EdgeInsets.all(6),
-                child: GridView.builder(
-                  itemCount: filteredProducts.length,
-                  gridDelegate:
-                      new SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 6,
-                          crossAxisSpacing: 6),
-                  itemBuilder: (BuildContext context, int index) {
-                    return item(
-                      topSpace: SizedBox(height: 50),
-                      betweenSpace: SizedBox(height: 20),
-                      title: filteredProducts[index].name,
-                      statistics:
-                          "${filteredProducts[index].netTotalQuantity}"
-                          "${filteredProducts[index].unit} ",
-                      assetImage: "",
-                      backGround: Colors.lightBlue,
-                      onPress: () {
-                        var selectedProduct = filteredProducts[index];
-                        Navigator.pushNamed(context, '/product_profile',
-                            arguments: selectedProduct);
-                      },
-                    );
-                  },
-                ),
-              ));
-  }
-}
+import 'package:flutter/cupertino.dart';import 'package:flutter/material.dart';import 'package:gym_bar/core/models/product.dart';import 'package:gym_bar/core/view_models/product_model.dart';import 'package:gym_bar/ui/shared/dimensions.dart';import 'package:gym_bar/ui/widgets/custom_card_item.dart';import 'package:provider/provider.dart';class Products extends StatelessWidget {  @override  Widget build(BuildContext context) {    CustomCardItem cardItem = CustomCardItem(context: context);    Dimensions _dimensions = Dimensions(context);    ProductModel productModel = Provider.of<ProductModel>(context);    List<Product> products = productModel.products;    return Scaffold(        appBar: AppBar(          title: Text("اختر المنتج"),        ),        body: products == null            ? Center(child: CircularProgressIndicator())            : CustomScrollView(                slivers: <Widget>[                  SliverGrid(                    gridDelegate:                        SliverGridDelegateWithFixedCrossAxisCount(                            crossAxisCount: 2),                    delegate: SliverChildBuilderDelegate(                      (BuildContext context, int index) {                        return products.isEmpty                            ? Center(child: Text('لا يوجد منتجات هنا'))                            : Padding(                                padding: EdgeInsets.only(                                    left: _dimensions.widthPercent(1),                                    top: _dimensions.heightPercent(3),                                    right: _dimensions.widthPercent(1)),                                child: cardItem.item(                                    onPress: () {                                      productModel.selectedProduct =                                          products[index];                                      Navigator.pushNamed(                                          context, "/product_profile");                                    },                                    assetImage: "assets/images/banana.jpg",                                    title: products[index].name),                              );                      },                      childCount: products.length,                    ),                  ),                ],              ));  }}

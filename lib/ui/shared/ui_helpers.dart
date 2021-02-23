@@ -1,66 +1,59 @@
-import 'package:flutter/material.dart';
-
-/// Contains useful functions to reduce boilerplate code
-class UIHelper {
-  // Vertical spacing constants. Adjust to your liking.
-  static const double _VerticalSpaceSmall = 10.0;
-  static const double _VerticalSpaceMedium = 20.0;
-  static const double _VerticalSpaceLarge = 40.0;
-  static const double _VerticalSpaceXLarge = 60.0;
-
-  // Vertical spacing constants. Adjust to your liking.
-  static const double _HorizontalSpaceSmall = 10.0;
-  static const double _HorizontalSpaceMedium = 20.0;
-  static const double HorizontalSpaceLarge = 20.0;
-  static const double HorizontalSpaceXLarge = 60.0;
-
-  /// Returns a vertical space with height set to [_VerticalSpaceSmall]
-  static Widget verticalSpaceSmall() {
-    return verticalSpace(_VerticalSpaceSmall);
-  }
-
-  /// Returns a vertical space with height set to [_VerticalSpaceMedium]
-  static Widget verticalSpaceMedium() {
-    return verticalSpace(_VerticalSpaceMedium);
-  }
-
-  /// Returns a vertical space with height set to [_VerticalSpaceLarge]
-  static Widget verticalSpaceLarge() {
-    return verticalSpace(_VerticalSpaceLarge);
-  }
-
-  /// Returns a vertical space with height set to [_VerticalSpaceLarge]
-  static Widget verticalSpaceXLarge() {
-    return verticalSpace(_VerticalSpaceXLarge);
-  }
-
-  /// Returns a vertical space equal to the [height] supplied
-  static Widget verticalSpace(double height) {
-    return Container(height: height);
-  }
-
-  /// Returns a vertical space with height set to [_HorizontalSpaceSmall]
-  static Widget horizontalSpaceSmall() {
-    return horizontalSpace(_HorizontalSpaceSmall);
-  }
-
-  /// Returns a vertical space with height set to [_HorizontalSpaceMedium]
-  static Widget horizontalSpaceMedium() {
-    return horizontalSpace(_HorizontalSpaceMedium);
-  }
-
-  /// Returns a vertical space with height set to [HorizontalSpaceXLarge]
-  static Widget horizontalSpaceXLarge() {
-    return horizontalSpace(HorizontalSpaceXLarge);
-  }
-
-  /// Returns a vertical space with height set to [HorizontalSpaceLarge]
-  static Widget horizontalSpaceLarge() {
-    return horizontalSpace(HorizontalSpaceLarge);
-  }
-
-  /// Returns a vertical space equal to the [width] supplied
-  static Widget horizontalSpace(double width) {
-    return Container(width: width);
-  }
-}
+// import 'package:flutter/material.dart';
+// import 'package:gym_bar/ui/shared/dimensions.dart';
+//
+// /// Contains useful functions to reduce boilerplate code
+// class UIHelper {
+//   final context;
+//
+//   UIHelper(this.context);
+//
+//   /// Returns a vertical space with height set to [_verticalSpaceSmall]
+//   Widget verticalSpaceSmall() {
+//     return verticalSpace(Dimensions(context).heightPercent(2));
+//   }
+//
+//   /// Returns a vertical space with height set to [_verticalSpaceMedium]
+//   Widget verticalSpaceMedium() {
+//     return verticalSpace(Dimensions(context).heightPercent(4));
+//   }
+//
+//   /// Returns a vertical space with height set to [_verticalSpaceLarge]
+//   Widget verticalSpaceLarge() {
+//     return verticalSpace(Dimensions(context).heightPercent(6));
+//   }
+//
+//   /// Returns a vertical space with height set to [_verticalSpaceLarge]
+//   Widget verticalSpaceXLarge() {
+//     return verticalSpace(Dimensions(context).heightPercent(8));
+//   }
+//
+//   /// Returns a vertical space equal to the [height] supplied
+//   Widget verticalSpace(double height) {
+//     return Container(height: height);
+//   }
+//
+//   /// Returns a vertical space with height set to [_horizontalSpaceSmall]
+//   Widget horizontalSpaceSmall() {
+//     return horizontalSpace(Dimensions(context).widthPercent(2));
+//   }
+//
+//   /// Returns a vertical space with height set to [_horizontalSpaceMedium]
+//   Widget horizontalSpaceMedium() {
+//     return horizontalSpace(Dimensions(context).widthPercent(4));
+//   }
+//
+//   /// Returns a vertical space with height set to [HorizontalSpaceXLarge]
+//   Widget horizontalSpaceXLarge() {
+//     return horizontalSpace(Dimensions(context).widthPercent(6));
+//   }
+//
+//   /// Returns a vertical space with height set to [HorizontalSpaceLarge]
+//   Widget horizontalSpaceLarge() {
+//     return horizontalSpace(Dimensions(context).widthPercent(8));
+//   }
+//
+//   /// Returns a vertical space equal to the [width] supplied
+//   Widget horizontalSpace(double width) {
+//     return Container(width: width);
+//   }
+// }

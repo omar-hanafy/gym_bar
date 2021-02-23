@@ -1,34 +1,61 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:gym_bar/core/enums.dart';
-import 'package:gym_bar/core/locator.dart';
 import 'package:gym_bar/core/models/total.dart';
 import 'package:gym_bar/core/services/api.dart';
-import 'package:gym_bar/core/view_models/base_model.dart';
 
-class TotalModel extends BaseModel {
-  Api _api = locator<Api>();
-  List<Total> total;
-  Total oneTotal;
+class TotalModel extends ChangeNotifier {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future fetchTotal({docId}) async {
-    setState(ViewState.Busy);
-    var doc = await _api.getDocumentById('total', docId);
-    oneTotal = Total.fromMap(doc.data(), doc.id);
-    setState(ViewState.Idle);
-    return total;
+  // Status _status = Status.Busy;
+
+  // Status get status => _status;
+
+  List<Total> _total;
+
+  List<Total> get total => _total;
+
+  set total(List<Total> value) {
+    _total = value;
+    notifyListeners();
   }
 
-  updateTotal({docId, Total total}) async {
-    Api.checkDocExist("total", docId).then((value) async {
-      if (!value) {
-        setState(ViewState.Busy);
-        await _api.addDocumentCustomId(docId, total.toJson(), "total");
-        setState(ViewState.Idle);
-      }
-      if (value) {
-        setState(ViewState.Busy);
-        await _api.updateDocument(docId, total.toJson(), "total");
-        setState(ViewState.Idle);
-      }
-    });
+  Future fetchTotal() async {
+    // _status = Status.Busy;
+
+    var result = await _db.collection("total").get();
+    _total = result.docs
+        .map((doc) => Total.fromMap(doc.data(), doc.id))
+        .toList();
+    // _status = Status.Idle;
+
+    notifyListeners();
+  }
+
+  // fetchTotalStream() {
+  //   Stream<QuerySnapshot> result = _db.collection("total").snapshots();
+  //   return result;
+  // }
+
+  Stream<String> fetchTotalStream() {
+    return _db.collection("total").snapshots().map((snapShot) =>
+        snapShot.docs.map((doc) => doc.data()['cash']).toString());
+  }
+
+  // updateTotal({docId, Total total}) async {
+  //   Api.checkDocExist("total", docId).then((value) async {
+  //     if (!value) {
+  //       await _api.addDocumentCustomId(docId, total.toJson(), "total");
+  //     }
+  //     if (value) {
+  //       await _api.updateDocument(docId, total.toJson(), "total");
+  //     }
+  //   });
+  // }
+
+  Future updateTotal({docId, Map<String, dynamic> data}) async {
+    // _status = Status.Busy;
+    await _db.collection("total").doc(docId).update(data);
+    // _status = Status.Idle;
   }
 }

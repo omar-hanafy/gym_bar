@@ -1,14 +1,17 @@
 class Client {
   String id, name, category, type, branch, cash, photo;
+  bool isSelected;
 
-  Client(
-      {this.category,
-      this.branch,
-      this.name,
-      this.id,
-      this.type,
-      this.cash,
-      this.photo});
+  Client({
+    this.category,
+    this.branch,
+    this.name,
+    this.id,
+    this.type,
+    this.cash,
+    this.photo,
+    this.isSelected = false,
+  });
 
   Client.fromMap(Map snapshot, String id)
       : id = id ?? "",

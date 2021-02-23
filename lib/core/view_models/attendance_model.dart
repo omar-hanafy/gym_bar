@@ -1,28 +1,28 @@
+import 'package:flutter/cupertino.dart';
 import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/attendance.dart';
 import 'package:gym_bar/core/services/api.dart';
-import 'package:gym_bar/core/view_models/base_model.dart';
 
-import '../locator.dart';
 
-class AttendanceModel extends BaseModel {
-  Api _api = locator<Api>();
+class AttendanceModel extends ChangeNotifier {
+  Api _api;
 
   List<Attendance> attendance;
 
   Future addProduct(Attendance data, String path) async {
-    setState(ViewState.Busy);
+    // setBusy(true);
     await _api.addDocument(data.toJson(), path);
-    setState(ViewState.Idle);
+    // setBusy(false);
   }
 
   Future<List<Attendance>> fetchAttendance(String path) async {
-    setState(ViewState.Busy);
+    // setBusy(true);
     var result = await _api.getDataCollection(path);
+
     attendance = result.docs
         .map((doc) => Attendance.fromMap(doc.data(), doc.id))
         .toList();
-    setState(ViewState.Idle);
+    // setBusy(false);
     return attendance;
   }
 }

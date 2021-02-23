@@ -1,56 +1,175 @@
 import 'package:flutter/material.dart';
+import 'dimensions.dart';
 
-const headerStyle = TextStyle(
-    fontSize: 35, fontWeight: FontWeight.w900, fontFamily: 'Tajawal');
+class TextStyles {
+  final context;
 
-const signLogHintButtonStyle = TextStyle(
-    fontSize: 15.0,
-    fontWeight: FontWeight.w600,
-    color: Colors.blue,
-    fontFamily: 'Tajawal');
+  TextStyles({@required this.context});
 
-const signLogHintStyle = TextStyle(
-    fontWeight: FontWeight.w300,
-    fontSize: 12,
-    color: Colors.grey,
-    fontFamily: 'Tajawal');
+  branchesItemTitleStyle() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(4),
+      fontWeight: FontWeight.bold,
+      fontFamily: 'Tajawal',
+      color: Colors.white);
 
-const formTitleStyle = TextStyle(
-    fontWeight: FontWeight.bold, fontSize: 20, fontFamily: 'Tajawal');
-const formTitleStyleSmall = TextStyle(
-    fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Tajawal');
-const formTitleStyleWhite = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-    fontSize: 20,
-    fontFamily: 'Tajawal');
-const formTitleStyleLight = TextStyle(fontSize: 20, fontFamily: 'Tajawal');
+  detailsTitlesStyle() => TextStyle(
+        fontSize: Dimensions(context).heightPercent(2),
+        fontFamily: 'Tajawal',
+      );
 
-const tableTitleStyle = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 20,
-    fontFamily: 'Tajawal',
-    color: Colors.black);
-const tableTitleStyleSmall = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 15,
-    fontFamily: 'Tajawal',
-    color: Colors.black);
+  detailsBoldTitlesStyle() => TextStyle(
+        fontSize: Dimensions(context).heightPercent(2),
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Tajawal',
+      );
 
-const formLabelsStyle = TextStyle(
-  fontSize: 15,
-  fontFamily: 'Tajawal',
-);
-const dropDownLabelsStyle =
-    TextStyle(fontSize: 16, fontFamily: 'Tajawal', color: Colors.black);
-const formButtonStyle =
-    TextStyle(fontSize: 15, fontFamily: 'Tajawal', color: Colors.white);
+  chooseDateTitleStyle() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(2.5),
+      fontWeight: FontWeight.bold,
+      fontFamily: 'Tajawal',
+      color: Colors.black);
 
-const imageTitle = TextStyle(
-    fontSize: 30.0,
-    fontWeight: FontWeight.bold,
-    fontFamily: 'Tajawal',
-    color: Colors.white);
+  tableTitleStyle() => TextStyle(
+        fontSize: Dimensions(context).heightPercent(2),
+        fontFamily: 'Tajawal',
+        color: Colors.white,
+      );
 
-const imageStatistics =
-    TextStyle(fontSize: 20.0, fontFamily: 'Tajawal', color: Colors.white);
+  tableContentStyle() => TextStyle(
+        fontSize: Dimensions(context).heightPercent(2),
+        fontFamily: 'Tajawal',
+        color: Colors.black,
+      );
+
+  chipLabelStyleLight() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(1.9),
+      fontFamily: 'Tajawal',
+      color: Colors.black);
+
+  iconTitle() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(1.5),
+      fontWeight: FontWeight.bold,
+      fontFamily: 'Tajawal',
+      color: Colors.black);
+
+//   billTitleStyle() => TextStyle(
+//       fontSize: Dimensions(context).heightPercent(3),
+//       fontWeight: FontWeight.w900,
+//       fontFamily: 'Tajawal');
+//
+//   //font 35 = percent 4
+//   billSearchTitleStyle() => TextStyle(
+//       fontWeight: FontWeight.bold,
+//       fontSize: Dimensions(context).heightPercent(1.9),
+//       fontFamily: 'Tajawal');
+//
+
+// //font 25 = percent 1.9
+//
+//   billTableTitleStyle() => TextStyle(
+//       fontWeight: FontWeight.bold,
+//       fontSize: Dimensions(context).heightPercent(2.2),
+//       fontFamily: 'Tajawal',
+//       color: Colors.black);
+//
+// // font 30 = 2.2
+//   billTableContentStyle() => TextStyle(
+//       fontSize: Dimensions(context).heightPercent(1.9),
+//       fontFamily: 'Tajawal',
+//       color: Colors.black);
+//
+//   billInfoStyle() => TextStyle(
+//       fontWeight: FontWeight.bold,
+//       fontSize: Dimensions(context).heightPercent(1.9),
+//       fontFamily: 'Tajawal');
+//
+//   billCustomInfoStyle(billChange) => TextStyle(
+//       color: billChange > 0 ? Colors.black : Colors.red,
+//       fontWeight: FontWeight.bold,
+//       fontSize: Dimensions(context).heightPercent(1.9),
+//       fontFamily: 'Tajawal');
+//
+//   billButtonStyle() => TextStyle(
+//       fontSize: Dimensions(context).heightPercent(1.9),
+//       fontFamily: 'Tajawal',
+//       color: Colors.black);
+//
+//   chipLabelStyleLight() => TextStyle(
+//       fontSize: Dimensions(context).heightPercent(1.9),
+//       fontFamily: 'Tajawal',
+//       color: Colors.black);
+//
+//   profileNameTitleStyle() => TextStyle(
+//       fontWeight: FontWeight.bold,
+//       fontSize: Dimensions(context).heightPercent(2.2),
+//       fontFamily: 'Tajawal',
+//       color: Colors.black);
+//
+//   appBarCalculationsStyle(cash) {
+//     if (double.parse(cash) <= 0) {
+//       return TextStyle(
+//           fontSize: Dimensions(context).heightPercent(2.2),
+//           fontFamily: 'Tajawal',
+//           color: Colors.red);
+//     }
+//     if (double.parse(cash) > 0) {
+//       return TextStyle(
+//           fontSize: Dimensions(context).heightPercent(2.2),
+//           fontFamily: 'Tajawal',
+//           color: Colors.green);
+//     }
+//   }
+
+// home_item styles
+  itemImageTitle() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(4),
+      fontWeight: FontWeight.bold,
+      fontFamily: 'Tajawal',
+      color: Colors.white);
+
+  itemImageTitleSmall() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(3),
+      fontWeight: FontWeight.bold,
+      fontFamily: 'Tajawal',
+      color: Colors.white);
+
+  itemImageStatistics() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(2.5),
+      fontFamily: 'Tajawal',
+      color: Colors.white);
+
+  itemBadgeStyle() => TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: Dimensions(context).heightPercent(1.9),
+      );
+
+// form_widget styles
+  formLabelsStyle() => TextStyle(
+        fontSize: Dimensions(context).heightPercent(1.5),
+        fontFamily: 'Tajawal',
+      );
+
+  formButtonStyle() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(1.9),
+      fontFamily: 'Tajawal',
+      color: Colors.black);
+
+  formTitleStyle() => TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: Dimensions(context).heightPercent(1.9),
+      fontFamily: 'Tajawal');
+
+  searchListItemStyle() => TextStyle(
+        fontSize: Dimensions(context).heightPercent(1.5),
+        fontFamily: 'Tajawal',
+      );
+
+  searchTextFieldStyle() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(1.5),
+      color: Colors.grey[600]);
+
+  searchTextFieldHintStyle() => TextStyle(
+      fontSize: Dimensions(context).heightPercent(1.5),
+      color: Colors.black54);
+}

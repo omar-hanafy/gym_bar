@@ -23,24 +23,7 @@ String convertToEnglishDigits(String value) {
   return newValue;
 }
 
-cashCalculations({String cash, selectedType}) {
-  print('caaaaaashhhhh');
-  print(cash);
-  String filterCash = convertToEnglishDigits(cash);
-  print(filterCash);
-  String _finalCash; // ignore: unused_local_variable
-  print('filterrrd caaaaaashhhhh');
-  print(filterCash);
-  int cashInt = int.parse(filterCash);
-  if (selectedType == "دائن") {
-    return _finalCash = "-${cashInt.toString()}";
-  }
-  if (selectedType == "خالص") {
-    return _finalCash = "0";
-  }
-  if (selectedType == "مدين") {
-    return _finalCash = filterCash;
-  }
-}
+/// Returns the string without any leading whitespace.
+/// As [trim], but only removes leading whitespace.
 
-calculateTheTotalBill({totalNo, wholesaleUnit}) {}
+String cleanString(String string) => string.trim();

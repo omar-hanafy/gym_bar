@@ -1,65 +1,1 @@
-import 'package:flutter/material.dart';
-import 'package:gym_bar/core/enums.dart';
-import 'package:gym_bar/core/models/product.dart';
-import 'package:gym_bar/core/view_models/product_category_model.dart';
-import 'package:gym_bar/ui/views/base_view.dart';
-import 'package:gym_bar/ui/widgets/home_item.dart';
-
-class Categories extends StatelessWidget {
-  final String branchName;
-
-  Categories({this.branchName});
-
-  @override
-  Widget build(BuildContext context) {
-    Map<String, dynamic> args;
-
-    filterProducts(List<Product> products, String categoryName) {
-      var filterList = products
-          .where((product) => product.category == categoryName)
-          .toList();
-
-      return filterList;
-    }
-
-    return BaseView<ProductCategoryModel>(
-      onModelReady: (model) =>
-          model.fetchCategoriesAndProducts(branchName: branchName),
-      builder: (context, model, child) => Scaffold(
-        appBar: AppBar(
-          title: Text("أختر نوع المنتج"),
-        ),
-        body: model.state == ViewState.Busy
-            ? Center(child: CircularProgressIndicator())
-            : Container(
-                padding: const EdgeInsets.all(6),
-                child: GridView.builder(
-                  itemCount: model.categories.length,
-                  gridDelegate:
-                      new SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 6,
-                          crossAxisSpacing: 6),
-                  itemBuilder: (BuildContext context, int index) {
-                    return item(
-                      title: model.categories[index].name,
-                      assetImage: "",
-                      backGround: Colors.lightBlue,
-                      onPress: () {
-                        args = {
-                          'branchName': branchName,
-                          'filteredProducts': filterProducts(
-                              model.products,
-                              model.categories[index].name),
-                        };
-                        Navigator.pushNamed(context, "/products",
-                            arguments: args);
-                      },
-                    );
-                  },
-                ),
-              ),
-      ),
-    );
-  }
-}
+import 'package:flutter/cupertino.dart';import 'package:flutter/material.dart';import 'package:gym_bar/core/models/category.dart';import 'package:gym_bar/core/view_models/branch_model.dart';import 'package:gym_bar/core/view_models/category_model.dart';import 'package:gym_bar/core/view_models/product_model.dart';import 'package:gym_bar/ui/shared/dimensions.dart';import 'package:gym_bar/ui/widgets/custom_card_item.dart';import 'package:provider/provider.dart';class Categories extends StatelessWidget {  @override  Widget build(BuildContext context) {    CustomCardItem cardItem = CustomCardItem(context: context);    Dimensions _dimensions = Dimensions(context);    CategoryModel categoryModel = Provider.of<CategoryModel>(context);    List<Category> categories = categoryModel.categories;    ProductModel productModel =        Provider.of<ProductModel>(context, listen: false);    var branch = Provider.of<BranchModel>(context).selectedBranch;    return Scaffold(        appBar: AppBar(          title: Text("اختر نوع المنتج"),        ),        body: categories == null            ? Center(child: CircularProgressIndicator())            : CustomScrollView(                slivers: <Widget>[                  SliverGrid(                    gridDelegate:                        SliverGridDelegateWithFixedCrossAxisCount(                            crossAxisCount: 2),                    delegate: SliverChildBuilderDelegate(                      (BuildContext context, int index) {                        return categories.isEmpty                            ? Center(child: Text('لا يوجد منتجات هنا'))                            : Padding(                                padding: EdgeInsets.only(                                    left: _dimensions.widthPercent(1),                                    top: _dimensions.heightPercent(3),                                    right: _dimensions.widthPercent(1)),                                child: cardItem.item(                                    onPress: () {                                      productModel                                          .fetchProductByCategoryName(                                              branchName: branch,                                              categoryName:                                                  categories[index].name);                                      Navigator.pushNamed(                                          context, '/products');                                    },                                    networkImage:                                        "https://www.cybrosys.com/odoo-apps/uploads/appimg/pos-product-category-filter.png",                                    title: categories[index].name),                              );                      },                      childCount: categories.length,                    ),                  ),                  SliverList(                    delegate: SliverChildListDelegate(                      [],                    ),                  ),                ],              ));  }}

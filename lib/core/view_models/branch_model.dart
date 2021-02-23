@@ -1,27 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/services/api.dart';
-import 'package:gym_bar/core/view_models/base_model.dart';
 
-import '../locator.dart';
+class BranchModel extends ChangeNotifier {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  String _selectedBranch;
 
-class BranchModel extends BaseModel {
-  Api _api = locator<Api>();
+  String get selectedBranch => _selectedBranch;
 
-  List<Branch> branches;
-
-  Future addBranch(Branch branch) async {
-    setState(ViewState.Busy);
-    await _api.addDocument(branch.toJson(), "branches");
-    setState(ViewState.Idle);
+  set selectedBranch(String value) {
+    _selectedBranch = value;
+    notifyListeners();
   }
 
-  Future fetchBranches() async {
-    setState(ViewState.Busy);
-    var result = await _api.getDataCollection("branches");
-    branches = result.docs
-        .map((doc) => Branch.fromMap(doc.data(), doc.id))
-        .toList();
-    setState(ViewState.Idle);
+  Future addBranch(Branch branch) async {
+    _db.collection("branches/").add(branch.toJson());
+  }
+
+  Stream<List<Branch>> fetchBranches() {
+    return _db.collection("branches").snapshots().map((snapShot) =>
+        snapShot.docs
+            .map((doc) => Branch.fromMap(doc.data(), doc.id))
+            .toList());
+  }
+
+  Stream get snapshot async* {
+    yield await _db
+        .collection("branches")
+        .get()
+        .then((QuerySnapshot snapshot) => snapshot);
   }
 }

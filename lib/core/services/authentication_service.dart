@@ -1,58 +1,45 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/models/user.dart';
-
-import '../locator.dart';
 import 'api.dart';
 
 class AuthenticationService {
-  Api _api = locator<Api>();
-  StreamController<UserProfile> userController =
-      StreamController<UserProfile>();
+  Api _api;
 
-  Future<bool> login(String email, String password) async {
-    final UserCredential userCredential =
-        (await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    ));
+  UserProfile _fetchedUser;
 
-    print("agagagaggagagaagagaga user ID is:  ${userCredential.user.uid}");
-    var fetchedUser = await _api.getUserProfile(userCredential.user.uid);
-    if (userCredential != null) {
-      userController.add(fetchedUser);
-    }
-    return userCredential != null;
-  }
-
-  // ignore: missing_return
-  Future<String> signUp(String email, String password) async {
-    try {
-      final UserCredential userCredential =
-          (await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      ));
-      return userCredential.user.uid;
-    } catch (e) {
-      print('catching error...');
-      print(e);
-      getExceptionText(e);
-    }
-  }
+  // Future<UserProfile> authenticateUser(String email, String password) async {
+  //   final UserCredential userCredential =
+  //       (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //     email: email,
+  //     password: password,
+  //   ));
+  //
+  //   if (userCredential != null) {
+  //     _fetchedUser = await _api.getUserProfile(userCredential.user.uid);
+  //   }
+  //
+  //   return _fetchedUser;
+  // }
+  //
+  // Future<String> signUp(String email, String password) async {
+  //   final UserCredential userCredential =
+  //       (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //     email: email,
+  //     password: password,
+  //   ));
+  //   return userCredential.user.uid;
+  // }
 
   static void addUserDB(UserProfile user) async {
     Api.checkDocExist("users", user.id).then((value) {
       if (!value) {
         print("user ${user.name} ${user.email} ${user.photo}added");
         FirebaseFirestore.instance
-            .collection("users")
-            .doc(user.id)
-            .set(user.toJson());
+            .collection("users/${user.id}")
+            .add(user.toJson());
       } else {
         print("user ${user.name} ${user.email} exists");
       }
@@ -60,38 +47,35 @@ class AuthenticationService {
   }
 
   static void addEmployeeDB(Employee employee, branchName) async {
-    Api.checkDocExist("employees/branches/$branchName", employee.id)
-        .then((value) {
+    Api.checkDocExist("employees", employee.id).then((value) {
       if (!value) {
         FirebaseFirestore.instance
-            .collection("employees/branches/$branchName")
-            .doc(employee.id)
-            .set(employee.toJson());
+            .collection("employees/branches/$branchName/${employee.id}")
+            .add(employee.toJson());
       } else {
         print("user ${employee.name} ${employee.email} exists");
       }
     });
   }
 
-//
-//  static Future<bool> checkEmployeeExist(String employeeId) async {
-//    bool exists = false;
-//    try {
-//      await FirebaseFirestore.instance
-//          .collection("employee")
-//          .doc(employeeId)
-//          .get()
-//          .then((DocumentSnapshot documentSnapshot) {
-//        if (documentSnapshot.exists)
-//          exists = true;
-//        else
-//          exists = false;
-//      });
-//      return exists;
-//    } catch (e) {
-//      return false;
-//    }
-//  }
+  static Future<bool> checkEmployeeExist(String employeeId) async {
+    bool exists = false;
+    try {
+      await FirebaseFirestore.instance
+          .collection("employee")
+          .doc(employeeId)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
+  }
 
   static String getExceptionText(Exception e) {
     if (e is PlatformException) {

@@ -1,93 +1,130 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:gym_bar/core/models/total.dart';
+import 'package:gym_bar/core/view_models/branch_model.dart';
+import 'package:gym_bar/core/view_models/category_model.dart';
+import 'package:gym_bar/core/view_models/client_model.dart';
+import 'package:gym_bar/core/view_models/employee_model.dart';
+import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/ui/responsive/screen_type_layout.dart';
+import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
-import 'package:gym_bar/ui/shared/ui_helpers.dart';
-import 'package:gym_bar/ui/widgets/home_item.dart';
+import 'package:gym_bar/ui/widgets/custom_card_item.dart';
+import 'package:provider/provider.dart';
 
 class Details extends StatelessWidget {
-  final String branchName;
-  final bool notificationOn = false;
-
-  Details({this.branchName});
-
-  quickReport() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 10, top: 5),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Text(
-              ": الشهر الحالي",
-              style: formTitleStyle,
-            ),
-            UIHelper.verticalSpaceSmall(),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    //todo: calculate revenue here!!
-                    "2000",
-                    style: dropDownLabelsStyle,
-                  ),
-                  Text(
-                    "الربح",
-                    style: formTitleStyleSmall,
-                  ),
-                ],
-              ),
-            ),
-            UIHelper.verticalSpaceSmall(),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    //todo: calculate السحب الشخصي !!
-                    "2000",
-                    style: dropDownLabelsStyle,
-                  ),
-                  Text(
-                    "السحب الشخصي",
-                    style: formTitleStyleSmall,
-                  ),
-                ],
-              ),
-            )
-          ]),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    Dimensions _dimensions = Dimensions(context);
+    CustomCardItem _homeItem = CustomCardItem(context: context);
+    TextStyles _textStyles = TextStyles(context: context);
+    ClientModel clientModel =
+        Provider.of<ClientModel>(context, listen: false);
+
+    EmployeeModel employeeModel =
+        Provider.of<EmployeeModel>(context, listen: false);
+
+    TransactionModel transactionModel =
+        Provider.of<TransactionModel>(context, listen: false);
+
+    BranchModel branchModel = Provider.of<BranchModel>(context);
+
+    CategoryModel categoryModel =
+        Provider.of<CategoryModel>(context, listen: false);
+
+    quickReport() {
+      return Padding(
+        padding: EdgeInsets.only(
+            right: _dimensions.widthPercent(2),
+            top: _dimensions.heightPercent(2)),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text(": الشهر الحالي",
+                  style: _textStyles.detailsBoldTitlesStyle()),
+              SizedBox(height: _dimensions.heightPercent(2)),
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: _dimensions.heightPercent(3.5)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Consumer<String>(
+                      builder:
+                          (BuildContext context, total, Widget child) {
+                        return Text(
+                          total == null ? "" : total,
+                          style: _textStyles.detailsTitlesStyle(),
+                        );
+                      },
+                    ),
+                    Text(
+                      "الخزنة",
+                      style: _textStyles.detailsBoldTitlesStyle(),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: _dimensions.heightPercent(2)),
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: _dimensions.heightPercent(3.5)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "2000",
+                      style: _textStyles.detailsTitlesStyle(),
+                    ),
+                    Text(
+                      "السحب الشخصي",
+                      style: _textStyles.detailsBoldTitlesStyle(),
+                    ),
+                  ],
+                ),
+              )
+            ]),
+      );
+    }
+
     var floatingButtons = [
       SpeedDialChild(
-          child: Icon(Icons.library_add),
+          child: Icon(
+            Icons.add_business,
+            color: Colors.white,
+          ),
           backgroundColor: Colors.red,
-          label: 'صفحة الأضافات',
+          label: 'منتج',
           labelStyle: TextStyle(fontSize: 18.0),
           onTap: () {
-            Navigator.pushNamed(context, "/add", arguments: branchName);
+            Navigator.pushNamed(context, "/add_product");
           }),
       SpeedDialChild(
-          child: Icon(Icons.collections_bookmark),
+          child: Icon(
+            Icons.person_add,
+            color: Colors.white,
+          ),
+          backgroundColor: Colors.green,
+          label: 'موظف او عميل   ',
+          labelStyle: TextStyle(fontSize: 18.0),
+          onTap: () {
+            Navigator.pushNamed(context, "/add_client");
+          }),
+      SpeedDialChild(
+          child: Icon(Icons.collections_bookmark, color: Colors.white),
           backgroundColor: Colors.blue,
           label: 'عملية شراء',
           labelStyle: TextStyle(fontSize: 18.0),
           onTap: () {
-            Navigator.pushNamed(context, "/add_purchase",
-                arguments: branchName);
+            Navigator.pushNamed(context, "/add_purchase");
           }),
     ];
     var floating = SpeedDial(
       overlayColor: Colors.black,
-      animatedIcon: AnimatedIcons.menu_close,
-      onOpen: () => print('OPENING DIAL'),
-      onClose: () => print('DIAL CLOSED'),
+      icon: Icons.add,
+      // onOpen: () => print('OPENING DIAL'),
+      // onClose: () => print('DIAL CLOSED'),
       tooltip: 'إضافة',
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
@@ -112,56 +149,52 @@ class Details extends StatelessWidget {
                               crossAxisSpacing: 6),
                       delegate: SliverChildListDelegate(
                         [
-                          item(
+                          _homeItem.item(
                             title: "المبيعات",
                             assetImage: "assets/images/clients.jpeg",
                             onPress: () {
-                              print("branch is $branchName");
-                              Map<String, dynamic> args = {
-                                "isSells": true,
-                                "branchName": branchName
-                              };
-                              Navigator.pushNamed(context, '/choose_date',
-                                  arguments: args);
+                              transactionModel.isSales = true;
+                              Navigator.pushNamed(context, '/choose_date');
                             },
                           ),
-                          item(
+                          _homeItem.item(
                             title: "المشتريات",
                             assetImage: "assets/images/employers.jpg",
                             onPress: () {
-                              Map<String, dynamic> args = {
-                                "isSells": false,
-                                "branchName": branchName
-                              };
-                              Navigator.pushNamed(context, '/choose_date',
-                                  arguments: args);
+                              transactionModel.isSales = false;
+                              Navigator.pushNamed(context, '/choose_date');
                             },
                           ),
-                          item(
+                          _homeItem.item(
                             title: "العملاء",
                             assetImage: "assets/images/clients.jpeg",
                             onPress: () {
-                              Navigator.pushNamed(context, '/clients',
-                                  arguments: branchName);
+                              clientModel.fetchClients(
+                                  branchName: branchModel.selectedBranch);
+                              Navigator.pushNamed(
+                                  context, '/clients_list');
                             },
                           ),
-                          item(
+                          _homeItem.item(
                             title: "الموظفين",
                             assetImage: "assets/images/employers.jpg",
                             onPress: () {
-                              Navigator.pushNamed(context, '/employees',
-                                  arguments: branchName);
+                              employeeModel.fetchEmployees(
+                                  branchName: branchModel.selectedBranch);
+
+                              Navigator.pushNamed(
+                                  context, '/employees_list');
                             },
                           ),
-                          item(
+                          _homeItem.item(
                             title: "المنتجات",
                             assetImage: "assets/images/products.jpg",
                             onPress: () {
-                              Navigator.pushNamed(context, '/categories',
-                                  arguments: branchName);
+                              categoryModel.fetchCategories();
+                              Navigator.pushNamed(context, '/categories');
                             },
                           ),
-                          item(
+                          _homeItem.item(
                             title: "التحميلات",
                             assetImage: "assets/images/employers.jpg",
                             onPress: () {},
@@ -180,29 +213,57 @@ class Details extends StatelessWidget {
             ),
           ],
         );
+
     return ScreenTypeLayout(
       mobile: Scaffold(
         floatingActionButton: floating,
         appBar: AppBar(
           actions: <Widget>[
-            IconButton(
-              icon: notificationOn
-                  ? Icon(
-                      Icons.notification_important,
-                      color: Colors.amber,
-                      size: 30,
-                    )
-                  : Icon(
-                      Icons.notifications,
-                      color: Colors.amber,
-                      size: 30,
+            Stack(
+              children: <Widget>[
+                Icon(
+                  Icons.notifications,
+                  color: Colors.amber,
+                  size: 35,
+                ),
+                Positioned(
+                  right: 0,
+                  child: Container(
+                    padding: EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-              onPressed: () {},
+                    constraints: BoxConstraints(
+                      minWidth: 17,
+                      minHeight: 17,
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          '3',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
-            SizedBox(width: 10)
+            SizedBox(width: 15),
+            //todo: add to UIHelper
           ],
           elevation: 0,
-          title: Text(branchName),
+          title: Consumer<BranchModel>(
+              builder: (context, branchModel, _) =>
+                  Text(branchModel.selectedBranch)),
         ),
         body: body(),
       ),

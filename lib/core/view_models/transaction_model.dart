@@ -1,121 +1,152 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:gym_bar/core/enums.dart';
-import 'package:gym_bar/core/locator.dart';
-import 'package:gym_bar/core/models/product.dart';
-import 'package:gym_bar/core/models/total.dart';
-import 'package:gym_bar/core/models/transaction.dart';
-import 'package:gym_bar/core/services/api.dart';
-import 'package:gym_bar/core/view_models/base_model.dart';
+import 'package:gym_bar/core/models/my_transaction.dart';
+import 'package:intl/intl.dart';
 
-class TransactionModel extends BaseModel {
-  Api _api = locator<Api>();
-  List<Transaction> transaction;
-  List<Total> total;
-  Product product;
+class TransactionModel extends ChangeNotifier {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future addTransaction({Transaction transaction, branchName}) async {
-    setState(ViewState.Busy);
-    await _api.addDocument(
-        transaction.toJson(), "transactions/branches/$branchName");
-    setState(ViewState.Idle);
+  List<MyTransaction> _transaction;
+
+  List<MyTransaction> get transaction => _transaction;
+
+  MyTransaction _selectedTransaction;
+
+  MyTransaction get selectedTransaction => _selectedTransaction;
+
+  set selectedTransaction(MyTransaction value) {
+    _selectedTransaction = value;
+    notifyListeners();
   }
 
-  Future<List<Transaction>> fetchTransaction({branchName}) async {
+  List<MyTransaction> _filteredTransactions;
+
+  List<MyTransaction> get filteredTransactions => _filteredTransactions;
+
+  set filteredTransactions(List<MyTransaction> value) {
+    _filteredTransactions = value;
+    notifyListeners();
+  }
+
+  bool _isSales;
+
+  bool get isSales => _isSales;
+
+  set isSales(bool value) {
+    _isSales = value;
+    notifyListeners();
+  }
+
+  String _chosenDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  String get chosenDate => _chosenDate;
+
+  set chosenDate(String value) {
+    _chosenDate = value;
+    notifyListeners();
+  }
+
+  Status _status = Status.Busy;
+
+  Status get status => _status;
+
+  bool _hourAscending = false;
+  bool _amountAscending = false;
+
+  IconData sortHourIcon = Icons.sort;
+  IconData sortAmountIcon = Icons.sort;
+
+  onSortAmount() {
+    _amountAscending = !_amountAscending;
+
+    if (_amountAscending) {
+      sortAmountIcon = Icons.keyboard_arrow_down;
+      sortHourIcon = Icons.sort;
+
+      filteredTransactions.sort(
+          (a, b) => a.transactionAmount.compareTo(b.transactionAmount));
+    } else {
+      sortAmountIcon = Icons.keyboard_arrow_up;
+      sortHourIcon = Icons.sort;
+
+      filteredTransactions.sort(
+          (a, b) => b.transactionAmount.compareTo(a.transactionAmount));
+    }
+    notifyListeners();
+  }
+
+  onSortHour() {
+    _hourAscending = !_hourAscending;
+    if (_hourAscending) {
+      sortHourIcon = Icons.keyboard_arrow_down;
+      sortAmountIcon = Icons.sort;
+
+      filteredTransactions.sort((a, b) => a.hour.compareTo(b.hour));
+    } else {
+      sortHourIcon = Icons.keyboard_arrow_up;
+      sortAmountIcon = Icons.sort;
+
+      filteredTransactions.sort((a, b) => b.hour.compareTo(a.hour));
+    }
+    notifyListeners();
+  }
+
+  resetSort() {
+    _hourAscending = false;
+    _amountAscending = false;
+
+    sortHourIcon = Icons.sort;
+    sortAmountIcon = Icons.sort;
+  }
+
+  Future fetchTransaction({branchName}) async {
+    _status = Status.Busy;
     var result =
-        await _api.getDataCollection("transactions/branches/$branchName/");
-    transaction = result.docs
-        .map((doc) => Transaction.fromMap(doc.data(), doc.id))
+        await _db.collection("transactions/branches/$branchName/").get();
+
+    _transaction = result.docs
+        .map((doc) => MyTransaction.fromMap(doc.data(), doc.id))
         .toList();
-    return transaction;
+    _status = Status.Idle;
+    notifyListeners();
   }
 
-  Future fetchFilteredTransaction({
-    branchName,
-    field,
-    equalTo,
-    field2,
-    equalTo2,
-    field3,
-    equalTo3,
-    field4,
-    equalTo4,
-  }) async {
-    setState(ViewState.Busy);
-    print(field2);
-    print(equalTo2);
-    var result = await _api.getCustomDataCollection(
-      path: "transactions/branches/$branchName/",
-      field: field,
-      equalTo: equalTo,
-      field2: field2,
-      equalTo2: equalTo2,
-      field3: field3,
-      equalTo3: equalTo3,
-      field4: field4,
-      equalTo4: equalTo4,
-    );
-    transaction = result.docs
-        .map((doc) => Transaction.fromMap(doc.data(), doc.id))
+  Future fetchTransactionByTypeAndDate({branchName, type, date}) async {
+    resetSort();
+    _status = Status.Busy;
+    var result = await _db
+        .collection("transactions/branches/$branchName/")
+        .where("transactionType", isEqualTo: type)
+        .where("date", isEqualTo: date)
+        .get();
+    _filteredTransactions = result.docs
+        .map((doc) => MyTransaction.fromMap(doc.data(), doc.id))
         .toList();
-    setState(ViewState.Idle);
+    _status = Status.Idle;
+    notifyListeners();
   }
 
-//  Future fetchTotal({docId}) async {
-//    setState(ViewState.Busy);
-//    await _api.getDocumentById('total', docId).then((ds) {
-//      total = Total.fromMap(ds.data(), ds.id);
-//    });
-//
-//    print("total cash is: ");
-//    print(total.cash);
-//
-//    setState(ViewState.Idle);
-//  }
-
-  Future fetchTotal() async {
-    setState(ViewState.Busy);
-    var result = await _api.getDataCollection("total");
-    total = result.docs
-        .map((doc) => Total.fromMap(doc.data(), doc.id))
+  Future fetchTransactionByCustomerName({branchName, customerName}) async {
+    resetSort();
+    _status = Status.Busy;
+    var result = await _db
+        .collection("transactions/branches/$branchName/")
+        .where("customerName", isEqualTo: customerName)
+        .get();
+    _filteredTransactions = result.docs
+        .map((doc) => MyTransaction.fromMap(doc.data(), doc.id))
         .toList();
-    setState(ViewState.Idle);
-    return total;
+    _status = Status.Idle;
+    notifyListeners();
   }
 
-  updateTotal({docId, Map<String, dynamic> data}) async {
-    await _api.updateDocument(docId, data, "total");
+  Future addTransaction({MyTransaction transaction, branchName}) async {
+    _status = Status.Busy;
+    _db
+        .collection("transactions/branches/$branchName")
+        .add(transaction.toJson());
+    _status = Status.Idle;
+    notifyListeners();
   }
-
-  updateProducts(
-      {branchName, Map<String, dynamic> data, productId}) async {
-    setState(ViewState.Busy);
-    print('printing from method........');
-    print(branchName);
-    print(productId);
-    print(data);
-    print('Done Printingggggggg.............:D');
-    await _api.updateDocument(
-        productId, data, "products/branches/$branchName/");
-    setState(ViewState.Idle);
-  }
-
-  Future fetchTotalAndProduct({branchName, productId}) async {
-    setState(ViewState.Busy);
-    var result = await _api.getDataCollection("total");
-    total = result.docs
-        .map((doc) => Total.fromMap(doc.data(), doc.id))
-        .toList();
-
-    await _api
-        .getDocumentById("products/branches/$branchName/", productId)
-        .then((ds) {
-      product = Product.fromMap(ds.data(), ds.id);
-    });
-
-    setState(ViewState.Idle);
-  }
-
-
-  addWithdraw() {}
-
-  addDeposit() {}
 }
