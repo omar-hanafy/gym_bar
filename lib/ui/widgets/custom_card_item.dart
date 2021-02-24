@@ -29,9 +29,8 @@ class CustomCardItem {
         onTapCancel: onTapCancel,
         onTap: onPress,
         child: Card(
-          shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(_dimensions.heightPercent(1))),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(_dimensions.heightPercent(1))),
           elevation: 5,
           color: networkImage == null ? backGround : Colors.black,
           semanticContainer: true,
@@ -49,10 +48,8 @@ class CustomCardItem {
                       ? CachedNetworkImage(
                           fit: BoxFit.fill,
                           imageUrl: networkImage,
-                          placeholder: (context, url) =>
-                              Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) =>
-                              new Icon(Icons.error),
+                          placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => new Icon(Icons.error),
                         )
                       : Image.asset(assetImage, fit: BoxFit.fill),
                 ),
@@ -71,8 +68,7 @@ class CustomCardItem {
         ));
   }
 
-  titleStatistics(
-      {bool bigTitle, title, statistics, topSpace, betweenSpace}) {
+  titleStatistics({bool bigTitle, title, statistics, topSpace, betweenSpace}) {
     TextStyles _textStyles = TextStyles(context: context);
 
     return Column(
@@ -85,9 +81,7 @@ class CustomCardItem {
         betweenSpace != null ? betweenSpace : SizedBox(),
         Text(
           title,
-          style: bigTitle
-              ? _textStyles.itemImageTitle()
-              : _textStyles.itemImageTitleSmall(),
+          style: bigTitle ? _textStyles.itemImageTitle() : _textStyles.itemImageTitleSmall(),
         ),
       ],
     );
@@ -98,9 +92,7 @@ class CustomCardItem {
 
     return Text(
       title,
-      style: bigTitle
-          ? _textStyles.itemImageTitle()
-          : _textStyles.itemImageTitleSmall(),
+      style: bigTitle ? _textStyles.itemImageTitle() : _textStyles.itemImageTitleSmall(),
     );
   }
 }

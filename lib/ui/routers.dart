@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gym_bar/ui/views/add/add_person.dart';
+import 'package:gym_bar/ui/views/add/add_product.dart';
 import 'package:gym_bar/ui/views/details/Purchases_and_sales/choose_date.dart';
 import 'package:gym_bar/ui/views/branches.dart';
 import 'package:gym_bar/ui/views/details/Purchases_and_sales/Purchases_and_sales.dart';
@@ -10,7 +12,6 @@ import 'package:gym_bar/ui/views/details/products/categories.dart';
 import 'package:gym_bar/ui/views/details/products/product_profile.dart';
 import 'package:gym_bar/ui/views/details/products/products.dart';
 import 'package:gym_bar/ui/views/details/purchases_and_sales/selected_transaction.dart';
-
 import 'views/details/details.dart';
 
 class Routers {
@@ -102,15 +103,11 @@ class Routers {
 
       //ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD
 
-      // case '/add_product':
-      //   var branch = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => AddProduct(branchName: branch));
+      case '/add_product':
+        return MaterialPageRoute(builder: (_) => AddProduct());
 
-      // case '/add_client':
-      //   var branch = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => AddClient(branchName: branch));
+      case '/add_person':
+        return MaterialPageRoute(builder: (_) => AddPerson());
       //
       // case '/add_purchase':
       //   var branch = settings.arguments;
@@ -135,9 +132,7 @@ class Routers {
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
-                  body: Center(
-                      child:
-                          Text('No route defined for ${settings.name}')),
+                  body: Center(child: Text('No route defined for ${settings.name}')),
                 ));
     }
   }

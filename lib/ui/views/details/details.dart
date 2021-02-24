@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:gym_bar/core/models/total.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
@@ -13,78 +12,84 @@ import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/widgets/custom_card_item.dart';
 import 'package:provider/provider.dart';
 
-class Details extends StatelessWidget {
+class Details extends StatefulWidget {
+  @override
+  _DetailsState createState() => _DetailsState();
+}
+
+class _DetailsState extends State<Details> {
+  var _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      // Provider.of<BranchModel>(context).fetchBranches();
+      Provider.of<CategoryModel>(context).fetchCategories();
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     Dimensions _dimensions = Dimensions(context);
     CustomCardItem _homeItem = CustomCardItem(context: context);
     TextStyles _textStyles = TextStyles(context: context);
-    ClientModel clientModel =
-        Provider.of<ClientModel>(context, listen: false);
+    ClientModel clientModel = Provider.of<ClientModel>(context, listen: false);
 
-    EmployeeModel employeeModel =
-        Provider.of<EmployeeModel>(context, listen: false);
+    EmployeeModel employeeModel = Provider.of<EmployeeModel>(context, listen: false);
 
-    TransactionModel transactionModel =
-        Provider.of<TransactionModel>(context, listen: false);
+    TransactionModel transactionModel = Provider.of<TransactionModel>(context, listen: false);
 
     BranchModel branchModel = Provider.of<BranchModel>(context);
 
-    CategoryModel categoryModel =
-        Provider.of<CategoryModel>(context, listen: false);
+    CategoryModel categoryModel = Provider.of<CategoryModel>(context, listen: false);
 
     quickReport() {
       return Padding(
         padding: EdgeInsets.only(
-            right: _dimensions.widthPercent(2),
-            top: _dimensions.heightPercent(2)),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Text(": الشهر الحالي",
-                  style: _textStyles.detailsBoldTitlesStyle()),
-              SizedBox(height: _dimensions.heightPercent(2)),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: _dimensions.heightPercent(3.5)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Consumer<String>(
-                      builder:
-                          (BuildContext context, total, Widget child) {
-                        return Text(
-                          total == null ? "" : total,
-                          style: _textStyles.detailsTitlesStyle(),
-                        );
-                      },
-                    ),
-                    Text(
-                      "الخزنة",
-                      style: _textStyles.detailsBoldTitlesStyle(),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: _dimensions.heightPercent(2)),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: _dimensions.heightPercent(3.5)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "2000",
+            right: _dimensions.widthPercent(2), top: _dimensions.heightPercent(2)),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
+          Text(": الشهر الحالي", style: _textStyles.detailsBoldTitlesStyle()),
+          SizedBox(height: _dimensions.heightPercent(2)),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: _dimensions.heightPercent(3.5)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Consumer<String>(
+                  builder: (BuildContext context, total, Widget child) {
+                    return Text(
+                      total == null ? "" : total,
                       style: _textStyles.detailsTitlesStyle(),
-                    ),
-                    Text(
-                      "السحب الشخصي",
-                      style: _textStyles.detailsBoldTitlesStyle(),
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              )
-            ]),
+                Text(
+                  "الخزنة",
+                  style: _textStyles.detailsBoldTitlesStyle(),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: _dimensions.heightPercent(2)),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: _dimensions.heightPercent(3.5)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "2000",
+                  style: _textStyles.detailsTitlesStyle(),
+                ),
+                Text(
+                  "السحب الشخصي",
+                  style: _textStyles.detailsBoldTitlesStyle(),
+                ),
+              ],
+            ),
+          )
+        ]),
       );
     }
 
@@ -109,7 +114,7 @@ class Details extends StatelessWidget {
           label: 'موظف او عميل   ',
           labelStyle: TextStyle(fontSize: 18.0),
           onTap: () {
-            Navigator.pushNamed(context, "/add_client");
+            Navigator.pushNamed(context, "/add_person");
           }),
       SpeedDialChild(
           child: Icon(Icons.collections_bookmark, color: Colors.white),
@@ -137,16 +142,12 @@ class Details extends StatelessWidget {
             quickReport(),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10, horizontal: 6),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
                 child: CustomScrollView(
                   slivers: <Widget>[
                     SliverGrid(
-                      gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 6,
-                              crossAxisSpacing: 6),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, mainAxisSpacing: 6, crossAxisSpacing: 6),
                       delegate: SliverChildListDelegate(
                         [
                           _homeItem.item(
@@ -169,10 +170,8 @@ class Details extends StatelessWidget {
                             title: "العملاء",
                             assetImage: "assets/images/clients.jpeg",
                             onPress: () {
-                              clientModel.fetchClients(
-                                  branchName: branchModel.selectedBranch);
-                              Navigator.pushNamed(
-                                  context, '/clients_list');
+                              clientModel.fetchClients(branchName: branchModel.selectedBranch);
+                              Navigator.pushNamed(context, '/clients_list');
                             },
                           ),
                           _homeItem.item(
@@ -182,15 +181,13 @@ class Details extends StatelessWidget {
                               employeeModel.fetchEmployees(
                                   branchName: branchModel.selectedBranch);
 
-                              Navigator.pushNamed(
-                                  context, '/employees_list');
+                              Navigator.pushNamed(context, '/employees_list');
                             },
                           ),
                           _homeItem.item(
                             title: "المنتجات",
                             assetImage: "assets/images/products.jpg",
                             onPress: () {
-                              categoryModel.fetchCategories();
                               Navigator.pushNamed(context, '/categories');
                             },
                           ),
@@ -262,8 +259,7 @@ class Details extends StatelessWidget {
           ],
           elevation: 0,
           title: Consumer<BranchModel>(
-              builder: (context, branchModel, _) =>
-                  Text(branchModel.selectedBranch)),
+              builder: (context, branchModel, _) => Text(branchModel.selectedBranch)),
         ),
         body: body(),
       ),

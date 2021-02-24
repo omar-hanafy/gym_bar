@@ -16,8 +16,7 @@ class Branches extends StatefulWidget {
 class _BranchesState extends State<Branches> {
   @override
   Widget build(BuildContext context) {
-    BranchModel branchModel =
-        Provider.of<BranchModel>(context, listen: false);
+    BranchModel branchModel = Provider.of<BranchModel>(context, listen: false);
 
     Dimensions _dimensions = Dimensions(context);
 
@@ -33,15 +32,13 @@ class _BranchesState extends State<Branches> {
                 FlatButton(
                   child: Text('إلغاء'),
                   onPressed: () {
-                    Navigator.of(dialogContext)
-                        .pop(); // Dismiss alert dialog
+                    Navigator.of(dialogContext).pop(); // Dismiss alert dialog
                   },
                 ),
                 FlatButton(
                   child: Text('إضافة الفرع'),
                   onPressed: () {
-                    Navigator.of(dialogContext)
-                        .pop(); // Dismiss alert dialog
+                    Navigator.of(dialogContext).pop(); // Dismiss alert dialog
                   },
                 ),
               ],
@@ -73,24 +70,19 @@ class _BranchesState extends State<Branches> {
                           Expanded(
                             child: ListView.builder(
                                 itemCount: branches.length,
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  return Container(
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
                                     padding: EdgeInsets.symmetric(
-                                        vertical:
-                                            _dimensions.heightPercent(1),
-                                        horizontal:
-                                            _dimensions.widthPercent(4)),
+                                        horizontal: _dimensions.widthPercent(7),
+                                        vertical: _dimensions.heightPercent(1)),
                                     child: CustomCardItem(context: context).item(
                                       bigTitle: true,
                                       title: (branches[index].name),
                                       networkImage:
                                           "https://www.fue.edu.eg/ImageHandler.ashx?Id=30076&SS=c2dfa95b9e37d08f5c875eb80951e7cb",
                                       onPress: () {
-                                        branchModel.selectedBranch =
-                                            branches[index].name;
-                                        Navigator.pushNamed(
-                                            context, '/details');
+                                        branchModel.selectedBranch = branches[index].name;
+                                        Navigator.pushNamed(context, '/details');
                                       },
                                     ),
                                   );
@@ -99,8 +91,7 @@ class _BranchesState extends State<Branches> {
                         ],
                       )
                     : Center(
-                        child: Text(
-                            "لم نجد اية فروع, من فضلك اضغط على الزر السفلي لاضافة اول فرع لك"),
+                        child: Text("لم نجد اية فروع, من فضلك اضغط على الزر السفلي لاضافة اول فرع لك"),
                       )),
         // tablet: HomeTablet(branches: branches),
       );

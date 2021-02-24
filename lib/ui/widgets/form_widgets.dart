@@ -15,9 +15,7 @@ class FormWidget {
       child: Container(
         child: CircleAvatar(
           child: ClipOval(child: imageContent),
-          backgroundColor: backgroundColor != null
-              ? backgroundColor
-              : Colors.blueAccent,
+          backgroundColor: backgroundColor != null ? backgroundColor : Colors.blueAccent,
           maxRadius: _dimensions.heightPercent(8),
 //          backgroundImage: imageContent,
         ),
@@ -35,6 +33,7 @@ class FormWidget {
     hint,
     ValueChanged<String> onChanged,
     secure = false,
+    border = true,
     double height = 51,
     double left = 10,
     double right = 10,
@@ -43,8 +42,7 @@ class FormWidget {
   }) {
     TextStyles _textStyles = TextStyles(context: context);
     return Container(
-      margin: EdgeInsets.only(
-          left: left, right: right, bottom: bottom, top: top),
+      margin: EdgeInsets.only(left: left, right: right, bottom: bottom, top: top),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Container(
@@ -56,18 +54,18 @@ class FormWidget {
             obscureText: secure,
             textAlign: TextAlign.right,
             decoration: InputDecoration(
-              isDense: true,
+                isDense: true,
 //            contentPadding: EdgeInsets.only(top: height, right: 10,),
-              labelStyle: _textStyles.formLabelsStyle(),
-
-              labelText: hint,
+                labelStyle: _textStyles.formLabelsStyle(),
+                labelText: hint,
 //          hintStyle: TextStyle(decoration: ),
-              border: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-              ),
-            ),
+                border: border
+                    ? OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      )
+                    : null),
           ),
         ),
       ),
@@ -99,8 +97,7 @@ class FormWidget {
           style: _textStyles.formLabelsStyle(),
         ),
         onPressed: onTab,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
     );
   }
@@ -110,8 +107,7 @@ class FormWidget {
     TextStyles _textStyles = TextStyles(context: context);
     return Padding(
         padding: EdgeInsets.symmetric(
-            vertical: _dimensions.heightPercent(1),
-            horizontal: _dimensions.widthPercent(1)),
+            vertical: _dimensions.heightPercent(1), horizontal: _dimensions.widthPercent(1)),
         child: TextField(
           textAlign: TextAlign.right,
           controller: controller,
@@ -119,15 +115,12 @@ class FormWidget {
           style: _textStyles.searchTextFieldStyle(),
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                    Radius.circular(_dimensions.heightPercent(7))),
+                borderRadius: BorderRadius.all(Radius.circular(_dimensions.heightPercent(7))),
                 borderSide: BorderSide(color: Colors.black54),
               ),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(_dimensions.heightPercent(7))),
-                  borderSide:
-                      BorderSide(color: Theme.of(context).primaryColor)),
+                  borderRadius: BorderRadius.all(Radius.circular(_dimensions.heightPercent(7))),
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor)),
               suffixIcon: Icon(Icons.search),
               border: InputBorder.none,
               hintText: "... ابحث هنا",

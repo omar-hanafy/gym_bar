@@ -4,7 +4,6 @@ import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
-import 'package:gym_bar/ui/shared/ui_helpers.dart';
 import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:provider/provider.dart';
 
