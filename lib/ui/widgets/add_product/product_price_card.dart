@@ -5,6 +5,10 @@ import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:provider/provider.dart';
 
 class ProductPriceCard extends StatelessWidget {
+  final formKey;
+
+  const ProductPriceCard({Key key, this.formKey}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     FormWidget _formWidget = FormWidget(context: context);
@@ -16,32 +20,35 @@ class ProductPriceCard extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 300),
-              child: Text(
-                "السعر",
-                // style: formTitleStyle,
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 300),
+                child: Text(
+                  "السعر",
+                  // style: formTitleStyle,
+                ),
               ),
-            ),
-            _formWidget.formTextFieldTemplate(
-              hint: "سعر العميل",
-              controller: addProductServices.customerPrice,
-              // left: 80,
-            ),
-            _formWidget.formTextFieldTemplate(
-              hint: "سعر الموظف",
-              controller: addProductServices.employeePrice,
-              // left: 80,
-            ),
-            _formWidget.formTextFieldTemplate(
-              hint: "سعر العامل",
-              controller: addProductServices.housePrice,
-              // left: 80,
-            ),
-          ],
+              _formWidget.formTextFieldTemplate(
+                hint: "سعر العميل",
+                controller: addProductServices.customerPrice,
+                // left: 80,
+              ),
+              _formWidget.formTextFieldTemplate(
+                hint: "سعر الموظف",
+                controller: addProductServices.employeePrice,
+                // left: 80,
+              ),
+              _formWidget.formTextFieldTemplate(
+                hint: "سعر العامل",
+                controller: addProductServices.housePrice,
+                // left: 80,
+              ),
+            ],
+          ),
         ),
       ),
     );

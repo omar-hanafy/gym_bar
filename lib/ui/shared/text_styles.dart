@@ -148,6 +148,7 @@ class TextStyles {
   formLabelsStyle() => TextStyle(
         fontSize: Dimensions(context).heightPercent(1.5),
         fontFamily: 'Tajawal',
+        color: Colors.white,
       );
 
   formButtonStyle() => TextStyle(
@@ -165,11 +166,9 @@ class TextStyles {
         fontFamily: 'Tajawal',
       );
 
-  searchTextFieldStyle() => TextStyle(
-      fontSize: Dimensions(context).heightPercent(1.5),
-      color: Colors.grey[600]);
+  searchTextFieldStyle() =>
+      TextStyle(fontSize: Dimensions(context).heightPercent(1.5), color: Colors.grey[600]);
 
-  searchTextFieldHintStyle() => TextStyle(
-      fontSize: Dimensions(context).heightPercent(1.5),
-      color: Colors.black54);
+  searchTextFieldHintStyle() =>
+      TextStyle(fontSize: Dimensions(context).heightPercent(1.5), color: Colors.black54);
 }

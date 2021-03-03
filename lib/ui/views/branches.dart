@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
-import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/ui/responsive/screen_type_layout.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/widgets/custom_card_item.dart';
@@ -14,11 +13,14 @@ class Branches extends StatefulWidget {
 }
 
 class _BranchesState extends State<Branches> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     BranchModel branchModel = Provider.of<BranchModel>(context, listen: false);
 
     Dimensions _dimensions = Dimensions(context);
+    final TextEditingController newBranchName = TextEditingController();
 
     addBranch() => showDialog<void>(
           context: context,
@@ -27,7 +29,18 @@ class _BranchesState extends State<Branches> {
           builder: (BuildContext dialogContext) {
             return AlertDialog(
               title: Text('إضافة فرع'),
-              content: TextField(),
+              content: Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: newBranchName,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "برجاء ملأ جميع الخانات";
+                    }
+                    return null;
+                  },
+                ),
+              ),
               actions: <Widget>[
                 FlatButton(
                   child: Text('إلغاء'),
@@ -38,7 +51,10 @@ class _BranchesState extends State<Branches> {
                 FlatButton(
                   child: Text('إضافة الفرع'),
                   onPressed: () {
-                    Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+                    if (_formKey.currentState.validate()) {
+                      Navigator.of(dialogContext).pop();
+                      print("sdads");
+                    }
                   },
                 ),
               ],
@@ -91,7 +107,8 @@ class _BranchesState extends State<Branches> {
                         ],
                       )
                     : Center(
-                        child: Text("لم نجد اية فروع, من فضلك اضغط على الزر السفلي لاضافة اول فرع لك"),
+                        child: Text(
+                            "لم نجد اية فروع, من فضلك اضغط على الزر السفلي لاضافة اول فرع لك"),
                       )),
         // tablet: HomeTablet(branches: branches),
       );

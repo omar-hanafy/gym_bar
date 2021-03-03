@@ -4,6 +4,7 @@ import 'package:gym_bar/core/services/add_person_services.dart';
 import 'package:gym_bar/core/services/add_product_services.dart';
 import 'package:gym_bar/core/services/bill_services.dart';
 import 'package:gym_bar/core/services/home_services.dart';
+import 'package:gym_bar/core/services/quantity_purchase_services.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
@@ -15,12 +16,14 @@ import 'core/models/employee.dart';
 import 'core/view_models/category_model.dart';
 
 var providers = [
+  //Streams
   StreamProvider<List<Branch>>(create: (_) => BranchModel().fetchBranches()),
   StreamProvider<String>(create: (_) => TotalModel().fetchTotalStream()),
   StreamProvider<List<Client>>(
       create: (_) => ClientModel().fetchClientStream(branchName: "بيفرلي")),
   StreamProvider<List<Employee>>(
       create: (_) => EmployeeModel().fetchEmployeeStream(branchName: "بيفرلي")),
+  //Models
   ChangeNotifierProvider(create: (_) => BranchModel()),
   ChangeNotifierProvider(create: (_) => CategoryModel()),
   ChangeNotifierProvider(create: (_) => ProductModel()),
@@ -28,8 +31,10 @@ var providers = [
   ChangeNotifierProvider(create: (_) => ClientModel()),
   ChangeNotifierProvider(create: (_) => TransactionModel()),
   ChangeNotifierProvider(create: (_) => TotalModel()),
+  //Services
   ChangeNotifierProvider(create: (_) => BillServices()),
   ChangeNotifierProvider(create: (_) => HomeServices()),
   ChangeNotifierProvider(create: (_) => AddProductServices()),
   ChangeNotifierProvider(create: (_) => AddPersonServices()),
+  ChangeNotifierProvider(create: (_) => QuantityPurchaseServices()),
 ];

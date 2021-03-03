@@ -7,22 +7,28 @@ import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/widgets/add_product/product_amount.dart';
 import 'package:gym_bar/ui/widgets/add_product/product_details_card.dart';
 import 'package:gym_bar/ui/widgets/add_product/product_price_card.dart';
+import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class AddProduct extends StatelessWidget {
   PageController _pageController = PageController();
+  final _productDetailsCardFormKey = GlobalKey<FormState>();
+  final _productAmountCardFormKey = GlobalKey<FormState>();
+  final _productPriceCardFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     AddProductServices addProductServices = Provider.of<AddProductServices>(context);
     ProductModel productModel = Provider.of<ProductModel>(context);
     Dimensions _dimensions = Dimensions(context);
+    FormWidget _formWidget = FormWidget(context: context);
+
     var branchName = Provider.of<BranchModel>(context).selectedBranch;
     final List<Widget> addProductCards = [
-      ProductDetailsCard(),
-      ProductAmount(),
-      ProductPriceCard()
+      ProductDetailsCard(formKey: _productDetailsCardFormKey),
+      ProductAmountCard(formKey: _productAmountCardFormKey),
+      ProductPriceCard(formKey: _productPriceCardFormKey)
     ];
 
     addProduct() {
@@ -75,6 +81,52 @@ class AddProduct extends StatelessWidget {
             );
           },
         );
+    productDetailsCardButton() {
+      return _formWidget.formButtonTemplate(
+        onTab: () {
+          if (_productDetailsCardFormKey.currentState.validate()) {
+            addProductServices.index = 1;
+            _pageController.animateToPage(
+              addProductServices.index,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.linear,
+            );
+          }
+        },
+        text: "Next",
+        context: context,
+      );
+    }
+
+    productAmountButton() {
+      return _formWidget.formButtonTemplate(
+        onTab: () {
+          if (_productAmountCardFormKey.currentState.validate()) {
+            addProductServices.index = 2;
+            _pageController.animateToPage(
+              addProductServices.index,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.linear,
+            );
+          }
+        },
+        text: "Next",
+        context: context,
+      );
+    }
+
+    productPriceCardButton() {
+      return _formWidget.formButtonTemplate(
+        onTab: () {
+          if (_productPriceCardFormKey.currentState.validate()) {
+            print(addProductServices.index);
+            _confirmAddProduct();
+          }
+        },
+        text: "Submit",
+        context: context,
+      );
+    }
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -92,6 +144,12 @@ class AddProduct extends StatelessWidget {
               icon: Icon(Icons.clear_all),
               onPressed: () {
                 addProductServices.clear();
+                addProductServices.index = 0;
+                _pageController.animateToPage(
+                  addProductServices.index,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.linear,
+                );
                 FocusScope.of(context).requestFocus(FocusNode());
               },
             )
@@ -118,8 +176,8 @@ class AddProduct extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                RaisedButton(
-                  onPressed: () {
+                _formWidget.formButtonTemplate(
+                  onTab: () {
                     FocusScope.of(context).requestFocus(FocusNode());
 
                     addProductServices.index =
@@ -132,32 +190,14 @@ class AddProduct extends StatelessWidget {
                       curve: Curves.linear,
                     );
                   },
-                  child: Text("Previous"),
+                  text: "Previous",
+                  context: context,
                 ),
-                addProductServices.index == 2
-                    ? RaisedButton(
-                        onPressed: () {
-                          print(addProductServices.index);
-
-                          _confirmAddProduct();
-                        },
-                        child: Text("Submit"),
-                      )
-                    : RaisedButton(
-                        onPressed: () {
-                          addProductServices.index =
-                              addProductServices.index == 2 ? 2 : addProductServices.index + 1;
-
-                          _pageController.animateToPage(
-                            addProductServices.index,
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.linear,
-                          );
-                        },
-                        child: Text("Next"),
-                      )
+                if (addProductServices.index == 0) productDetailsCardButton(),
+                if (addProductServices.index == 1) productAmountButton(),
+                if (addProductServices.index == 2) productPriceCardButton()
               ],
-            )
+            ),
           ],
         ),
       ),

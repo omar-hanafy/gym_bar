@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_bar/ui/views/add/add_person.dart';
 import 'package:gym_bar/ui/views/add/add_product.dart';
+import 'package:gym_bar/ui/views/add/quantity_purchase.dart';
 import 'package:gym_bar/ui/views/details/Purchases_and_sales/choose_date.dart';
 import 'package:gym_bar/ui/views/branches.dart';
 import 'package:gym_bar/ui/views/details/Purchases_and_sales/Purchases_and_sales.dart';
@@ -19,12 +20,11 @@ class Routers {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => Branches());
-
       //Login());
+
       case '/branches':
         return MaterialPageRoute(builder: (_) => Branches());
 
-      // DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS
       case '/details':
         return MaterialPageRoute(builder: (_) => Details());
 
@@ -42,92 +42,28 @@ class Routers {
 
       case '/products':
         return MaterialPageRoute(builder: (_) => Products());
-      //
       case '/product_profile':
         return MaterialPageRoute(builder: (_) => ProductProfile());
-      //
+
       case '/clients_list':
         return MaterialPageRoute(builder: (_) => ClientsList());
       case '/one_client_info':
         return MaterialPageRoute(builder: (_) => OneClientInfo());
+
       case '/employees_list':
         return MaterialPageRoute(builder: (_) => EmployeesList());
       case '/one_employee_info':
         return MaterialPageRoute(builder: (_) => OneEmployeeInfo());
 
-      // case '/all_clients':
-      //   var branch = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => AllClients(branchName: branch));
-      //
-      // case '/filtered_clients':
-      //   List<String> args = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => FilteredClients(args: args));
-      //
-      // case '/client_profile':
-      //   Client clients = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => ClientProfile(client: clients));
-      //
-      // case '/employees':
-      //   var branch = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => Employees(branchName: branch));
-      //
-      // case '/all_employees':
-      //   var branch = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => AllEmployees(branchName: branch));
-      //
-      // case '/filtered_employees':
-      //   List<String> args = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => FilteredEmployees(args: args));
-      // case '/employee_profile':
-      //   Employee employees = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => EmployeeProfile(employees: employees));
-
-//      case '/dept_employees':s
-//        var branch = settings.arguments;
-//        return MaterialPageRoute(
-//            builder: (_) => DeptEmployees(branchName: branch));
-//
-//      case '/credit_employees':
-//        var branch = settings.arguments;
-//        return MaterialPageRoute(
-//            builder: (_) => CreditEmployees(branchName: branch));
-
-      // DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS DETAILS
-
-      //ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD ADD
+      // case '/back_up':
+      //   return MaterialPageRoute(builder: (_) => OneEmployeeInfo());
 
       case '/add_product':
         return MaterialPageRoute(builder: (_) => AddProduct());
-
       case '/add_person':
         return MaterialPageRoute(builder: (_) => AddPerson());
-      //
-      // case '/add_purchase':
-      //   var branch = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => AddPurchase(branchName: branch));
-      //
-      // case '/add_employee':
-      //   var branch = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => AddEmployee(branchName: branch));
-      //
-      // case '/add_branch':
-      //   var branch = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => AddBranch(branchName: branch));
-      //
-      // case '/add_category':
-      //   var branch = settings.arguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => AddCategory(branchName: branch));
+      case '/quantity_purchase':
+        return MaterialPageRoute(builder: (_) => QuantityPurchase());
 
       default:
         return MaterialPageRoute(

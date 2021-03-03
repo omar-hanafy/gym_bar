@@ -6,6 +6,10 @@ import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailsCard extends StatelessWidget {
+  final formKey;
+
+  const ProductDetailsCard({Key key, this.formKey}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     FormWidget _formWidget = FormWidget(context: context);
@@ -17,28 +21,37 @@ class ProductDetailsCard extends StatelessWidget {
       //todo: make it stream better;
       return Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: Text(
-              "أختر نوع المنتج",
-              // style: formLabelsStyle,
+        child: Column(
+          children: [
+            DropdownButtonFormField<String>(
+              decoration: InputDecoration.collapsed(hintText: ""),
+              isExpanded: true,
+              hint: Text(
+                "أختر نوع المنتج",
+                // style: formLabelsStyle,
+              ),
+              value: addProductServices.selectedCategory,
+              isDense: true,
+              onChanged: (value) {
+                addProductServices.selectedCategory = value;
+                print(addProductServices.selectedCategory);
+              },
+              items: categories.map((category) {
+                return DropdownMenuItem<String>(
+                  value: "${category.name}",
+                  child: Text(
+                    "${category.name}",
+                  ),
+                );
+              }).toList(),
+              validator: (String value) {
+                if (value?.isEmpty ?? true) {
+                  return "برجاء ملأ جميع الخانات";
+                }
+                return null;
+              },
             ),
-            value: addProductServices.selectedCategory,
-            isDense: true,
-            onChanged: (value) {
-              addProductServices.selectedCategory = value;
-              print(addProductServices.selectedCategory);
-            },
-            items: categories.map((category) {
-              return DropdownMenuItem<String>(
-                value: "${category.name}",
-                child: Text(
-                  "${category.name}",
-                ),
-              );
-            }).toList(),
-          ),
+          ],
         ),
       );
     }
@@ -83,17 +96,35 @@ class ProductDetailsCard extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            categoryWidget(),
-            _formWidget.formTextFieldTemplate(
-                hint: "اسم المنتج", controller: addProductServices.name),
-            _formWidget.formTextFieldTemplate(
-                hint: "الوصف", controller: addProductServices.description),
-            _formWidget.formTextFieldTemplate(
-                hint: "اسم الشركه", controller: addProductServices.companyName),
-          ],
+        child: Form(
+          key: formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                categoryWidget(),
+                _formWidget.formTextFieldTemplate(
+                  hint: "اسم المنتج",
+                  // key: formKey,
+                  controller: addProductServices.name,
+                  maxLengthEnforced: true,
+                ),
+                _formWidget.formTextFieldTemplate(
+                  hint: "الوصف",
+
+                  // key: formKey,
+                  controller: addProductServices.description,
+                  maxLengthEnforced: true,
+                ),
+                _formWidget.formTextFieldTemplate(
+                  hint: "اسم الشركه",
+                  controller: addProductServices.companyName,
+                  maxLengthEnforced: true,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

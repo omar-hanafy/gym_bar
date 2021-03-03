@@ -5,6 +5,7 @@ import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
+import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/ui/responsive/screen_type_layout.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
@@ -23,7 +24,6 @@ class _DetailsState extends State<Details> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      // Provider.of<BranchModel>(context).fetchBranches();
       Provider.of<CategoryModel>(context).fetchCategories();
     }
     _isInit = false;
@@ -36,6 +36,7 @@ class _DetailsState extends State<Details> {
     CustomCardItem _homeItem = CustomCardItem(context: context);
     TextStyles _textStyles = TextStyles(context: context);
     ClientModel clientModel = Provider.of<ClientModel>(context, listen: false);
+    ProductModel productModel = Provider.of<ProductModel>(context, listen: false);
 
     EmployeeModel employeeModel = Provider.of<EmployeeModel>(context, listen: false);
 
@@ -76,15 +77,32 @@ class _DetailsState extends State<Details> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: _dimensions.heightPercent(3.5)),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
                   "2000",
                   style: _textStyles.detailsTitlesStyle(),
                 ),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                  ),
+                ),
                 Text(
                   "السحب الشخصي",
                   style: _textStyles.detailsBoldTitlesStyle(),
+                ),
+                SizedBox(
+                  width: _dimensions.widthPercent(4),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    print("ds");
+                  },
+                  child: Icon(
+                    Icons.add_circle_outlined,
+                    color: Colors.black54,
+                  ),
                 ),
               ],
             ),
@@ -100,7 +118,7 @@ class _DetailsState extends State<Details> {
             color: Colors.white,
           ),
           backgroundColor: Colors.red,
-          label: 'منتج',
+          label: 'اضف منتج  ',
           labelStyle: TextStyle(fontSize: 18.0),
           onTap: () {
             Navigator.pushNamed(context, "/add_product");
@@ -119,17 +137,21 @@ class _DetailsState extends State<Details> {
       SpeedDialChild(
           child: Icon(Icons.collections_bookmark, color: Colors.white),
           backgroundColor: Colors.blue,
-          label: 'عملية شراء',
+          label: ' شراء كمية',
           labelStyle: TextStyle(fontSize: 18.0),
           onTap: () {
-            Navigator.pushNamed(context, "/add_purchase");
+            Navigator.pushNamed(context, "/quantity_purchase");
+            productModel.fetchProducts(branchName: branchModel.selectedBranch);
           }),
     ];
     var floating = SpeedDial(
       overlayColor: Colors.black,
-      icon: Icons.add,
+      // icon: Icons.add,
       // onOpen: () => print('OPENING DIAL'),
       // onClose: () => print('DIAL CLOSED'),
+      // animatedIcon: AnimatedIcons.event_add,
+      icon: Icons.add,
+      activeIcon: Icons.close,
       tooltip: 'إضافة',
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
@@ -210,50 +232,51 @@ class _DetailsState extends State<Details> {
             ),
           ],
         );
+    billNotification() => Stack(
+          children: <Widget>[
+            Icon(
+              Icons.notifications,
+              color: Colors.amber,
+              size: 35,
+            ),
+            Positioned(
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                constraints: BoxConstraints(
+                  minWidth: 17,
+                  minHeight: 17,
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      '3',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
 
     return ScreenTypeLayout(
       mobile: Scaffold(
         floatingActionButton: floating,
         appBar: AppBar(
           actions: <Widget>[
-            Stack(
-              children: <Widget>[
-                Icon(
-                  Icons.notifications,
-                  color: Colors.amber,
-                  size: 35,
-                ),
-                Positioned(
-                  right: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    constraints: BoxConstraints(
-                      minWidth: 17,
-                      minHeight: 17,
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          '3',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
+            billNotification(),
             SizedBox(width: 15),
             //todo: add to UIHelper
           ],

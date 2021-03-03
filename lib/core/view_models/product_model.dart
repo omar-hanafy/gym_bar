@@ -86,12 +86,9 @@ class ProductModel extends ChangeNotifier {
 
   Future fetchProducts({branchName}) async {
     _status = Status.Busy;
-    // loading = true;
     var result = await _db.collection("products/branches/$branchName/").get();
-    // var result2 = await _api.getDataCollection("products/branches/$branchName/");
     _products = result.docs.map((doc) => Product.fromMap(doc.data(), doc.id)).toList();
     print(_products[1].name);
-    // loading = false;
     _status = Status.Idle;
     notifyListeners();
   }
@@ -108,7 +105,27 @@ class ProductModel extends ChangeNotifier {
         .snapshots()
         .map((snapshot) => Product.fromMap(snapshot.data(), id));
   }
+  Future fetchProductById({branchName, id}) async {
+    print("Printing IDDDDDDDD");
+    print(id);
+    _status = Status.Busy;
+    Product product = await _db
+        .collection("products/branches/$branchName/")
+        .doc(id)
+        .get()
+        .then((snapshot) {
+      Map<String, dynamic> map = snapshot.data();
+      print("prinitng name");
+      print(map['name']);
 
+      return Product.fromMap(map, id);
+    });
+
+    print(product.name);
+    _status = Status.Idle;
+    notifyListeners();
+    return product;
+  }
   Future fetchProductByCategoryName({branchName, categoryName}) async {
     _status = Status.Busy;
     var result = await _db

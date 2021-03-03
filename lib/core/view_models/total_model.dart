@@ -20,7 +20,7 @@ class TotalModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future fetchTotal() async {
+  Future<List <Total>> fetchTotal() async {
     // _status = Status.Busy;
 
     var result = await _db.collection("total").get();
@@ -30,6 +30,7 @@ class TotalModel extends ChangeNotifier {
     // _status = Status.Idle;
 
     notifyListeners();
+    return total;
   }
 
   // fetchTotalStream() {

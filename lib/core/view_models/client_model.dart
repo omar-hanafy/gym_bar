@@ -63,18 +63,13 @@ class ClientModel extends ChangeNotifier {
     if (selectedClientType == "all") {
       return _client;
     } else
-      return _client
-          .where((client) => client.type == selectedClientType)
-          .toList();
+      return _client.where((client) => client.type == selectedClientType).toList();
   }
 
   Future fetchClients({branchName}) async {
     _status = Status.Busy;
-    var result =
-        await _db.collection("clients/branches/$branchName/").get();
-    _client = result.docs
-        .map((doc) => Client.fromMap(doc.data(), doc.id))
-        .toList();
+    var result = await _db.collection("clients/branches/$branchName/").get();
+    _client = result.docs.map((doc) => Client.fromMap(doc.data(), doc.id)).toList();
     _status = Status.Idle;
     notifyListeners();
   }
@@ -83,11 +78,8 @@ class ClientModel extends ChangeNotifier {
     print("Printing IDDDDDDDD");
     print(id);
     _status = Status.Busy;
-    Client client = await _db
-        .collection("clients/branches/$branchName/")
-        .doc(id)
-        .get()
-        .then((snapshot) {
+    Client client =
+        await _db.collection("clients/branches/$branchName/").doc(id).get().then((snapshot) {
       return Client.fromMap(snapshot.data(), id);
     });
 
@@ -99,20 +91,20 @@ class ClientModel extends ChangeNotifier {
 
   Stream<List<Client>> fetchClientStream({branchName}) {
     return _db.collection("clients/branches/$branchName/").snapshots().map(
-        (snapShot) => snapShot.docs
-            .map((doc) => Client.fromMap(doc.data(), doc.id))
-            .toList());
+        (snapShot) => snapShot.docs.map((doc) => Client.fromMap(doc.data(), doc.id)).toList());
   }
 
-  Future updateClient(
-      {clientId, Map<String, dynamic> data, String branchName}) async {
+  Future updateClient({clientId, Map<String, dynamic> data, String branchName}) async {
     _status = Status.Busy;
 
-    await _db
-        .collection("clients/branches/$branchName/")
-        .doc(clientId)
-        .update(data);
+    await _db.collection("clients/branches/$branchName/").doc(clientId).update(data);
     _status = Status.Idle;
     notifyListeners();
+  }
+
+  Future addClient({Client client, String branchName}) async {
+    _status = Status.Busy;
+    await _db.collection("clients/branches/$branchName/").add(client.toJson());
+    _status = Status.Idle;
   }
 }

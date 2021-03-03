@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:gym_bar/core/models/employee.dart';
 import 'package:gym_bar/core/models/user.dart';
@@ -33,6 +34,21 @@ class AuthenticationService {
   //   return userCredential.user.uid;
   // }
 
+  // ignore: missing_return
+  Future<String> signUp({String email, String password}) async {
+    try {
+      final UserCredential userCredential =
+      (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      ));
+      return userCredential.user.uid;
+    } catch (e) {
+      print('catching error...');
+      print(e);
+      getExceptionText(e);
+    }
+  }
   static void addUserDB(UserProfile user) async {
     Api.checkDocExist("users", user.id).then((value) {
       if (!value) {
