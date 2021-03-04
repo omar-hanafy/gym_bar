@@ -19,24 +19,26 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^0.7.0
-  firebase_auth: ^0.20.1
-  cloud_firestore: ^0.16.0+1
+  firebase_core: ^1.0.0
+  firebase_auth: ^1.0.0
+  firebase_auth_web: ^1.0.0
+  cloud_firestore: ^1.0.0
+  http_parser: ^4.0.0
   #  firebase_storage: ^7.0.0
   #  shared_preferences: ^0.5.12+4
   #  flushbar: ^1.10.4
   provider: ^4.3.3
   flutter_speed_dial: ^2.1.1
   search_widget: ^1.0.2
-  intl: ^0.16.1
-  cupertino_icons: ^1.0.0
+  intl: ^0.17.0
+  cupertino_icons: ^1.0.2
   #  pdf: ^1.12.0
   #  path_provider: ^1.6.24
   #  easy_localization: ^2.3.3
   #  csv: ^4.1.0
-  image_picker: ^0.6.0
+  image_picker: ^0.7.2
   #  permission_handler: ^5.0.1+1
-  cached_network_image: ^2.5.0
+  cached_network_image: 3.0.0-nullsafety
   #  mobile_sidebar: ^2.0.1
 
   #  unicorndial: ^1.1.5
@@ -72,6 +74,22 @@ flutter:
     - assets/images/myprofile.jpg
     - assets/images/deposit.png
     - assets/images/withdraw.png
+    - ios/Runner.xcworkspace/xcshareddata/
+    - ios/Runner/Assets.xcassets/
+    - ios/Runner/Base.lproj/
+    - ios/Runner/
+    - ios/Runner.xcworkspace/
+    - ios/
+    - ios/Runner/Assets.xcassets/LaunchImage.imageset/
+    - ios/Runner.xcodeproj/
+    - ios/Runner/Assets.xcassets/AppIcon.appiconset/
+    - ios/build/XCBuildData/
+    - ios/build/
+    - ios/Runner.xcodeproj/xcshareddata/
+    - ios/Runner.xcodeproj/project.xcworkspace/
+    - ios/Runner.xcodeproj/xcshareddata/xcschemes/
+    - ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/
+    - ios/Flutter/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
