@@ -155,11 +155,9 @@ class AddProduct extends StatelessWidget {
             )
           ],
         ),
-        body: Column(
+        body: ListView(
           children: [
-            SizedBox(
-              height: 70,
-            ),
+            SizedBox(height: _dimensions.heightPercent(10)),
             Center(
               child: Container(
                   height: _dimensions.heightPercent(50),
@@ -170,9 +168,7 @@ class AddProduct extends StatelessWidget {
                     children: addProductCards,
                   )),
             ),
-            SizedBox(
-              height: 50,
-            ),
+            SizedBox(height: _dimensions.heightPercent(5)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

@@ -1,9 +1,8 @@
 class Branch {
-  String id, name, gym, photo;
+  String id, name, photo;
 
   Branch({
     this.name,
-    this.gym,
     this.photo,
     this.id,
   });
@@ -11,10 +10,9 @@ class Branch {
   Branch.fromMap(Map snapshot, String id)
       : id = id ?? "",
         name = snapshot['name'] ?? '',
-        photo = snapshot['photo'] ?? '',
-        gym = snapshot['gym'] ?? '';
+        photo = snapshot['photo'] ?? '';
 
   toJson() {
-    return {"name": name, "photo": photo, "gym": gym};
+    return {"name": name, "photo": photo};
   }
 }

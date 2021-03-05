@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gym_bar/core/services/add_product_services.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
+import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ class ProductAmountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FormWidget _formWidget = FormWidget(context: context);
+    TextStyles _textStyles = TextStyles(context: context);
     Dimensions _dimensions = Dimensions(context);
 
     AddProductServices addProductServices = Provider.of<AddProductServices>(context);
@@ -33,7 +35,10 @@ class ProductAmountCard extends StatelessWidget {
                         addProductServices.selectedRadio = value;
                       },
                     ),
-                    Text("اضافة الكمية الان"),
+                    Text(
+                      "اضافة الكمية الان",
+                      style: _textStyles.formLabelsStyle(),
+                    ),
                   ],
                 )),
               ),
@@ -47,7 +52,10 @@ class ProductAmountCard extends StatelessWidget {
                         onChanged: (value) {
                           addProductServices.selectedRadio = value;
                         }),
-                    Text("اضافة المنتج فقط"),
+                    Text(
+                      "اضافة المنتج فقط",
+                      style: _textStyles.formLabelsStyle(),
+                    ),
                   ],
                 )),
               ),
@@ -59,8 +67,10 @@ class ProductAmountCard extends StatelessWidget {
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Center(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_dimensions.heightPercent(2))),
+      child: Padding(
+        padding: EdgeInsets.all(_dimensions.widthPercent(2)),
         child: Form(
           key: formKey,
           child: Column(
@@ -83,6 +93,7 @@ class ProductAmountCard extends StatelessWidget {
                               ],
                             ),
                           ),
+                          SizedBox(width: _dimensions.widthPercent(2)),
                           Expanded(
                             child: _formWidget.formTextFieldTemplate(
                                 controller: addProductServices.wholesaleUnit,
@@ -110,6 +121,7 @@ class ProductAmountCard extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            SizedBox(width: _dimensions.widthPercent(2)),
                             Expanded(
                               child: _formWidget.formTextFieldTemplate(
                                 controller: addProductServices.unit,
@@ -164,6 +176,7 @@ class ProductAmountCard extends StatelessWidget {
                                     ],
                                   ),
                                 ),
+                                SizedBox(width: _dimensions.widthPercent(2)),
                                 Expanded(
                                   child: _formWidget.formTextFieldTemplate(
                                     controller: addProductServices.unit,
@@ -183,29 +196,27 @@ class ProductAmountCard extends StatelessWidget {
                       : Container(),
               Row(
                 children: <Widget>[
+                  SizedBox(width: _dimensions.widthPercent(25)),
+                  Text(
+                    ///TODO: WARNING WARNING WARNING WARNING WARNING WARNING
+                    ///TODO: Fix issue when [${unit.text}] char reach 1000.
+                    ///TODO: WARNING WARNING WARNING WARNING WARNING WARNING
+                    "${addProductServices.unit.text == "" ? "الوحدة" : addProductServices.unit.text}",
+
+//                    "test",
+                    style: _textStyles.formLabelsStyle(),
+                  ),
+                  SizedBox(width: _dimensions.widthPercent(2)),
                   Expanded(
                     child: _formWidget.formTextFieldTemplate(
                       hint: "كمية البيع للمنتج الواحد",
                       controller: addProductServices.theAmountOfSalesPerProduct,
-                      right: 10,
                       maxLength: 25,
                       maxLengthEnforced: true,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                       ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      ///TODO: WARNING WARNING WARNING WARNING WARNING WARNING
-                      ///TODO: Fix issue when [${unit.text}] char reach 1000.
-                      ///TODO: WARNING WARNING WARNING WARNING WARNING WARNING
-                      "${addProductServices.unit.text}",
-
-//                    "test",
-//                     style: formTitleStyle,
                     ),
                   ),
                 ],

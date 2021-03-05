@@ -5,6 +5,7 @@ import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/ui/responsive/screen_type_layout.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/widgets/custom_card_item.dart';
+import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:provider/provider.dart';
 
 class Branches extends StatefulWidget {
@@ -18,7 +19,7 @@ class _BranchesState extends State<Branches> {
   @override
   Widget build(BuildContext context) {
     BranchModel branchModel = Provider.of<BranchModel>(context, listen: false);
-
+    FormWidget _formWidget = FormWidget(context: context);
     Dimensions _dimensions = Dimensions(context);
     final TextEditingController newBranchName = TextEditingController();
 
@@ -31,7 +32,8 @@ class _BranchesState extends State<Branches> {
               title: Text('إضافة فرع'),
               content: Form(
                 key: _formKey,
-                child: TextFormField(
+                child: _formWidget.formTextFieldTemplate(
+                  hint: "اسم الفرع",
                   controller: newBranchName,
                   validator: (value) {
                     if (value.isEmpty) {
@@ -42,18 +44,23 @@ class _BranchesState extends State<Branches> {
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('إلغاء'),
                   onPressed: () {
                     Navigator.of(dialogContext).pop(); // Dismiss alert dialog
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text('إضافة الفرع'),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       Navigator.of(dialogContext).pop();
-                      print("sdads");
+                      branchModel.addBranch(Branch(name: newBranchName.text, photo: null));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("تم اضافة الفرع بنجاح"),
+                        ),
+                      );
                     }
                   },
                 ),

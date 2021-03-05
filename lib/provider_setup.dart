@@ -17,12 +17,20 @@ import 'core/view_models/category_model.dart';
 
 var providers = [
   //Streams
-  StreamProvider<List<Branch>>(create: (_) => BranchModel().fetchBranches()),
-  StreamProvider<String>(create: (_) => TotalModel().fetchTotalStream()),
+  StreamProvider<List<Branch>>(
+    create: (_) => BranchModel().fetchBranches(),
+    initialData: [],
+  ),
+  StreamProvider<String>(
+    create: (_) => TotalModel().fetchTotalStream(),
+    initialData: "",
+  ),
   StreamProvider<List<Client>>(
-      create: (_) => ClientModel().fetchClientStream(branchName: "بيفرلي")),
+    create: (_) => ClientModel().fetchClientStream(branchName: "بيفرلي"),
+    initialData: [],
+  ),
   StreamProvider<List<Employee>>(
-      create: (_) => EmployeeModel().fetchEmployeeStream(branchName: "بيفرلي")),
+      create: (_) => EmployeeModel().fetchEmployeeStream(branchName: "بيفرلي"), initialData: []),
   //Models
   ChangeNotifierProvider(create: (_) => BranchModel()),
   ChangeNotifierProvider(create: (_) => CategoryModel()),

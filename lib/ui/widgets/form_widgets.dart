@@ -68,11 +68,17 @@ class FormWidget {
         maxLengthEnforced: maxLengthEnforced,
         inputFormatters: inputFormatters,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(left: left, right: right, top: top, bottom: bottom),
+            contentPadding: EdgeInsets.only(
+              left: left,
+              right: right,
+              top: top,
+              bottom: bottom,
+            ),
             isDense: true,
 //            contentPadding: EdgeInsets.only(top: height, right: 10,),
             labelStyle: _textStyles.formLabelsStyle(),
             labelText: hint,
+
 //          hintStyle: TextStyle(decoration: ),
             border: border
                 ? OutlineInputBorder(
@@ -85,21 +91,13 @@ class FormWidget {
     );
   }
 
-  formTitle(title) {
-    TextStyles _textStyles = TextStyles(context: context);
-    return Text(
-      title,
-      style: _textStyles.formLabelsStyle(),
-    );
-  }
-
   Widget formButtonTemplate({
     @required context,
     @required text,
     @required onTab,
     color = Colors.blueAccent,
-   double minWidth = 150,
-   double height = 40,
+    double minWidth = 150,
+    double height = 40,
   }) {
     TextStyles _textStyles = TextStyles(context: context);
     return ButtonTheme(
@@ -109,11 +107,23 @@ class FormWidget {
         color: color,
         child: Text(
           text,
-          style: _textStyles.formLabelsStyle(),
+          style: _textStyles.formButtonStyle(),
         ),
         onPressed: onTab,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
+
+      // ElevatedButton(
+      //   style: ElevatedButton.styleFrom(
+      //     primary: color,
+      //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      //   ),
+      //   child: Text(
+      //     text,
+      //     style: _textStyles.formLabelsStyle(),
+      //   ),
+      //   onPressed: onTab,
+      // ),
     );
   }
 
@@ -121,30 +131,42 @@ class FormWidget {
     Dimensions _dimensions = Dimensions(context);
     TextStyles _textStyles = TextStyles(context: context);
     return Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: _dimensions.heightPercent(1), horizontal: _dimensions.widthPercent(1)),
-        child: TextField(
-          textAlign: TextAlign.right,
-          controller: controller,
-          focusNode: focusNode,
-          style: _textStyles.searchTextFieldStyle(),
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(_dimensions.heightPercent(7))),
-                borderSide: BorderSide(color: Colors.black54),
+      padding: EdgeInsets.symmetric(
+        vertical: _dimensions.heightPercent(1),
+        horizontal: _dimensions.widthPercent(1),
+      ),
+      child: TextField(
+        textAlign: TextAlign.right,
+        controller: controller,
+        focusNode: focusNode,
+        style: _textStyles.searchTextFieldStyle(),
+        decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  _dimensions.heightPercent(7),
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(_dimensions.heightPercent(7))),
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor)),
-              suffixIcon: Icon(Icons.search),
-              border: InputBorder.none,
-              hintText: "... ابحث هنا",
-              hintStyle: _textStyles.searchTextFieldHintStyle(),
-              contentPadding: EdgeInsets.only(
-                  left: _dimensions.heightPercent(1),
-                  right: _dimensions.heightPercent(1),
-                  top: _dimensions.heightPercent(1.5),
-                  bottom: _dimensions.heightPercent(1.5))),
-        ));
+              borderSide: BorderSide(color: Colors.black54),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  _dimensions.heightPercent(7),
+                ),
+              ),
+              borderSide: BorderSide(color: Theme.of(context).primaryColor),
+            ),
+            suffixIcon: Icon(Icons.search),
+            border: InputBorder.none,
+            hintText: "... ابحث هنا",
+            hintStyle: _textStyles.searchTextFieldHintStyle(),
+            contentPadding: EdgeInsets.only(
+                left: _dimensions.heightPercent(1),
+                right: _dimensions.heightPercent(1),
+                top: _dimensions.heightPercent(1.5),
+                bottom: _dimensions.heightPercent(1.5))),
+      ),
+    );
   }
 }

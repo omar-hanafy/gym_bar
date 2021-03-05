@@ -21,7 +21,7 @@ class ProductProfile extends StatelessWidget {
     header(String value) {
       return Container(
         width: double.infinity,
-        height: 50,
+        height: _dimensions.heightPercent(5),
         color: Colors.blue,
         child: Center(
             child: Text(
@@ -33,12 +33,12 @@ class ProductProfile extends StatelessWidget {
 
     data({title, value}) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
+        padding: EdgeInsets.symmetric(
+            vertical: _dimensions.heightPercent(1.5), horizontal: _dimensions.widthPercent(3)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(value == null ? handleNull : value,
-                style: _textStyles.tableContentStyle()),
+            Text(value == null ? handleNull : value, style: _textStyles.tableContentStyle()),
             Text(title, style: _textStyles.tableContentStyle()),
           ],
         ),
@@ -81,42 +81,31 @@ class ProductProfile extends StatelessWidget {
                       vertical: _dimensions.heightPercent(1),
                       horizontal: _dimensions.widthPercent(1)),
                   child: Text(
-                    product.description == null
-                        ? handleNull
-                        : product.description,
+                    product.description == null ? handleNull : product.description,
                     style: _textStyles.tableContentStyle(),
                   ),
                 ),
               ),
               header("السعر"),
               Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: _dimensions.widthPercent(2)),
-                  child:
-                      data(title: "للعميل", value: product.customerPrice)),
+                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
+                  child: data(title: "للعميل", value: product.customerPrice)),
               Divider(),
               Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: _dimensions.widthPercent(2)),
-                  child:
-                      data(title: "للموظف", value: product.employeePrice)),
+                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
+                  child: data(title: "للموظف", value: product.employeePrice)),
               Divider(),
               Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: _dimensions.widthPercent(2)),
+                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
                   child: data(title: "للعامل", value: product.housePrice)),
               header("الكمية"),
               Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: _dimensions.widthPercent(2)),
-                  child: data(
-                      title: "الكمية", value: product.netTotalQuantity)),
+                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
+                  child: data(title: "الكمية", value: product.netTotalQuantity)),
               Divider(),
               Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: _dimensions.widthPercent(2)),
-                  child: data(
-                      title: "الحد الادنى", value: product.quantityLimit)),
+                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
+                  child: data(title: "الحد الادنى", value: product.quantityLimit)),
             ],
           ),
         ));

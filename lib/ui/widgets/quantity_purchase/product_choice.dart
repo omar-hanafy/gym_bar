@@ -5,6 +5,8 @@ import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/services/quantity_purchase_services.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
+import 'package:gym_bar/ui/shared/dimensions.dart';
+import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +18,9 @@ class ProductChoiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FormWidget _formWidget = FormWidget(context: context);
+    Dimensions _dimensions = Dimensions(context);
+    TextStyles _textStyles = TextStyles(context: context);
+
     QuantityPurchaseServices quantityPurchaseServices =
         Provider.of<QuantityPurchaseServices>(context);
     CategoryModel categoryModel = Provider.of<CategoryModel>(context);
@@ -26,13 +31,14 @@ class ProductChoiceCard extends StatelessWidget {
     dropDownCategories() {
       //todo: make it stream better;
       return Padding(
-        padding: EdgeInsets.only(left: 10, right: 10),
+        padding: EdgeInsets.only(
+            left: _dimensions.widthPercent(2), right: _dimensions.widthPercent(2)),
         child: DropdownButtonFormField<String>(
           decoration: InputDecoration.collapsed(hintText: ""),
           isExpanded: true,
           hint: Text(
             "أختر نوع المنتج",
-            // style: formLabelsStyle,
+            style: _textStyles.formLabelsStyle(),
           ),
           value: quantityPurchaseServices.selectedCategory,
           isDense: true,
@@ -46,6 +52,7 @@ class ProductChoiceCard extends StatelessWidget {
               value: "${category.name}",
               child: Text(
                 "${category.name}",
+                style: _textStyles.formLabelsStyleBlack(),
               ),
             );
           }).toList(),
@@ -63,7 +70,8 @@ class ProductChoiceCard extends StatelessWidget {
       List<Product> _filteredProducts =
           productModel.filterProduct(quantityPurchaseServices.selectedCategory);
       return Padding(
-          padding: EdgeInsets.only(left: 10, right: 10),
+          padding: EdgeInsets.only(
+              left: _dimensions.widthPercent(2), right: _dimensions.widthPercent(2)),
           child: DropdownButtonFormField<String>(
             decoration: InputDecoration.collapsed(hintText: ""),
 
@@ -71,10 +79,11 @@ class ProductChoiceCard extends StatelessWidget {
             hint: productModel.selectedProduct == null
                 ? Text(
                     "اختر المنتج",
-                    // style: dropDownLabelsStyle,
+                    style: _textStyles.formLabelsStyle(),
                   )
                 : Text(
-                    productModel.selectedProduct.name,
+                    productModel.selectedProduct.name, style: _textStyles.formLabelsStyleBlack(),
+
                     // style: dropDownLabelsStyle,
                   ),
             // value: value,
@@ -88,6 +97,7 @@ class ProductChoiceCard extends StatelessWidget {
                 value: "${_filteredProducts.name}",
                 child: Text(
                   "${_filteredProducts.name}",
+                  style: _textStyles.formLabelsStyleBlack(),
                 ),
               );
             }).toList(),
@@ -112,7 +122,10 @@ class ProductChoiceCard extends StatelessWidget {
                 onChanged: (value) {
                   quantityPurchaseServices.selectedUnitIndex = value;
                 }),
-            Text(productModel.selectedProduct.unit),
+            Text(
+              productModel.selectedProduct.unit,
+              style: _textStyles.formLabelsStyle(),
+            ),
           ]))),
           Expanded(
               child: Container(
@@ -123,7 +136,10 @@ class ProductChoiceCard extends StatelessWidget {
                 onChanged: (value) {
                   quantityPurchaseServices.selectedUnitIndex = value;
                 }),
-            Text(productModel.selectedProduct.wholesaleUnit)
+            Text(
+              productModel.selectedProduct.wholesaleUnit,
+              style: _textStyles.formLabelsStyle(),
+            )
           ])))
         ])
       ]);
@@ -132,12 +148,12 @@ class ProductChoiceCard extends StatelessWidget {
     productDetailsForm() {
       if (productModel.selectedProduct == null) {
         return SizedBox(
-          height: 150,
+          height: _dimensions.heightPercent(30),
         );
       } else
         return Column(
           children: [
-            dropDownCategories(),
+            // dropDownCategories(),
             unitsRadioButtons(),
             _formWidget.formTextFieldTemplate(
               controller: quantityPurchaseServices.quantity,
@@ -155,8 +171,10 @@ class ProductChoiceCard extends StatelessWidget {
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Center(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_dimensions.heightPercent(2))),
+      child: Padding(
+        padding: EdgeInsets.all(_dimensions.widthPercent(2)),
         child: Form(
           key: formKey,
           child: Column(

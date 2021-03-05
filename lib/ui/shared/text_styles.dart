@@ -121,6 +121,14 @@ class TextStyles {
 //   }
 
 // home_item styles
+
+  floatingButtonLabelStyle() => TextStyle(fontSize: 18.0);
+
+  billNotificationStyle() => TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+      );
+
   itemImageTitle() => TextStyle(
       fontSize: Dimensions(context).heightPercent(4),
       fontWeight: FontWeight.bold,
@@ -146,15 +154,21 @@ class TextStyles {
 
 // form_widget styles
   formLabelsStyle() => TextStyle(
-        fontSize: Dimensions(context).heightPercent(1.5),
+        fontSize: Dimensions(context).heightPercent(1.8),
         fontFamily: 'Tajawal',
-        color: Colors.white,
+        color: Colors.black54,
+      );
+
+  formLabelsStyleBlack() => TextStyle(
+        fontSize: Dimensions(context).heightPercent(1.9),
+        fontFamily: 'Tajawal',
+        color: Colors.black,
       );
 
   formButtonStyle() => TextStyle(
       fontSize: Dimensions(context).heightPercent(1.9),
       fontFamily: 'Tajawal',
-      color: Colors.black);
+      color: Colors.white);
 
   formTitleStyle() => TextStyle(
       fontWeight: FontWeight.bold,
