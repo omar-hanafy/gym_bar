@@ -13,12 +13,12 @@ class TextStyles {
       color: Colors.white);
 
   detailsTitlesStyle() => TextStyle(
-        fontSize: Dimensions(context).heightPercent(2),
+        fontSize: Dimensions(context).heightPercent(2.5),
         fontFamily: 'Tajawal',
       );
 
   detailsBoldTitlesStyle() => TextStyle(
-        fontSize: Dimensions(context).heightPercent(2),
+        fontSize: Dimensions(context).heightPercent(2.5),
         fontWeight: FontWeight.bold,
         fontFamily: 'Tajawal',
       );
@@ -30,13 +30,13 @@ class TextStyles {
       color: Colors.black);
 
   tableTitleStyle() => TextStyle(
-        fontSize: Dimensions(context).heightPercent(2),
+        fontSize: Dimensions(context).heightPercent(3),
         fontFamily: 'Tajawal',
         color: Colors.white,
       );
 
   tableContentStyle() => TextStyle(
-        fontSize: Dimensions(context).heightPercent(2),
+        fontSize: Dimensions(context).heightPercent(2.5),
         fontFamily: 'Tajawal',
         color: Colors.black,
       );
@@ -126,7 +126,7 @@ class TextStyles {
 
   billNotificationStyle() => TextStyle(
         color: Colors.white,
-        fontSize: 12,
+        fontSize: Dimensions(context).heightPercent(1.8),
       );
 
   itemImageTitle() => TextStyle(
@@ -185,4 +185,6 @@ class TextStyles {
 
   searchTextFieldHintStyle() =>
       TextStyle(fontSize: Dimensions(context).heightPercent(1.5), color: Colors.black54);
+
+  warningStyle() => TextStyle(fontSize: Dimensions(context).heightPercent(2.5));
 }

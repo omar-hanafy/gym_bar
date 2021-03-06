@@ -21,10 +21,10 @@ var providers = [
     create: (_) => BranchModel().fetchBranches(),
     initialData: [],
   ),
-  StreamProvider<String>(
-    create: (_) => TotalModel().fetchTotalStream(),
-    initialData: "",
-  ),
+  // StreamProvider<String>(
+  //   create: (_) => TotalModel().fetchTotalStream(),
+  //   initialData: "",
+  // ),
   StreamProvider<List<Client>>(
     create: (_) => ClientModel().fetchClientStream(branchName: "بيفرلي"),
     initialData: [],

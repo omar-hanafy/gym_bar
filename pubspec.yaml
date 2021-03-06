@@ -14,36 +14,29 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.10.4 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+
+  #firebase packs.
   firebase_core: ^1.0.0
   firebase_auth: ^1.0.0
   firebase_auth_web: ^1.0.0
   cloud_firestore: ^1.0.0
+  firebase_storage: ^8.0.0
+
+  #patterns and services.
   http_parser: ^4.0.0
-  #  firebase_storage: ^7.0.0
-  #  shared_preferences: ^0.5.12+4
-  #  flushbar: ^1.10.4
   provider: ^5.0.0
-  search_widget: ^1.0.2
-  intl: ^0.17.0
   cupertino_icons: ^1.0.2
-  #  pdf: ^1.12.0
-  #  path_provider: ^1.6.24
-  #  easy_localization: ^2.3.3
-  #  csv: ^4.1.0
   image_picker: ^0.7.2
-  #  permission_handler: ^5.0.1+1
   cached_network_image: 3.0.0-nullsafety
-  #  mobile_sidebar: ^2.0.1
 
-  #  unicorndial: ^1.1.5
-
-
-  # rflutter_alert: ^1.0.3
+  #ui packs.
+  #todo: replace soon.
+  search_widget: ^1.0.2
 
 dev_dependencies:
   flutter_test:

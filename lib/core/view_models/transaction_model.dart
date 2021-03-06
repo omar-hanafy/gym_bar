@@ -64,14 +64,14 @@ class TransactionModel extends ChangeNotifier {
       sortAmountIcon = Icons.keyboard_arrow_down;
       sortHourIcon = Icons.sort;
 
-      filteredTransactions.sort(
-          (a, b) => a.transactionAmount.compareTo(b.transactionAmount));
+      filteredTransactions.sort((a, b) =>
+          double.parse(a.transactionAmount).compareTo(double.parse(b.transactionAmount)));
     } else {
       sortAmountIcon = Icons.keyboard_arrow_up;
       sortHourIcon = Icons.sort;
 
-      filteredTransactions.sort(
-          (a, b) => b.transactionAmount.compareTo(a.transactionAmount));
+      filteredTransactions.sort((a, b) =>
+          double.parse(b.transactionAmount).compareTo(double.parse(a.transactionAmount)));
     }
     notifyListeners();
   }
@@ -81,13 +81,14 @@ class TransactionModel extends ChangeNotifier {
     if (_hourAscending) {
       sortHourIcon = Icons.keyboard_arrow_down;
       sortAmountIcon = Icons.sort;
-
-      filteredTransactions.sort((a, b) => a.hour.compareTo(b.hour));
+      filteredTransactions.sort((a, b) =>
+          DateFormat('h:mm a').parse(a.hour).compareTo(DateFormat('h:mm a').parse(b.hour)));
     } else {
       sortHourIcon = Icons.keyboard_arrow_up;
       sortAmountIcon = Icons.sort;
 
-      filteredTransactions.sort((a, b) => b.hour.compareTo(a.hour));
+      filteredTransactions.sort((a, b) =>
+          DateFormat('h:mm a').parse(b.hour).compareTo(DateFormat('h:mm a').parse(a.hour)));
     }
     notifyListeners();
   }
@@ -102,12 +103,9 @@ class TransactionModel extends ChangeNotifier {
 
   Future fetchTransaction({branchName}) async {
     _status = Status.Busy;
-    var result =
-        await _db.collection("transactions/branches/$branchName/").get();
+    var result = await _db.collection("transactions/branches/$branchName/").get();
 
-    _transaction = result.docs
-        .map((doc) => MyTransaction.fromMap(doc.data(), doc.id))
-        .toList();
+    _transaction = result.docs.map((doc) => MyTransaction.fromMap(doc.data(), doc.id)).toList();
     _status = Status.Idle;
     notifyListeners();
   }
@@ -120,9 +118,8 @@ class TransactionModel extends ChangeNotifier {
         .where("transactionType", isEqualTo: type)
         .where("date", isEqualTo: date)
         .get();
-    _filteredTransactions = result.docs
-        .map((doc) => MyTransaction.fromMap(doc.data(), doc.id))
-        .toList();
+    _filteredTransactions =
+        result.docs.map((doc) => MyTransaction.fromMap(doc.data(), doc.id)).toList();
     _status = Status.Idle;
     notifyListeners();
   }
@@ -134,18 +131,15 @@ class TransactionModel extends ChangeNotifier {
         .collection("transactions/branches/$branchName/")
         .where("customerName", isEqualTo: customerName)
         .get();
-    _filteredTransactions = result.docs
-        .map((doc) => MyTransaction.fromMap(doc.data(), doc.id))
-        .toList();
+    _filteredTransactions =
+        result.docs.map((doc) => MyTransaction.fromMap(doc.data(), doc.id)).toList();
     _status = Status.Idle;
     notifyListeners();
   }
 
   Future addTransaction({MyTransaction transaction, branchName}) async {
     _status = Status.Busy;
-    _db
-        .collection("transactions/branches/$branchName")
-        .add(transaction.toJson());
+    _db.collection("transactions/branches/$branchName").add(transaction.toJson());
     _status = Status.Idle;
     notifyListeners();
   }

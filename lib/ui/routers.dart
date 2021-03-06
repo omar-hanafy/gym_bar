@@ -12,7 +12,7 @@ import 'package:gym_bar/ui/views/details/employees/one_employee_info.dart';
 import 'package:gym_bar/ui/views/details/products/categories.dart';
 import 'package:gym_bar/ui/views/details/products/product_profile.dart';
 import 'package:gym_bar/ui/views/details/products/products.dart';
-import 'package:gym_bar/ui/views/details/purchases_and_sales/selected_transaction.dart';
+import 'package:gym_bar/ui/widgets/selected_transaction.dart';
 import 'views/details/details.dart';
 
 class Routers {

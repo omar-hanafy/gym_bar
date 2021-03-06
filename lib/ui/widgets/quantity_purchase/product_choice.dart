@@ -3,6 +3,7 @@ import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/category.dart';
 import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/services/quantity_purchase_services.dart';
+import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
@@ -25,6 +26,7 @@ class ProductChoiceCard extends StatelessWidget {
         Provider.of<QuantityPurchaseServices>(context);
     CategoryModel categoryModel = Provider.of<CategoryModel>(context);
     ProductModel productModel = Provider.of<ProductModel>(context);
+    BranchModel branchModel = Provider.of<BranchModel>(context);
 
     List<Category> categories = categoryModel.categories;
 
@@ -67,8 +69,12 @@ class ProductChoiceCard extends StatelessWidget {
     }
 
     dropDownProducts() {
-      List<Product> _filteredProducts =
-          productModel.filterProduct(quantityPurchaseServices.selectedCategory);
+      productModel.fetchProductByCategoryName(
+          branchName: branchModel.selectedBranch,
+          categoryName: quantityPurchaseServices.selectedCategory);
+
+      List<Product> _filteredProducts = productModel.products;
+
       return Padding(
           padding: EdgeInsets.only(
               left: _dimensions.widthPercent(2), right: _dimensions.widthPercent(2)),

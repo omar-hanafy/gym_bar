@@ -4,6 +4,7 @@ import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
 import 'package:gym_bar/core/view_models/employee_model.dart';
+import 'package:gym_bar/core/view_models/total_model.dart';
 import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
@@ -80,45 +81,52 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       });
     }
 
-    billNotification() => GestureDetector(
-          onTap: () {
-            closeFloatingButton();
-          },
-          child: Stack(
-            children: <Widget>[
-              Icon(
-                Icons.notifications,
-                color: Colors.amber,
-                size: _dimensions.heightPercent(4),
+    billNotification() => Column(
+          children: [
+            SizedBox(
+              height: _dimensions.heightPercent(0.6),
+            ),
+            GestureDetector(
+              onTap: () {
+                closeFloatingButton();
+              },
+              child: Stack(
+                children: <Widget>[
+                  Icon(
+                    Icons.notifications,
+                    color: Colors.amber,
+                    size: _dimensions.heightPercent(5),
+                  ),
+                  Positioned(
+                    right: 0,
+                    child: Container(
+                      height: _dimensions.heightPercent(2.7),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: _dimensions.heightPercent(2.5),
+                        minHeight: _dimensions.heightPercent(2.5),
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: _dimensions.heightPercent(0.5),
+                          ),
+                          Text(
+                            '99+',
+                            style: _textStyles.billNotificationStyle(),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
-              Positioned(
-                right: 0,
-                child: Container(
-                  padding: EdgeInsets.all(_dimensions.heightPercent(0.1)),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(_dimensions.heightPercent(1)),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: 17,
-                    minHeight: 17,
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: _dimensions.heightPercent(0.3),
-                      ),
-                      Text(
-                        '3',
-                        style: _textStyles.billNotificationStyle(),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+            ),
+          ],
         );
 
     quickReport() {
@@ -142,13 +150,23 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Consumer<String>(
-                  builder: (BuildContext context, total, Widget child) {
-                    return Text(
-                      total == null ? "" : total,
-                      style: _textStyles.detailsTitlesStyle(),
-                    );
+                StreamProvider<String>(
+                  create: (_) => TotalModel().fetchTotalStream(branchModel.selectedBranch),
+                  initialData: "loading...",
+                  catchError: (_, Object err) {
+                    if (err.toString().contains("Tried calling: [](\"cash\")")) {
+                      return "لا يوجد";
+                    } else
+                      return "حدث خطأ";
                   },
+                  child: Consumer<String>(
+                    builder: (BuildContext context, total, Widget child) {
+                      return Text(
+                        total == null ? "" : total,
+                        style: _textStyles.detailsTitlesStyle(),
+                      );
+                    },
+                  ),
                 ),
                 Text(
                   "الخزنة",

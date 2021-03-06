@@ -19,7 +19,7 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> _products;
+  List<Product> _products = [];
 
   List<Product> get products => _products;
 
@@ -105,15 +105,13 @@ class ProductModel extends ChangeNotifier {
         .snapshots()
         .map((snapshot) => Product.fromMap(snapshot.data(), id));
   }
+
   Future fetchProductById({branchName, id}) async {
     print("Printing IDDDDDDDD");
     print(id);
     _status = Status.Busy;
-    Product product = await _db
-        .collection("products/branches/$branchName/")
-        .doc(id)
-        .get()
-        .then((snapshot) {
+    Product product =
+        await _db.collection("products/branches/$branchName/").doc(id).get().then((snapshot) {
       Map<String, dynamic> map = snapshot.data();
       print("prinitng name");
       print(map['name']);
@@ -126,6 +124,7 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
     return product;
   }
+
   Future fetchProductByCategoryName({branchName, categoryName}) async {
     _status = Status.Busy;
     var result = await _db
