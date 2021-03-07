@@ -28,42 +28,49 @@ class CustomCardItem {
         onTapDown: onTapDown,
         onTapCancel: onTapCancel,
         onTap: onPress,
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(_dimensions.heightPercent(1))),
-          elevation: 5,
-          color: networkImage == null ? backGround : Colors.black,
-          semanticContainer: true,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            textDirection: TextDirection.rtl,
-            children: <Widget>[
-              Container(
-                width: _dimensions.widthPercent(90),
-                height: _dimensions.heightPercent(35),
-                child: Opacity(
-                  opacity: 0.4,
-                  child: assetImage == null
-                      ? CachedNetworkImage(
-                          fit: BoxFit.fill,
-                          imageUrl: networkImage,
-                          placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) => new Icon(Icons.error),
-                        )
-                      : Image.asset(assetImage, fit: BoxFit.fill),
+        child: Container(
+          width: _dimensions.widthPercent(80),
+          height: _dimensions.widthPercent(80),
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(_dimensions.heightPercent(1))),
+            elevation: 5,
+            color: networkImage == null ? backGround : Colors.black,
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              textDirection: TextDirection.rtl,
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Opacity(
+                    opacity: 0.4,
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: assetImage == null
+                          ? CachedNetworkImage(
+                              imageUrl: networkImage,
+                              placeholder: (context, url) =>
+                                  Center(child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) => new Icon(Icons.error),
+                            )
+                          : Image.asset(assetImage),
+                    ),
+                  ),
                 ),
-              ),
-              if (statistics == null)
-                titleOnly(bigTitle: bigTitle, title: title)
-              else
-                titleStatistics(
-                    bigTitle: bigTitle,
-                    title: title,
-                    statistics: statistics,
-                    topSpace: topSpace,
-                    betweenSpace: betweenSpace)
-            ],
+                if (statistics == null)
+                  titleOnly(bigTitle: bigTitle, title: title)
+                else
+                  titleStatistics(
+                      bigTitle: bigTitle,
+                      title: title,
+                      statistics: statistics,
+                      topSpace: topSpace,
+                      betweenSpace: betweenSpace)
+              ],
+            ),
           ),
         ));
   }

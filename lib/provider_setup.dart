@@ -3,6 +3,7 @@ import 'package:gym_bar/core/models/client.dart';
 import 'package:gym_bar/core/services/add_person_services.dart';
 import 'package:gym_bar/core/services/add_product_services.dart';
 import 'package:gym_bar/core/services/bill_services.dart';
+import 'package:gym_bar/core/services/details_services.dart';
 import 'package:gym_bar/core/services/home_services.dart';
 import 'package:gym_bar/core/services/quantity_purchase_services.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
@@ -17,20 +18,13 @@ import 'core/view_models/category_model.dart';
 
 var providers = [
   //Streams
-  StreamProvider<List<Branch>>(
-    create: (_) => BranchModel().fetchBranches(),
-    initialData: [],
-  ),
-  // StreamProvider<String>(
-  //   create: (_) => TotalModel().fetchTotalStream(),
-  //   initialData: "",
-  // ),
+  StreamProvider<List<Branch>>(create: (_) => BranchModel().fetchBranches(), initialData: []),
   StreamProvider<List<Client>>(
-    create: (_) => ClientModel().fetchClientStream(branchName: "بيفرلي"),
-    initialData: [],
-  ),
+      create: (_) => ClientModel().fetchClientStream(branchName: "بيفرلي"), initialData: null),
   StreamProvider<List<Employee>>(
-      create: (_) => EmployeeModel().fetchEmployeeStream(branchName: "بيفرلي"), initialData: []),
+      create: (_) => EmployeeModel().fetchEmployeeStream(branchName: "بيفرلي"),
+      initialData: null),
+
   //Models
   ChangeNotifierProvider(create: (_) => BranchModel()),
   ChangeNotifierProvider(create: (_) => CategoryModel()),
@@ -39,10 +33,12 @@ var providers = [
   ChangeNotifierProvider(create: (_) => ClientModel()),
   ChangeNotifierProvider(create: (_) => TransactionModel()),
   ChangeNotifierProvider(create: (_) => TotalModel()),
+
   //Services
   ChangeNotifierProvider(create: (_) => BillServices()),
   ChangeNotifierProvider(create: (_) => HomeServices()),
   ChangeNotifierProvider(create: (_) => AddProductServices()),
   ChangeNotifierProvider(create: (_) => AddPersonServices()),
   ChangeNotifierProvider(create: (_) => QuantityPurchaseServices()),
+  ChangeNotifierProvider(create: (_) => DetailsServices()),
 ];

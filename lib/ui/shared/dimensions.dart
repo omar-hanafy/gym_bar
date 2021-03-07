@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Dimensions {
-  final context;
+  final BuildContext context;
 
   Dimensions(this.context);
 

@@ -56,32 +56,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/clients.jpeg
-    - assets/images/employers.jpg
-    - assets/images/branches.jpg
-    - assets/images/products.jpg
-    - assets/images/logo.jpg
-    - assets/images/add.jpg
-    - assets/images/banana.jpg
-    - assets/images/myprofile.jpg
-    - assets/images/deposit.png
-    - assets/images/withdraw.png
-    - ios/Runner.xcworkspace/xcshareddata/
-    - ios/Runner/Assets.xcassets/
-    - ios/Runner/Base.lproj/
-    - ios/Runner/
-    - ios/Runner.xcworkspace/
-    - ios/
-    - ios/Runner/Assets.xcassets/LaunchImage.imageset/
-    - ios/Runner.xcodeproj/
-    - ios/Runner/Assets.xcassets/AppIcon.appiconset/
-    - ios/build/XCBuildData/
-    - ios/build/
-    - ios/Runner.xcodeproj/xcshareddata/
-    - ios/Runner.xcodeproj/project.xcworkspace/
-    - ios/Runner.xcodeproj/xcshareddata/xcschemes/
-    - ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/
-    - ios/Flutter/
+    - assets/images/
+    - assets/images/details/
+    - assets/images/employee_clients/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

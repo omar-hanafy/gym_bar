@@ -72,14 +72,19 @@ class _BranchesState extends State<Branches> {
     return Consumer<List<Branch>>(builder: (_, branches, __) {
       return ScreenTypeLayout(
         mobile: Scaffold(
-            floatingActionButton: FloatingActionButton(
-                child: Icon(
-                  Icons.business,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  addBranch();
-                }),
+            floatingActionButton: Container(
+              width: _dimensions.widthPercent(15),
+              height: _dimensions.widthPercent(15),
+              child: FloatingActionButton(
+                  child: Icon(
+                    Icons.business,
+                    color: Colors.white,
+                    size: _dimensions.widthPercent(7),
+                  ),
+                  onPressed: () {
+                    addBranch();
+                  }),
+            ),
             appBar: AppBar(title: Text("الفروع")),
             body: branches == null
                 ? Center(
@@ -89,14 +94,13 @@ class _BranchesState extends State<Branches> {
                     ? Column(
                         children: [
                           SizedBox(height: _dimensions.heightPercent(1.5)),
-                          //todo: add to UIHelper
                           Expanded(
                             child: ListView.builder(
                                 itemCount: branches.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: _dimensions.widthPercent(7),
+                                        horizontal: _dimensions.widthPercent(6),
                                         vertical: _dimensions.heightPercent(1)),
                                     child: CustomCardItem(context: context).item(
                                       bigTitle: true,

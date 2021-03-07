@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_bar/core/services/details_services.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
 import 'package:gym_bar/core/view_models/client_model.dart';
@@ -19,13 +20,17 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
   var _isInit = true;
-  var backgroundColor;
 
   AnimationController _controller;
   static const List<Widget> icons = const [
     Icon(Icons.attach_money_sharp, color: Colors.green),
     Icon(Icons.person_add, color: Colors.red),
     Icon(Icons.add_business, color: Colors.orange),
+  ];
+  static const List<String> toolTips = const [
+    "عملية شراء",
+    "إضافة شخص",
+    "إضافة منتج",
   ];
 
   @override
@@ -65,68 +70,56 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     BranchModel branchModel = Provider.of<BranchModel>(context);
 
     // CategoryModel categoryModel = Provider.of<CategoryModel>(context, listen: false);
-
+    DetailsServices detailsService = Provider.of<DetailsServices>(context, listen: false);
     openFloatingButton() {
-      setState(() {
-        backgroundColor = Colors.black.withOpacity(0.2);
-      });
+      detailsService.backgroundColor = Colors.black.withOpacity(0.8);
       print("dismisssssed");
       _controller.forward();
     }
 
     closeFloatingButton() {
       _controller.reverse();
-      setState(() {
-        backgroundColor = null;
-      });
+      detailsService.backgroundColor = null;
     }
 
-    billNotification() => Column(
-          children: [
-            SizedBox(
-              height: _dimensions.heightPercent(0.6),
-            ),
-            GestureDetector(
-              onTap: () {
-                closeFloatingButton();
-              },
-              child: Stack(
-                children: <Widget>[
-                  Icon(
-                    Icons.notifications,
-                    color: Colors.amber,
-                    size: _dimensions.heightPercent(5),
-                  ),
-                  Positioned(
-                    right: 0,
-                    child: Container(
-                      height: _dimensions.heightPercent(2.7),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      constraints: BoxConstraints(
-                        minWidth: _dimensions.heightPercent(2.5),
-                        minHeight: _dimensions.heightPercent(2.5),
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: _dimensions.heightPercent(0.5),
-                          ),
-                          Text(
-                            '99+',
-                            style: _textStyles.billNotificationStyle(),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
+    billNotification() => Align(
+          alignment: Alignment.centerRight,
+          child: Stack(
+            children: <Widget>[
+              Icon(
+                Icons.notifications,
+                color: Colors.amber,
+                size: _dimensions.widthPercent(10),
               ),
-            ),
-          ],
+              Positioned(
+                right: 0,
+                child: Container(
+                  // height: _dimensions.heightPercent(2.),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: _dimensions.widthPercent(5),
+                    maxWidth: _dimensions.widthPercent(20),
+                    minHeight: _dimensions.widthPercent(5),
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: _dimensions.heightPercent(0.5),
+                      ),
+                      Text(
+                        '9',
+                        style: _textStyles.billNotificationStyle(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         );
 
     quickReport() {
@@ -199,11 +192,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (!_controller.isDismissed) {
-                      closeFloatingButton();
-                    } else {
-                      print("ds");
-                    }
+                    print("ds");
                   },
                   child: Icon(
                     Icons.add_circle_outlined,
@@ -217,116 +206,95 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       );
     }
 
-    body() => GestureDetector(
-          onTap: () {
-            if (!_controller.isDismissed) {
-              closeFloatingButton();
-            }
-          },
-          child: Container(
-            color: backgroundColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                quickReport(),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: _dimensions.heightPercent(1.2),
-                        horizontal: _dimensions.widthPercent(2)),
-                    child: CustomScrollView(
-                      slivers: <Widget>[
-                        SliverGrid(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, mainAxisSpacing: 6, crossAxisSpacing: 6),
-                          delegate: SliverChildListDelegate(
-                            [
-                              _homeItem.item(
-                                title: "المبيعات",
-                                assetImage: "assets/images/clients.jpeg",
-                                onPress: () {
-                                  closeFloatingButton();
-
-                                  transactionModel.isSales = true;
-                                  Navigator.pushNamed(context, '/choose_date');
-                                },
-                              ),
-                              _homeItem.item(
-                                title: "المشتريات",
-                                assetImage: "assets/images/employers.jpg",
-                                onPress: () {
-                                  if (!_controller.isDismissed) {
-                                    closeFloatingButton();
-                                  } else {
-                                    transactionModel.isSales = false;
-                                    Navigator.pushNamed(context, '/choose_date');
-                                  }
-                                },
-                              ),
-                              _homeItem.item(
-                                title: "العملاء",
-                                assetImage: "assets/images/clients.jpeg",
-                                onPress: () {
-                                  if (!_controller.isDismissed) {
-                                    closeFloatingButton();
-                                  } else {
-                                    clientModel.fetchClients(
-                                        branchName: branchModel.selectedBranch);
-                                    Navigator.pushNamed(context, '/clients_list');
-                                  }
-                                },
-                              ),
-                              _homeItem.item(
-                                title: "الموظفين",
-                                assetImage: "assets/images/employers.jpg",
-                                onPress: () {
-                                  if (!_controller.isDismissed) {
-                                    closeFloatingButton();
-                                  } else {
-                                    employeeModel.fetchEmployees(
-                                        branchName: branchModel.selectedBranch);
-
-                                    Navigator.pushNamed(context, '/employees_list');
-                                  }
-                                },
-                              ),
-                              _homeItem.item(
-                                title: "المنتجات",
-                                assetImage: "assets/images/products.jpg",
-                                onPress: () {
-                                  if (!_controller.isDismissed) {
-                                    closeFloatingButton();
-                                  } else {
-                                    Navigator.pushNamed(context, '/categories');
-                                  }
-                                },
-                              ),
-                              _homeItem.item(
-                                title: "التحميلات",
-                                assetImage: "assets/images/employers.jpg",
-                                onPress: () {
-                                  if (!_controller.isDismissed) {
-                                    closeFloatingButton();
-                                  } else {
-                                    //on press after closing floating actions
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                            [],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+    body() => Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            AppBar(
+              actions: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(3)),
+                  child: billNotification(),
                 ),
               ],
+              elevation: 0,
+              title: Consumer<BranchModel>(
+                  builder: (context, branchModel, _) => Text(branchModel.selectedBranch)),
             ),
-          ),
+            quickReport(),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: _dimensions.heightPercent(1.2),
+                    horizontal: _dimensions.widthPercent(2)),
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, mainAxisSpacing: 6, crossAxisSpacing: 6),
+                      delegate: SliverChildListDelegate(
+                        [
+                          _homeItem.item(
+                            title: "المبيعات",
+                            assetImage: "assets/images/details/sales.jpeg",
+                            onPress: () {
+                              transactionModel.isSales = true;
+                              Navigator.pushNamed(context, '/choose_date');
+                            },
+                          ),
+                          _homeItem.item(
+                            title: "المشتريات",
+                            assetImage: "assets/images/details/purchases.jpeg",
+                            onPress: () {
+                              transactionModel.isSales = false;
+                              Navigator.pushNamed(context, '/choose_date');
+                            },
+                          ),
+                          _homeItem.item(
+                            title: "العملاء",
+                            assetImage: "assets/images/details/clients.jpeg",
+                            onPress: () {
+                              clientModel.fetchClients(branchName: branchModel.selectedBranch);
+                              clientModel.filterClients(clientModel.selectedClientType);
+                              Navigator.pushNamed(context, '/clients_list');
+                            },
+                          ),
+                          _homeItem.item(
+                            title: "الموظفين",
+                            assetImage: "assets/images/details/employees.jpeg",
+                            onPress: () {
+                              employeeModel.fetchEmployees(
+                                  branchName: branchModel.selectedBranch);
+
+                              Navigator.pushNamed(context, '/employees_list');
+                            },
+                          ),
+                          _homeItem.item(
+                            title: "المنتجات",
+                            assetImage: "assets/images/details/products.jpeg",
+                            onPress: () {
+                              Navigator.pushNamed(context, '/categories');
+                            },
+                          ),
+                          _homeItem.item(
+                            title: "التحميلات",
+                            assetImage: "assets/images/details/downloads.jpeg",
+                            onPress: () {
+                              //on press after closing floating actions
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         );
 
     floatingActionButton() {
@@ -343,13 +311,13 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                 curve: Interval(0.0, 1.0 - index / icons.length / 2.0, curve: Curves.easeOut),
               ),
               child: FloatingActionButton(
+                tooltip: toolTips[index],
                 heroTag: null,
                 // isExtended: true,
                 backgroundColor: backgroundColorForIcon,
                 // mini: true,
                 child: icons[index],
                 onPressed: () {
-                  if (!_controller.isDismissed) closeFloatingButton();
                   if (index == 0)
                     Navigator.pushNamed(context, "/quantity_purchase");
                   else if (index == 1)
@@ -362,25 +330,35 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
           return child;
         }).toList()
           ..add(
-            FloatingActionButton(
-              heroTag: null,
-              child: AnimatedBuilder(
-                animation: _controller,
-                builder: (BuildContext context, Widget child) {
-                  return Transform(
-                    transform: Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
-                    alignment: FractionalOffset.center,
-                    child: Icon(_controller.isDismissed ? Icons.add : Icons.close),
-                  );
+            Container(
+              width: _dimensions.widthPercent(15),
+              height: _dimensions.widthPercent(15),
+              child: FloatingActionButton(
+                backgroundColor: Colors.white,
+                tooltip: "إضافات",
+                heroTag: null,
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (BuildContext context, Widget child) {
+                    return Transform(
+                      transform: Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
+                      alignment: FractionalOffset.center,
+                      child: Icon(
+                        _controller.isDismissed ? Icons.add : Icons.close,
+                        size: _dimensions.widthPercent(7),
+                        color: Colors.deepOrange,
+                      ),
+                    );
+                  },
+                ),
+                onPressed: () {
+                  if (_controller.isDismissed) {
+                    openFloatingButton();
+                  } else {
+                    closeFloatingButton();
+                  }
                 },
               ),
-              onPressed: () {
-                if (_controller.isDismissed) {
-                  openFloatingButton();
-                } else {
-                  closeFloatingButton();
-                }
-              },
             ),
           ),
       );
@@ -388,16 +366,21 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
 
     return Scaffold(
       floatingActionButton: floatingActionButton(),
-      appBar: AppBar(
-        actions: <Widget>[
-          billNotification(),
-          SizedBox(width: _dimensions.widthPercent(4)),
+      body: Stack(
+        children: [
+          body(),
+          GestureDetector(
+            onTap: closeFloatingButton,
+            child: Consumer<DetailsServices>(
+              builder: (_, detailsService, __) {
+                return Container(
+                  color: detailsService.backgroundColor,
+                );
+              },
+            ),
+          ),
         ],
-        elevation: 0,
-        title: Consumer<BranchModel>(
-            builder: (context, branchModel, _) => Text(branchModel.selectedBranch)),
       ),
-      body: body(),
     );
   }
 }
