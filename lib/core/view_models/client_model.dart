@@ -1,42 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gym_bar/core/enums.dart';
 import 'package:gym_bar/core/models/client.dart';
+
+import '../enums.dart';
 
 class ClientModel extends ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final TextEditingController cashToAdd = TextEditingController();
 
-  double _cashToAdd = 0;
+  clear() => cashToAdd.clear();
 
-  double get cashToAdd => _cashToAdd;
-
-  set cashToAdd(double value) {
-    _cashToAdd = value;
-    notifyListeners();
-  }
-
-  bool nameAscending = false;
-  bool cashAscending = false;
-
-  Status _status = Status.Busy;
-
-  Status get status => _status;
+  bool _nameAscending = false;
+  bool _cashAscending = false;
 
   List<Client> _client;
-
-  set client(List<Client> value) {
-    _client = value;
-    notifyListeners();
-  }
-
   Client _selectedClient;
-
   String _selectedClientType = 'all';
+  Status _status = Status.Busy;
+
+  List<Client> get clients => _client;
+
+  Client get selectedClient => _selectedClient;
 
   String get selectedClientType => _selectedClientType;
 
-  set selectedClientType(String value) {
-    _selectedClientType = value;
+  Status get status => _status;
+
+  set client(List<Client> value) {
+    _client = value;
     notifyListeners();
   }
 
@@ -45,33 +36,32 @@ class ClientModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Client> get clients => _client;
-
-  Client get selectedClient => _selectedClient;
-
-  changeNameAscendingState() {
-    nameAscending = !nameAscending;
+  set selectedClientType(String value) {
+    _selectedClientType = value;
     notifyListeners();
   }
 
-  changeCashAscendingState() {
-    cashAscending = !cashAscending;
+  onSortName(List<Client> liveClients) {
+    _nameAscending = !_nameAscending;
+    _nameAscending
+        ? liveClients.sort((a, b) => a.name.compareTo(b.name))
+        : liveClients.sort((a, b) => b.name.compareTo(a.name));
     notifyListeners();
   }
 
-  List<Client> filterClients(String selectedClientType) {
+  onSortCash(List<Client> liveClients) {
+    _cashAscending = !_cashAscending;
+    _cashAscending
+        ? liveClients.sort((a, b) => a.cash.compareTo(b.cash))
+        : liveClients.sort((a, b) => b.cash.compareTo(a.cash));
+    notifyListeners();
+  }
+
+  List<Client> filterClients({String selectedClientType, List<Client> liveClients}) {
     if (selectedClientType == "all") {
-      return _client;
+      return liveClients;
     } else
-      return _client.where((client) => client.type == selectedClientType).toList();
-  }
-
-  Future fetchClients({branchName}) async {
-    _status = Status.Busy;
-    var result = await _db.collection("clients/branches/$branchName/").get();
-    _client = result.docs.map((doc) => Client.fromMap(doc.data(), doc.id)).toList();
-    _status = Status.Idle;
-    notifyListeners();
+      return liveClients.where((client) => client.type == selectedClientType).toList();
   }
 
   Future fetchClientById({branchName, id}) async {
@@ -94,17 +84,17 @@ class ClientModel extends ChangeNotifier {
         (snapShot) => snapShot.docs.map((doc) => Client.fromMap(doc.data(), doc.id)).toList());
   }
 
+  Future addClient({Client client, String branchName}) async {
+    _status = Status.Busy;
+    await _db.collection("clients/branches/$branchName/").add(client.toJson());
+    _status = Status.Idle;
+  }
+
   Future updateClient({clientId, Map<String, dynamic> data, String branchName}) async {
     _status = Status.Busy;
 
     await _db.collection("clients/branches/$branchName/").doc(clientId).update(data);
     _status = Status.Idle;
     notifyListeners();
-  }
-
-  Future addClient({Client client, String branchName}) async {
-    _status = Status.Busy;
-    await _db.collection("clients/branches/$branchName/").add(client.toJson());
-    _status = Status.Idle;
   }
 }

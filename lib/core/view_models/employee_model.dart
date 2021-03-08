@@ -6,38 +6,28 @@ import '../enums.dart';
 
 class EmployeeModel extends ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final TextEditingController cashToAdd = TextEditingController();
 
-  double _cashToAdd = 0;
+  clear() => cashToAdd.clear();
 
-  double get cashToAdd => _cashToAdd;
-
-  set cashToAdd(double value) {
-    _cashToAdd = value;
-    notifyListeners();
-  }
-
-  bool nameAscending = false;
-  bool cashAscending = false;
-
-  Status _status = Status.Busy;
-
-  Status get status => _status;
+  bool _nameAscending = false;
+  bool _cashAscending = false;
 
   List<Employee> _employee;
-
-  set employee(List<Employee> value) {
-    _employee = value;
-    notifyListeners();
-  }
-
   Employee _selectedEmployee;
-
   String _selectedEmployeeType = 'all';
+  Status _status = Status.Busy;
+
+  List<Employee> get employees => _employee;
+
+  Employee get selectedEmployee => _selectedEmployee;
 
   String get selectedEmployeeType => _selectedEmployeeType;
 
-  set selectedEmployeeType(String value) {
-    _selectedEmployeeType = value;
+  Status get status => _status;
+
+  set employee(List<Employee> value) {
+    _employee = value;
     notifyListeners();
   }
 
@@ -46,68 +36,32 @@ class EmployeeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Employee> get employees => _employee;
-
-  Employee get selectedEmployee => _selectedEmployee;
-
-  changeNameAscendingState() {
-    nameAscending = !nameAscending;
+  set selectedEmployeeType(String value) {
+    _selectedEmployeeType = value;
     notifyListeners();
   }
 
-  changeCashAscendingState() {
-    cashAscending = !cashAscending;
+  onSortName(List<Employee> liveEmployees) {
+    _nameAscending = !_nameAscending;
+    _nameAscending
+        ? liveEmployees.sort((a, b) => a.name.compareTo(b.name))
+        : liveEmployees.sort((a, b) => b.name.compareTo(a.name));
     notifyListeners();
   }
 
-  onSortName({List<Employee> liveEmployees}) {
-    nameAscending = !nameAscending;
-    if (liveEmployees == null) {
-      nameAscending
-          ? _employee.sort((a, b) => a.name.compareTo(b.name))
-          : _employee.sort((a, b) => b.name.compareTo(a.name));
-    } else {
-      nameAscending
-          ? liveEmployees.sort((a, b) => a.name.compareTo(b.name))
-          : liveEmployees.sort((a, b) => b.name.compareTo(a.name));
-    }
-    notifyListeners();
-  }
-
-  onSortCash({List<Employee> liveEmployees}) {
-    cashAscending = !cashAscending;
-    if (liveEmployees == null) {
-      cashAscending
-          ? _employee.sort((a, b) => a.cash.compareTo(b.cash))
-          : _employee.sort((a, b) => b.cash.compareTo(a.cash));
-    } else {
-      cashAscending
-          ? liveEmployees.sort((a, b) => a.cash.compareTo(b.cash))
-          : liveEmployees.sort((a, b) => b.cash.compareTo(a.cash));
-    }
+  onSortCash(List<Employee> liveEmployees) {
+    _cashAscending = !_cashAscending;
+    _cashAscending
+        ? liveEmployees.sort((a, b) => a.cash.compareTo(b.cash))
+        : liveEmployees.sort((a, b) => b.cash.compareTo(a.cash));
     notifyListeners();
   }
 
   List<Employee> filterEmployees({String selectedEmployeeType, List<Employee> liveEmployees}) {
-    if (liveEmployees == null) {
-      if (selectedEmployeeType == "all") {
-        return _employee;
-      } else
-        return _employee.where((employee) => employee.type == selectedEmployeeType).toList();
-    } else {
-      if (selectedEmployeeType == "all") {
-        return liveEmployees;
-      } else
-        return liveEmployees.where((employee) => employee.type == selectedEmployeeType).toList();
-    }
-  }
-
-  Future fetchEmployees({branchName}) async {
-    _status = Status.Busy;
-    var result = await _db.collection("employees/branches/$branchName/").get();
-    _employee = result.docs.map((doc) => Employee.fromMap(doc.data(), doc.id)).toList();
-    _status = Status.Idle;
-    notifyListeners();
+    if (selectedEmployeeType == "all") {
+      return liveEmployees;
+    } else
+      return liveEmployees.where((employee) => employee.type == selectedEmployeeType).toList();
   }
 
   Future fetchEmployeeById({branchName, id}) async {
@@ -128,6 +82,12 @@ class EmployeeModel extends ChangeNotifier {
   Stream<List<Employee>> fetchEmployeeStream({branchName}) {
     return _db.collection("employees/branches/$branchName/").snapshots().map(
         (snapShot) => snapShot.docs.map((doc) => Employee.fromMap(doc.data(), doc.id)).toList());
+  }
+
+  Future addEmployee({Employee employee, String branchName}) async {
+    _status = Status.Busy;
+    await _db.collection("employees/branches/$branchName/").add(employee.toJson());
+    _status = Status.Idle;
   }
 
   Future updateEmployee({employeeId, Map<String, dynamic> data, String branchName}) async {

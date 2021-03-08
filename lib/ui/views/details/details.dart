@@ -250,24 +250,13 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                             },
                           ),
                           _homeItem.item(
-                            title: "العملاء",
-                            assetImage: "assets/images/details/clients.jpeg",
-                            onPress: () {
-                              clientModel.fetchClients(branchName: branchModel.selectedBranch);
-                              clientModel.filterClients(clientModel.selectedClientType);
-                              Navigator.pushNamed(context, '/clients_list');
-                            },
-                          ),
+                              title: "العملاء",
+                              assetImage: "assets/images/details/clients.jpeg",
+                              onPress: () => Navigator.pushNamed(context, '/clients_list')),
                           _homeItem.item(
-                            title: "الموظفين",
-                            assetImage: "assets/images/details/employees.jpeg",
-                            onPress: () {
-                              employeeModel.fetchEmployees(
-                                  branchName: branchModel.selectedBranch);
-
-                              Navigator.pushNamed(context, '/employees_list');
-                            },
-                          ),
+                              title: "الموظفين",
+                              assetImage: "assets/images/details/employees.jpeg",
+                              onPress: () => Navigator.pushNamed(context, '/employees_list')),
                           _homeItem.item(
                             title: "المنتجات",
                             assetImage: "assets/images/details/products.jpeg",

@@ -11,30 +11,29 @@ class TotalModel extends ChangeNotifier {
 
   // Status get status => _status;
 
-  List<Total> _total;
+  Total _total;
 
-  List<Total> get total => _total;
+  Total get total => _total;
 
-  set total(List<Total> value) {
+  set total(Total value) {
     _total = value;
     notifyListeners();
   }
 
-  Future<List<Total>> fetchTotal() async {
-    // _status = Status.Busy;
-
-    var result = await _db.collection("total").get();
-    _total = result.docs.map((doc) => Total.fromMap(doc.data(), doc.id)).toList();
-    // _status = Status.Idle;
-
-    notifyListeners();
-    return total;
-  }
 
   // fetchTotalStream() {
   //   Stream<QuerySnapshot> result = _db.collection("total").snapshots();
   //   return result;
   // }
+  Future<Total> fetchTotal(branchName) async {
+
+    _total = await _db
+        .collection("total")
+        .doc(branchName).get().then((doc) => Total.fromMap(doc.data(), doc.id));
+
+    notifyListeners();
+    return total;
+  }
 
   Stream<String> fetchTotalStream(branchName) {
     return _db
