@@ -29,7 +29,7 @@ class TransactionModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isSales = true;
+  bool _isSales = false;
 
   bool get isSales => _isSales;
 

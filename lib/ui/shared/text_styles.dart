@@ -29,8 +29,20 @@ class TextStyles {
         color: Colors.white,
       );
 
+  tableTitleStyleLight() => TextStyle(
+        fontSize: Dimensions(context).widthPercent(5),
+        fontFamily: 'Tajawal',
+        color: Colors.white,
+      );
+
   tableContentStyle() => TextStyle(
         fontSize: Dimensions(context).widthPercent(5),
+        fontFamily: 'Tajawal',
+        color: Colors.black,
+      );
+
+  tableContentStyleLight() => TextStyle(
+        fontSize: Dimensions(context).widthPercent(4),
         fontFamily: 'Tajawal',
         color: Colors.black,
       );

@@ -30,9 +30,21 @@ class AddProduct extends StatelessWidget {
       ProductAmountCard(formKey: _productAmountCardFormKey),
       ProductPriceCard(formKey: _productPriceCardFormKey)
     ];
+    navigatePageToIndex() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_pageController.hasClients) {
+          _pageController.animateToPage(
+            addProductServices.index,
+            duration: Duration(milliseconds: 200),
+            curve: Curves.linear,
+          );
+        }
+      });
+    }
 
-    addProduct() {
-      productModel.addProduct(
+    addProduct() async {
+      addProductServices.addingProduct = true;
+      await productModel.addProduct(
         product: Product(
             name: addProductServices.name.text,
             category: addProductServices.selectedCategory,
@@ -44,14 +56,17 @@ class AddProduct extends StatelessWidget {
             quantityOfWholesaleUnit: addProductServices.quantityOfWholesaleUnit.text,
             quantityLimit: addProductServices.quantityLimit.text,
             unit: addProductServices.unit.text,
-            wholesaleQuantity: addProductServices.wholesaleQuantity.text,
             wholesaleUnit: addProductServices.wholesaleUnit.text,
             theAmountOfSalesPerProduct: addProductServices.theAmountOfSalesPerProduct.text,
             supplierName: addProductServices.companyName.text,
-            // netTotalQuantity:  addProductServices.netTotalQuantity().toString(),
+            wholesaleQuantity: addProductServices.selectedRadio == 1
+                ? addProductServices.wholesaleQuantity.text
+                : "0.0",
+            netTotalQuantity: addProductServices.netTotalQuantity(),
             photo: "photo"),
         branchName: branchName,
       );
+      addProductServices.addingProduct = false;
     }
 
     _confirmAddProduct() => showDialog<void>(
@@ -73,8 +88,11 @@ class AddProduct extends StatelessWidget {
                   child: Text('اتمام'),
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
-                    addProduct();
-                    addProductServices.clear();
+                    addProduct().then((value) {
+                      addProductServices.clear();
+                      addProductServices.index = 0;
+                      navigatePageToIndex();
+                    });
                   },
                 ),
               ],
@@ -93,7 +111,7 @@ class AddProduct extends StatelessWidget {
             );
           }
         },
-        text: "Next",
+        text: "اتمام",
         context: context,
       );
     }
@@ -110,7 +128,7 @@ class AddProduct extends StatelessWidget {
             );
           }
         },
-        text: "Next",
+        text: "التالي",
         context: context,
       );
     }
@@ -123,7 +141,7 @@ class AddProduct extends StatelessWidget {
             _confirmAddProduct();
           }
         },
-        text: "Submit",
+        text: "اتمام",
         context: context,
       );
     }
@@ -132,70 +150,68 @@ class AddProduct extends StatelessWidget {
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context, true);
-                addProductServices.clear();
-                addProductServices.index = 0;
-              }),
+          title: Text("اضافة منتج"),
+
+          // leading: IconButton(
+          //     icon: Icon(Icons.arrow_back),
+          //     onPressed: () {
+          //       Navigator.pop(context, true);
+          //       addProductServices.clear();
+          //       addProductServices.index = 0;
+          //     }),
           actions: [
             IconButton(
               icon: Icon(Icons.clear_all),
               onPressed: () {
                 addProductServices.clear();
                 addProductServices.index = 0;
-                _pageController.animateToPage(
-                  addProductServices.index,
-                  duration: Duration(milliseconds: 200),
-                  curve: Curves.linear,
-                );
+                navigatePageToIndex();
                 FocusScope.of(context).requestFocus(FocusNode());
               },
             )
           ],
         ),
-        body: ListView(
-          children: [
-            SizedBox(height: _dimensions.heightPercent(10)),
-            Center(
-              child: Container(
-                  height: _dimensions.heightPercent(50),
-                  width: _dimensions.widthPercent(95),
-                  child: PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: _pageController,
-                    children: addProductCards,
-                  )),
-            ),
-            SizedBox(height: _dimensions.heightPercent(5)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _formWidget.formButtonTemplate(
-                  onTab: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
+        body: addProductServices.addingProduct
+            ? Center(
+                child: Text("جاري اضافة المنتج..."),
+              )
+            : ListView(
+                children: [
+                  SizedBox(height: _dimensions.heightPercent(10)),
+                  Center(
+                    child: Container(
+                        height: _dimensions.heightPercent(50),
+                        width: _dimensions.widthPercent(95),
+                        child: PageView(
+                          physics: NeverScrollableScrollPhysics(),
+                          controller: _pageController,
+                          children: addProductCards,
+                        )),
+                  ),
+                  SizedBox(height: _dimensions.heightPercent(5)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _formWidget.formButtonTemplate(
+                        onTab: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
 
-                    addProductServices.index =
-                        addProductServices.index == 0 ? 0 : addProductServices.index - 1;
+                          addProductServices.index =
+                              addProductServices.index == 0 ? 0 : addProductServices.index - 1;
 
-                    print("sliding back");
-                    _pageController.animateToPage(
-                      addProductServices.index,
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.linear,
-                    );
-                  },
-                  text: "Previous",
-                  context: context,
-                ),
-                if (addProductServices.index == 0) productDetailsCardButton(),
-                if (addProductServices.index == 1) productAmountButton(),
-                if (addProductServices.index == 2) productPriceCardButton()
-              ],
-            ),
-          ],
-        ),
+                          print("sliding back");
+                          navigatePageToIndex();
+                        },
+                        text: "السابق",
+                        context: context,
+                      ),
+                      if (addProductServices.index == 0) productDetailsCardButton(),
+                      if (addProductServices.index == 1) productAmountButton(),
+                      if (addProductServices.index == 2) productPriceCardButton()
+                    ],
+                  ),
+                ],
+              ),
       ),
     );
   }

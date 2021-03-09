@@ -4,6 +4,7 @@ import 'package:gym_bar/core/models/branch.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/ui/responsive/screen_type_layout.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
+import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/widgets/custom_card_item.dart';
 import 'package:gym_bar/ui/widgets/form_widgets.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,8 @@ class _BranchesState extends State<Branches> {
     BranchModel branchModel = Provider.of<BranchModel>(context, listen: false);
     FormWidget _formWidget = FormWidget(context: context);
     Dimensions _dimensions = Dimensions(context);
+    TextStyles _textStyles = TextStyles(context: context);
+
     final TextEditingController newBranchName = TextEditingController();
 
     addBranch() => showDialog<void>(
@@ -117,10 +120,15 @@ class _BranchesState extends State<Branches> {
                           ),
                         ],
                       )
-                    : Center(
-                        child: Text(
-                            "لم نجد اية فروع, من فضلك اضغط على الزر السفلي لاضافة اول فرع لك"),
-                      )),
+                    : Container(
+                      child: Container(
+                        constraints: BoxConstraints(maxWidth: _dimensions.widthPercent(70)),
+                        child: Center(
+                            child: Text(
+                                "لم نجد اية فروع, من فضلك اضغط على الزر السفلي لاضافة اول فرع لك",style: _textStyles.warningStyle(),),
+                          ),
+                      ),
+                    )),
         // tablet: HomeTablet(branches: branches),
       );
     });

@@ -23,6 +23,11 @@ class ProductModel extends ChangeNotifier {
 
   List<Product> get products => _products;
 
+  set products(List<Product> value) {
+    _products = value;
+    notifyListeners();
+  }
+
   List<Product> filterProduct(String selectedCategory) {
     if (selectedCategory == "All") {
       return _products;

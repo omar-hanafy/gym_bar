@@ -66,7 +66,7 @@ class AuthenticationService {
     Api.checkDocExist("employees", employee.id).then((value) {
       if (!value) {
         FirebaseFirestore.instance
-            .collection("employees/branches/$branchName/${employee.id}")
+            .collection("employees/branches/$branchName/")
             .add(employee.toJson());
       } else {
         print("user ${employee.name} ${employee.email} exists");

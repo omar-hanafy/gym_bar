@@ -19,11 +19,6 @@ import 'core/view_models/category_model.dart';
 var providers = [
   //Streams
   StreamProvider<List<Branch>>(create: (_) => BranchModel().fetchBranches(), initialData: []),
-  StreamProvider<List<Client>>(
-      create: (_) => ClientModel().fetchClientStream(branchName: "بيفرلي"), initialData: null),
-  StreamProvider<List<Employee>>(
-      create: (_) => EmployeeModel().fetchEmployeeStream(branchName: "بيفرلي"),
-      initialData: null),
 
   //Models
   ChangeNotifierProvider(create: (_) => BranchModel()),

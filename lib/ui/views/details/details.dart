@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_bar/core/services/details_services.dart';
+import 'package:gym_bar/core/services/quantity_purchase_services.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
-import 'package:gym_bar/core/view_models/client_model.dart';
-import 'package:gym_bar/core/view_models/employee_model.dart';
 import 'package:gym_bar/core/view_models/total_model.dart';
 import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
@@ -19,8 +18,6 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
-  var _isInit = true;
-
   AnimationController _controller;
   static const List<Widget> icons = const [
     Icon(Icons.attach_money_sharp, color: Colors.green),
@@ -43,15 +40,6 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   }
 
   @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      Provider.of<CategoryModel>(context).fetchCategories();
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Dimensions _dimensions = Dimensions(context);
     CustomCardItem _homeItem = CustomCardItem(context: context);
@@ -60,16 +48,11 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     Color backgroundColorForIcon = Theme.of(context).cardColor;
     // Color foregroundColor = Theme.of(context).accentColor;
 
-    ClientModel clientModel = Provider.of<ClientModel>(context, listen: false);
-    // ProductModel productModel = Provider.of<ProductModel>(context, listen: false);
-
-    EmployeeModel employeeModel = Provider.of<EmployeeModel>(context, listen: false);
-
     TransactionModel transactionModel = Provider.of<TransactionModel>(context, listen: false);
-
+    QuantityPurchaseServices quantityPurchaseServices =
+        Provider.of<QuantityPurchaseServices>(context, listen: false);
     BranchModel branchModel = Provider.of<BranchModel>(context);
-
-    // CategoryModel categoryModel = Provider.of<CategoryModel>(context, listen: false);
+    CategoryModel categoryModel = Provider.of<CategoryModel>(context, listen: false);
     DetailsServices detailsService = Provider.of<DetailsServices>(context, listen: false);
     openFloatingButton() {
       detailsService.backgroundColor = Colors.black.withOpacity(0.8);
@@ -261,6 +244,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                             title: "المنتجات",
                             assetImage: "assets/images/details/products.jpeg",
                             onPress: () {
+                              categoryModel.fetchCategories();
                               Navigator.pushNamed(context, '/categories');
                             },
                           ),
@@ -307,11 +291,16 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                 // mini: true,
                 child: icons[index],
                 onPressed: () {
-                  if (index == 0)
+                  if (index == 0) {
+                    categoryModel.fetchCategories();
+                    quantityPurchaseServices.fromHomeScreen = true;
                     Navigator.pushNamed(context, "/quantity_purchase");
-                  else if (index == 1)
+                  } else if (index == 1)
                     Navigator.pushNamed(context, "/add_person");
-                  else if (index == 2) Navigator.pushNamed(context, "/add_product");
+                  else if (index == 2) {
+                    categoryModel.fetchCategories();
+                    Navigator.pushNamed(context, "/add_product");
+                  }
                 },
               ),
             ),

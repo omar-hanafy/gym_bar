@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gym_bar/core/models/product.dart';
+import 'package:gym_bar/core/services/quantity_purchase_services.dart';
 import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
@@ -17,7 +18,8 @@ class ProductProfile extends StatelessWidget {
 
     ProductModel productModel = Provider.of(context);
     Product product = productModel.selectedProduct;
-
+    QuantityPurchaseServices quantityPurchaseServices =
+        Provider.of<QuantityPurchaseServices>(context, listen: false);
     header(String value) {
       return Container(
         width: double.infinity,
@@ -53,13 +55,21 @@ class ProductProfile extends StatelessWidget {
             IconButton(icon: Icon(Icons.edit), onPressed: () {}),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            quantityPurchaseServices.fromHomeScreen = false;
+            Navigator.pushNamed(context, "/quantity_purchase");
+          },
+          backgroundColor: Colors.green,
+          child: Icon(Icons.attach_money_sharp, color: Colors.white),
+        ),
         body: Center(
           child: ListView(
             children: <Widget>[
               SizedBox(height: _dimensions.heightPercent(2)),
               FormWidget(context: context).logo(
                 imageContent: Image.asset(
-                  "assets/images/banana.jpg",
+                  "assets/images/details/products.jpeg",
                   width: double.infinity,
                   height: double.infinity,
                   fit: BoxFit.contain,

@@ -45,8 +45,11 @@ class ProductChoiceCard extends StatelessWidget {
           value: quantityPurchaseServices.selectedCategory,
           isDense: true,
           onChanged: (value) {
+            productModel.products = [];
             productModel.selectedProduct = null;
             quantityPurchaseServices.selectedCategory = value;
+            productModel.fetchProductByCategoryName(
+                branchName: branchModel.selectedBranch, categoryName: value);
             print(quantityPurchaseServices.selectedCategory);
           },
           items: categories.map((category) {
@@ -69,12 +72,6 @@ class ProductChoiceCard extends StatelessWidget {
     }
 
     dropDownProducts() {
-      productModel.fetchProductByCategoryName(
-          branchName: branchModel.selectedBranch,
-          categoryName: quantityPurchaseServices.selectedCategory);
-
-      List<Product> _filteredProducts = productModel.products;
-
       return Padding(
           padding: EdgeInsets.only(
               left: _dimensions.widthPercent(2), right: _dimensions.widthPercent(2)),
@@ -96,9 +93,9 @@ class ProductChoiceCard extends StatelessWidget {
             isDense: true,
             onChanged: (value) {
               productModel.selectedProduct =
-                  _filteredProducts.firstWhere((element) => element.name == value);
+                  productModel.products.firstWhere((element) => element.name == value);
             },
-            items: _filteredProducts.map((_filteredProducts) {
+            items: productModel.products.map((_filteredProducts) {
               return DropdownMenuItem<String>(
                 value: "${_filteredProducts.name}",
                 child: Text(
@@ -152,7 +149,8 @@ class ProductChoiceCard extends StatelessWidget {
     }
 
     productDetailsForm() {
-      if (productModel.selectedProduct == null) {
+      if (productModel.selectedProduct == null ||
+          quantityPurchaseServices.selectedCategory == null) {
         return SizedBox(
           height: _dimensions.heightPercent(30),
         );
@@ -175,6 +173,17 @@ class ProductChoiceCard extends StatelessWidget {
         );
     }
 
+    showDropDownProduct() {
+      if (quantityPurchaseServices.selectedCategory == null) {
+        return Container();
+      }
+      if (quantityPurchaseServices.selectedCategory == null && productModel.products == [] ||
+          productModel.status == Status.Busy) {
+        return Text("تحميل...");
+      } else
+        return dropDownProducts();
+    }
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -187,8 +196,8 @@ class ProductChoiceCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               dropDownCategories(),
-              if (quantityPurchaseServices.selectedCategory != null) dropDownProducts(),
-              productDetailsForm()
+              showDropDownProduct(),
+              productDetailsForm(),
             ],
           ),
         ),

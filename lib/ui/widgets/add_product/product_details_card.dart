@@ -80,7 +80,13 @@ class ProductDetailsCard extends StatelessWidget {
                     'اتمام',
                   ),
                   onPressed: () {
-                    Navigator.of(dialogContext).pop();
+                    if (formKey.currentState.validate()) {
+                      Navigator.of(dialogContext).pop();
+                      categoryModel.addCategory( Category(
+                        photo: "photo",
+                        name: addProductServices.newCategoryName.text,
+                      ));
+                    }
                   }),
             ],
           );
@@ -97,6 +103,7 @@ class ProductDetailsCard extends StatelessWidget {
                 icon: Icon(Icons.add),
                 onPressed: () {
                   _addCategoryDialog();
+                  addProductServices.newCategoryName.clear();
                 }),
           ],
         );
