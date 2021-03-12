@@ -59,8 +59,20 @@ class TextStyles {
         fontFamily: 'Tajawal',
       );
 
-  chipLabelStyleLight() => TextStyle(
-      fontSize: Dimensions(context).widthPercent(5), fontFamily: 'Tajawal', color: Colors.black);
+  notificationSubtitleStyle(Color color) => TextStyle(
+        color: color,
+        fontSize: Dimensions(context).widthPercent(5),
+        fontFamily: 'Tajawal',
+      );
+
+  notificationTitleStyle() => TextStyle(
+    fontSize: Dimensions(context).widthPercent(6),
+    fontFamily: 'Tajawal',
+    color: Colors.black,
+      );
+
+  chipLabelStyleLight() =>
+      TextStyle(fontSize: Dimensions(context).widthPercent(5), fontFamily: 'Tajawal', color: Colors.black);
 
   iconTitle() => TextStyle(
       fontSize: Dimensions(context).widthPercent(4),
@@ -89,8 +101,8 @@ class TextStyles {
       fontFamily: 'Tajawal',
       color: Colors.white);
 
-  itemImageStatistics() => TextStyle(
-      fontSize: Dimensions(context).widthPercent(5), fontFamily: 'Tajawal', color: Colors.white);
+  itemImageStatistics() =>
+      TextStyle(fontSize: Dimensions(context).widthPercent(5), fontFamily: 'Tajawal', color: Colors.white);
 
   itemBadgeStyle() => TextStyle(
         color: Colors.white,
@@ -111,26 +123,20 @@ class TextStyles {
         color: Colors.black,
       );
 
-  formButtonStyle() => TextStyle(
-      fontSize: Dimensions(context).widthPercent(3.8),
-      fontFamily: 'Tajawal',
-      color: Colors.white);
+  formButtonStyle() =>
+      TextStyle(fontSize: Dimensions(context).widthPercent(3.8), fontFamily: 'Tajawal', color: Colors.white);
 
-  formTitleStyle() => TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: Dimensions(context).widthPercent(3.8),
-      fontFamily: 'Tajawal');
+  formTitleStyle() =>
+      TextStyle(fontWeight: FontWeight.bold, fontSize: Dimensions(context).widthPercent(3.8), fontFamily: 'Tajawal');
 
   searchListItemStyle() => TextStyle(
         fontSize: Dimensions(context).widthPercent(3),
         fontFamily: 'Tajawal',
       );
 
-  searchTextFieldStyle() =>
-      TextStyle(fontSize: Dimensions(context).widthPercent(3), color: Colors.grey[600]);
+  searchTextFieldStyle() => TextStyle(fontSize: Dimensions(context).widthPercent(3), color: Colors.grey[600]);
 
-  searchTextFieldHintStyle() =>
-      TextStyle(fontSize: Dimensions(context).widthPercent(3), color: Colors.black54);
+  searchTextFieldHintStyle() => TextStyle(fontSize: Dimensions(context).widthPercent(3), color: Colors.black54);
 
   warningStyle() => TextStyle(fontSize: Dimensions(context).widthPercent(5));
 }

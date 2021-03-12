@@ -63,8 +63,7 @@ class ProductModel extends ChangeNotifier {
   }
 
   addTheTotalBuyingPerProduct({@required double changingValue, @required productId}) {
-    _products.firstWhere((product) => product.id == productId).theTotalBillPerProduct =
-        changingValue;
+    _products.firstWhere((product) => product.id == productId).theTotalBillPerProduct = changingValue;
 
     notifyListeners();
   }
@@ -89,6 +88,13 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  String checkLimit(double netTotalQuantity, quantityLimit) {
+    if (netTotalQuantity <= quantityLimit) {
+      return "true";
+    } else
+      return "false";
+  }
+
   Future fetchProducts({branchName}) async {
     _status = Status.Busy;
     var result = await _db.collection("products/branches/$branchName/").get();
@@ -103,6 +109,14 @@ class ProductModel extends ChangeNotifier {
     return result;
   }
 
+  Stream<List<Product>> fetchProductStreamByLimit(branchName) {
+    return _db
+        .collection("products/branches/$branchName/")
+        .where("limit", isEqualTo: "true")
+        .snapshots()
+        .map((snapShot) => snapShot.docs.map((doc) => Product.fromMap(doc.data(), doc.id)).toList());
+  }
+
   Stream<Product> fetchProductByIdStream({branchName, id}) {
     return _db
         .collection("products/branches/$branchName/")
@@ -115,8 +129,7 @@ class ProductModel extends ChangeNotifier {
     print("Printing IDDDDDDDD");
     print(id);
     _status = Status.Busy;
-    Product product =
-        await _db.collection("products/branches/$branchName/").doc(id).get().then((snapshot) {
+    Product product = await _db.collection("products/branches/$branchName/").doc(id).get().then((snapshot) {
       Map<String, dynamic> map = snapshot.data();
       print("prinitng name");
       print(map['name']);
@@ -132,10 +145,8 @@ class ProductModel extends ChangeNotifier {
 
   Future fetchProductByCategoryName({branchName, categoryName}) async {
     _status = Status.Busy;
-    var result = await _db
-        .collection("products/branches/$branchName/")
-        .where("category", isEqualTo: categoryName)
-        .get();
+    var result =
+        await _db.collection("products/branches/$branchName/").where("category", isEqualTo: categoryName).get();
     _products = result.docs.map((doc) => Product.fromMap(doc.data(), doc.id)).toList();
     _status = Status.Idle;
     notifyListeners();

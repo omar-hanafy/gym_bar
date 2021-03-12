@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_bar/core/models/product.dart';
 import 'package:gym_bar/core/services/add_person_services.dart';
 import 'package:gym_bar/core/services/add_product_services.dart';
 import 'package:gym_bar/core/services/details_services.dart';
@@ -13,7 +14,6 @@ import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/widgets/custom_card_item.dart';
 import 'package:provider/provider.dart';
-
 import 'dart:math' as math;
 
 class Details extends StatefulWidget {
@@ -28,6 +28,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     Icon(Icons.person_add, color: Colors.red),
     Icon(Icons.add_business, color: Colors.orange),
   ];
+
   static const List<String> toolTips = const [
     "عملية شراء",
     "إضافة شخص",
@@ -54,21 +55,17 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     Color backgroundColorForIcon = Theme.of(context).cardColor;
     // Color foregroundColor = Theme.of(context).accentColor;
 
-    AddProductServices addProductServices =
-        Provider.of<AddProductServices>(context, listen: false);
+    AddProductServices addProductServices = Provider.of<AddProductServices>(context, listen: false);
 
-    AddPersonServices addClientServices =
-        Provider.of<AddPersonServices>(context, listen: false);
+    AddPersonServices addClientServices = Provider.of<AddPersonServices>(context, listen: false);
 
     ProductModel productModel = Provider.of<ProductModel>(context, listen: false);
 
-    QuantityPurchaseServices quantityPurchaseServices =
-        Provider.of<QuantityPurchaseServices>(context, listen: false);
+    QuantityPurchaseServices quantityPurchaseServices = Provider.of<QuantityPurchaseServices>(context, listen: false);
 
-    TransactionModel transactionModel =
-        Provider.of<TransactionModel>(context, listen: false);
+    TransactionModel transactionModel = Provider.of<TransactionModel>(context, listen: false);
 
-    BranchModel branchModel = Provider.of<BranchModel>(context);
+    BranchModel branchModel = Provider.of<BranchModel>(context, listen: false);
 
     CategoryModel categoryModel = Provider.of<CategoryModel>(context, listen: false);
 
@@ -84,132 +81,142 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       detailsService.backgroundColor = null;
     }
 
-    billNotification() => Align(
-          alignment: Alignment.centerRight,
-          child: Stack(
-            children: <Widget>[
-              Icon(
-                Icons.notifications,
-                color: Colors.amber,
-                size: _dimensions.widthPercent(10),
-              ),
-              Positioned(
-                right: 0,
-                child: Container(
-                  // height: _dimensions.heightPercent(2.),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: _dimensions.widthPercent(5),
-                    maxWidth: _dimensions.widthPercent(20),
-                    minHeight: _dimensions.widthPercent(5),
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: _dimensions.heightPercent(0.5),
-                      ),
-                      Text(
-                        '9',
-                        style: _textStyles.billNotificationStyle(),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
+    Widget showNotificationNumberManager(number) {
+      if (number > 0) {
+        return Positioned(
+          right: 0,
+          child: Container(
+            // height: _dimensions.heightPercent(2.),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            constraints: BoxConstraints(
+              minWidth: _dimensions.widthPercent(5),
+              maxWidth: _dimensions.widthPercent(20),
+              minHeight: _dimensions.widthPercent(5),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: _dimensions.heightPercent(0.5),
                 ),
-              )
-            ],
+                Text(
+                  "${number.toString()}",
+                  style: _textStyles.billNotificationStyle(),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        );
+      } else
+        return Container();
+    }
+
+    Widget billNotification() => StreamProvider<List<Product>>(
+          create: (_) => productModel.fetchProductStreamByLimit(branchModel.selectedBranch),
+          initialData: [],
+          child: Consumer<List<Product>>(
+            builder: (_, products, __) {
+              return Align(
+                alignment: Alignment.centerRight,
+                child: Stack(
+                  children: <Widget>[
+                    Icon(
+                      Icons.notifications,
+                      color: Colors.amber,
+                      size: _dimensions.widthPercent(10),
+                    ),
+                    showNotificationNumberManager(products.length)
+                  ],
+                ),
+              );
+            },
           ),
         );
 
     quickReport() {
-      return StreamProvider<String>(
-        create: (_) => TotalModel().fetchTotalCashStream(branchModel.selectedBranch),
-        initialData: "",
-        child: Padding(
-          padding: EdgeInsets.only(
-            right: _dimensions.widthPercent(2),
-            top: _dimensions.heightPercent(2),
-          ),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
-            Text(
-              ": الشهر الحالي",
-              style: _textStyles.detailsBoldTitlesStyle(),
-            ),
-            SizedBox(
-              height: _dimensions.heightPercent(2),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: _dimensions.heightPercent(3.5),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  StreamProvider<String>(
-                    create: (_) =>
-                        TotalModel().fetchTotalCashStream(branchModel.selectedBranch),
-                    initialData: "loading...",
-                    catchError: (_, Object err) {
-                      if (err.toString().contains("Tried calling: [](\"cash\")")) {
-                        return "لا يوجد";
-                      } else
-                        return "حدث خطأ";
-                    },
-                    child: Consumer<String>(
-                      builder: (BuildContext context, total, Widget child) {
-                        return Text(
-                          total == null ? "" : total,
-                          style: _textStyles.detailsTitlesStyle(),
-                        );
-                      },
-                    ),
-                  ),
-                  Text(
-                    "الخزنة",
-                    style: _textStyles.detailsBoldTitlesStyle(),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: _dimensions.heightPercent(2)),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: _dimensions.heightPercent(3.5)),
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "2000",
-                    style: _textStyles.detailsTitlesStyle(),
-                  ),
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                    ),
-                  ),
-                  Text(
-                    "السحب الشخصي",
-                    style: _textStyles.detailsBoldTitlesStyle(),
-                  ),
-                  SizedBox(
-                    width: _dimensions.widthPercent(4),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      print("ds");
-                    },
-                    child: Icon(
-                      Icons.add_circle_outlined,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ]),
+      return Padding(
+        padding: EdgeInsets.only(
+          right: _dimensions.widthPercent(2),
+          top: _dimensions.heightPercent(2),
         ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
+          Text(
+            ": الشهر الحالي",
+            style: _textStyles.detailsBoldTitlesStyle(),
+          ),
+          SizedBox(
+            height: _dimensions.heightPercent(2),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: _dimensions.heightPercent(3.5),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                StreamProvider<String>(
+                  create: (_) => TotalModel().fetchTotalCashStream(branchModel.selectedBranch),
+                  initialData: "loading...",
+                  catchError: (_, Object err) {
+                    if (err.toString().contains("Tried calling: [](\"cash\")")) {
+                      return "لا يوجد";
+                    } else
+                      return "حدث خطأ";
+                  },
+                  child: Consumer<String>(
+                    builder: (BuildContext context, total, Widget child) {
+                      return Text(
+                        total == null ? "" : total,
+                        style: _textStyles.detailsTitlesStyle(),
+                      );
+                    },
+                  ),
+                ),
+                Text(
+                  "الخزنة",
+                  style: _textStyles.detailsBoldTitlesStyle(),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: _dimensions.heightPercent(2)),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: _dimensions.heightPercent(3.5)),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "2000",
+                  style: _textStyles.detailsTitlesStyle(),
+                ),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                  ),
+                ),
+                Text(
+                  "السحب الشخصي",
+                  style: _textStyles.detailsBoldTitlesStyle(),
+                ),
+                SizedBox(
+                  width: _dimensions.widthPercent(4),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    print("ds");
+                  },
+                  child: Icon(
+                    Icons.add_circle_outlined,
+                    color: Colors.black54,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ]),
       );
     }
 
@@ -220,19 +227,21 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
               actions: <Widget>[
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(3)),
-                  child: billNotification(),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/notifications');
+                      },
+                      child: billNotification()),
                 ),
               ],
               elevation: 0,
-              title: Consumer<BranchModel>(
-                  builder: (context, branchModel, _) => Text(branchModel.selectedBranch)),
+              title: Consumer<BranchModel>(builder: (context, branchModel, _) => Text(branchModel.selectedBranch)),
             ),
             quickReport(),
             Expanded(
               child: Container(
                 padding: EdgeInsets.symmetric(
-                    vertical: _dimensions.heightPercent(1.2),
-                    horizontal: _dimensions.widthPercent(2)),
+                    vertical: _dimensions.heightPercent(1.2), horizontal: _dimensions.widthPercent(2)),
                 child: CustomScrollView(
                   slivers: <Widget>[
                     SliverGrid(
@@ -259,13 +268,11 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                           _homeItem.item(
                               title: "العملاء",
                               assetImage: "assets/images/details/clients.jpeg",
-                              onPress: () =>
-                                  Navigator.pushNamed(context, '/clients_list')),
+                              onPress: () => Navigator.pushNamed(context, '/clients_list')),
                           _homeItem.item(
                               title: "الموظفين",
                               assetImage: "assets/images/details/employees.jpeg",
-                              onPress: () =>
-                                  Navigator.pushNamed(context, '/employees_list')),
+                              onPress: () => Navigator.pushNamed(context, '/employees_list')),
                           _homeItem.item(
                             title: "المنتجات",
                             assetImage: "assets/images/details/products.jpeg",
@@ -307,8 +314,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
             child: ScaleTransition(
               scale: CurvedAnimation(
                 parent: _controller,
-                curve: Interval(0.0, 1.0 - index / icons.length / 2.0,
-                    curve: Curves.easeOut),
+                curve: Interval(0.0, 1.0 - index / icons.length / 2.0, curve: Curves.easeOut),
               ),
               child: FloatingActionButton(
                 tooltip: toolTips[index],

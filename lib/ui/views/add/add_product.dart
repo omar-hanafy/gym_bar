@@ -62,8 +62,10 @@ class AddProduct extends StatelessWidget {
             supplierName: addProductServices.companyName.text,
             wholesaleQuantity:
                 addProductServices.selectedRadio == 1 ? addProductServices.wholesaleQuantity.text : "0.0",
-            netTotalQuantity: addProductServices.netTotalQuantity(),
-            photo: "photo"),
+            netTotalQuantity: addProductServices.netTotalQuantity().toString(),
+            photo: "photo",
+            limit: productModel.checkLimit(
+                addProductServices.netTotalQuantity(), double.parse(addProductServices.quantityLimit.text))),
         branchName: branchName,
       );
       addProductServices.addingProduct = false;

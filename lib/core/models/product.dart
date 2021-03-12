@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Product {
   String id,
       name,
@@ -10,16 +8,16 @@ class Product {
       employeePrice,
       housePrice,
       quantityOfWholesaleUnit,
-      quantityLimit,
       unit,
       wholesaleQuantity,
       wholesaleUnit,
       theAmountOfSalesPerProduct,
       supplierName,
+      photo,
+      quantityLimit,
       netTotalQuantity,
-      photo;
-  double selectionNo = 0;
-  double theTotalBillPerProduct = 0;
+      limit;
+  double selectionNo = 0, theTotalBillPerProduct = 0;
 
   Product({
     this.id,
@@ -39,6 +37,7 @@ class Product {
     this.netTotalQuantity,
     this.quantityLimit,
     this.photo,
+    this.limit,
     this.selectionNo = 0,
     this.theTotalBillPerProduct = 0,
   });
@@ -47,10 +46,10 @@ class Product {
       : id = '0',
         name = '';
 
-  Product.fromMap(Map <String, dynamic> snapshot, String id)
+  Product.fromMap(Map<String, dynamic> snapshot, String id)
       : id = id ?? "",
         name = snapshot['name'] ?? '',
-        netTotalQuantity = snapshot['netTotalQuantity'] ?? '',
+        netTotalQuantity = snapshot['netTotalQuantity'] ?? 0.0,
         category = snapshot['category'] ?? '',
         description = snapshot['description'] ?? '',
         branch = snapshot['branch'] ?? '',
@@ -58,14 +57,14 @@ class Product {
         employeePrice = snapshot['employeePrice'] ?? '',
         housePrice = snapshot['housePrice'] ?? '',
         quantityOfWholesaleUnit = snapshot['quantityOfWholesaleUnit'],
-        quantityLimit = snapshot['quantityLimit'],
+        quantityLimit = snapshot['quantityLimit'] ?? 0.0,
         wholesaleQuantity = snapshot['wholesaleQuantity'],
         wholesaleUnit = snapshot['wholesaleUnit'],
         unit = snapshot['unit'] ?? '',
         theAmountOfSalesPerProduct = snapshot['theAmountOfSalesPerProduct'],
         supplierName = snapshot['supplierName'] ?? '',
-        photo = snapshot['photo'] ?? '';
-
+        photo = snapshot['photo'] ?? '',
+        limit = snapshot['limit'] ?? '';
 
   toJson() {
     return {
@@ -85,10 +84,11 @@ class Product {
       "theAmountOfSalesPerProduct": theAmountOfSalesPerProduct,
       "supplierName": supplierName,
       "photo": photo,
+      "limit": limit,
     };
   }
 
-  // factory Product.fromDocument(DocumentSnapshot doc,id) {
-  //   return Product.fromMap(doc.data(),id);
-  // }
+// factory Product.fromDocument(DocumentSnapshot doc,id) {
+//   return Product.fromMap(doc.data(),id);
+// }
 }
