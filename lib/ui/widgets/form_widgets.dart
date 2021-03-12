@@ -26,7 +26,7 @@ class FormWidget {
     );
   }
 
-  formTextFieldTemplate({
+  Widget formTextFieldTemplate({
     Key key,
     controller,
     validator,
@@ -35,7 +35,7 @@ class FormWidget {
     secure = false,
     border = true,
     maxLength = 50,
-    bool maxLengthEnforced = true,
+    MaxLengthEnforcement maxLengthEnforced = MaxLengthEnforcement.enforced,
     List<TextInputFormatter> inputFormatters,
     keyboardType,
     double left = 20,
@@ -65,7 +65,7 @@ class FormWidget {
         textAlign: TextAlign.right,
         keyboardType: keyboardType,
         maxLength: maxLength,
-        maxLengthEnforced: maxLengthEnforced,
+        maxLengthEnforcement: maxLengthEnforced,
         inputFormatters: inputFormatters,
         decoration: InputDecoration(
             contentPadding: EdgeInsets.only(
@@ -100,30 +100,24 @@ class FormWidget {
     double height = 40,
   }) {
     TextStyles _textStyles = TextStyles(context: context);
-    return ButtonTheme(
-      minWidth: minWidth,
+    return Container(
+      constraints: BoxConstraints(
+        minWidth: minWidth,
+      ),
       height: height,
-      child: RaisedButton(
-        color: color,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(color),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          ),
+        ),
         child: Text(
           text,
           style: _textStyles.formButtonStyle(),
         ),
         onPressed: onTab,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
-
-      // ElevatedButton(
-      //   style: ElevatedButton.styleFrom(
-      //     primary: color,
-      //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      //   ),
-      //   child: Text(
-      //     text,
-      //     style: _textStyles.formLabelsStyle(),
-      //   ),
-      //   onPressed: onTab,
-      // ),
     );
   }
 

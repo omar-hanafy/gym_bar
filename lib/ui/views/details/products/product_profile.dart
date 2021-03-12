@@ -18,8 +18,7 @@ class ProductProfile extends StatelessWidget {
 
     ProductModel productModel = Provider.of(context);
     Product product = productModel.selectedProduct;
-    QuantityPurchaseServices quantityPurchaseServices =
-        Provider.of<QuantityPurchaseServices>(context, listen: false);
+    QuantityPurchaseServices quantityPurchaseServices = Provider.of<QuantityPurchaseServices>(context, listen: false);
     header(String value) {
       return Container(
         width: double.infinity,
@@ -36,7 +35,9 @@ class ProductProfile extends StatelessWidget {
     data({title, value}) {
       return Padding(
         padding: EdgeInsets.symmetric(
-            vertical: _dimensions.heightPercent(1.5), horizontal: _dimensions.widthPercent(3)),
+          vertical: _dimensions.heightPercent(1.5),
+          horizontal: _dimensions.widthPercent(4),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -48,76 +49,69 @@ class ProductProfile extends StatelessWidget {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          // backgroundColor: Colors.blue,
-          elevation: 0,
-          actions: [
-            IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+      appBar: AppBar(
+        // backgroundColor: Colors.blue,
+        elevation: 0,
+        actions: [
+          IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          quantityPurchaseServices.fromHomeScreen = false;
+          Navigator.pushNamed(context, "/quantity_purchase");
+        },
+        backgroundColor: Colors.green,
+        child: Icon(Icons.attach_money_sharp, color: Colors.white),
+      ),
+      body: Center(
+        child: ListView(
+          children: <Widget>[
+            SizedBox(height: _dimensions.heightPercent(2)),
+            FormWidget(context: context).logo(
+              imageContent: Image.asset(
+                "assets/images/details/products.jpeg",
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.contain,
+              ),
+            ),
+            SizedBox(height: _dimensions.heightPercent(2)),
+            Center(
+                child: Text(
+              product.name,
+              style: _textStyles.detailsTitlesStyle(),
+            )),
+            SizedBox(height: _dimensions.heightPercent(2)),
+            header("الوصف"),
+            Container(
+              height: 50,
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: _dimensions.heightPercent(1), horizontal: _dimensions.widthPercent(1)),
+                child: Text(
+                  product.description == null ? handleNull : product.description,
+                  style: _textStyles.tableContentStyle(),
+                ),
+              ),
+            ),
+            header("السعر"),
+            data(title: "للعميل", value: product.customerPrice),
+            Divider(),
+            data(title: "للموظف", value: product.employeePrice),
+            Divider(),
+            data(title: "للعامل", value: product.housePrice),
+            header("الكمية"),
+            data(title: "الكمية" + " (${product.unit})", value: product.netTotalQuantity),
+            Divider(),
+            data(title: "الكمية" + " (${product.wholesaleUnit})", value: product.wholesaleQuantity),
+            Divider(),
+            data(title: "الحد الادنى", value: product.quantityLimit),
+            data(title: "", value: ""),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            quantityPurchaseServices.fromHomeScreen = false;
-            Navigator.pushNamed(context, "/quantity_purchase");
-          },
-          backgroundColor: Colors.green,
-          child: Icon(Icons.attach_money_sharp, color: Colors.white),
-        ),
-        body: Center(
-          child: ListView(
-            children: <Widget>[
-              SizedBox(height: _dimensions.heightPercent(2)),
-              FormWidget(context: context).logo(
-                imageContent: Image.asset(
-                  "assets/images/details/products.jpeg",
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              SizedBox(height: _dimensions.heightPercent(2)),
-              Center(
-                  child: Text(
-                product.name,
-                style: _textStyles.detailsTitlesStyle(),
-              )),
-              SizedBox(height: _dimensions.heightPercent(2)),
-              header("الوصف"),
-              Container(
-                height: 50,
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: _dimensions.heightPercent(1),
-                      horizontal: _dimensions.widthPercent(1)),
-                  child: Text(
-                    product.description == null ? handleNull : product.description,
-                    style: _textStyles.tableContentStyle(),
-                  ),
-                ),
-              ),
-              header("السعر"),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
-                  child: data(title: "للعميل", value: product.customerPrice)),
-              Divider(),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
-                  child: data(title: "للموظف", value: product.employeePrice)),
-              Divider(),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
-                  child: data(title: "للعامل", value: product.housePrice)),
-              header("الكمية"),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
-                  child: data(title: "الكمية", value: product.netTotalQuantity)),
-              Divider(),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: _dimensions.widthPercent(2)),
-                  child: data(title: "الحد الادنى", value: product.quantityLimit)),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }

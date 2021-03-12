@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gym_bar/core/models/branch.dart';
+import 'package:gym_bar/core/models/total.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
+import 'package:gym_bar/core/view_models/total_model.dart';
 import 'package:gym_bar/ui/responsive/screen_type_layout.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
@@ -20,11 +23,18 @@ class _BranchesState extends State<Branches> {
   @override
   Widget build(BuildContext context) {
     BranchModel branchModel = Provider.of<BranchModel>(context, listen: false);
+    TotalModel totalModel = Provider.of<TotalModel>(context, listen: false);
+
     FormWidget _formWidget = FormWidget(context: context);
     Dimensions _dimensions = Dimensions(context);
     TextStyles _textStyles = TextStyles(context: context);
 
     final TextEditingController newBranchName = TextEditingController();
+    final TextEditingController cash = TextEditingController();
+
+    createTotalForBranch() async {
+      await totalModel.addTotal(total: Total(cash: cash.text), branchName: newBranchName.text);
+    }
 
     addBranch() => showDialog<void>(
           context: context,
@@ -35,15 +45,38 @@ class _BranchesState extends State<Branches> {
               title: Text('إضافة فرع'),
               content: Form(
                 key: _formKey,
-                child: _formWidget.formTextFieldTemplate(
-                  hint: "اسم الفرع",
-                  controller: newBranchName,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return "برجاء ملأ جميع الخانات";
-                    }
-                    return null;
-                  },
+                child: Container(
+                  height: _dimensions.widthPercent(38),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _formWidget.formTextFieldTemplate(
+                        hint: "اسم الفرع",
+                        controller: newBranchName,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "برجاء ملأ جميع الخانات";
+                          }
+                          return null;
+                        },
+                      ),
+                      _formWidget.formTextFieldTemplate(
+                        hint: "الخزنة",
+                        controller: cash,
+                        keyboardType: TextInputType.number,
+                        maxLength: 10,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        ],
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "برجاء ملأ جميع الخانات";
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
               actions: <Widget>[
@@ -58,12 +91,15 @@ class _BranchesState extends State<Branches> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       Navigator.of(dialogContext).pop();
-                      branchModel.addBranch(Branch(name: newBranchName.text, photo: null));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("تم اضافة الفرع بنجاح"),
-                        ),
-                      );
+                      branchModel.addBranch(Branch(name: newBranchName.text, photo: null)).then((_) {
+                        createTotalForBranch().then((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("تم اضافة الفرع بنجاح"),
+                            ),
+                          );
+                        });
+                      });
                     }
                   },
                 ),
@@ -93,8 +129,19 @@ class _BranchesState extends State<Branches> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : branches.length > 0
-                    ? Column(
+                : branches == []
+                    ? Container(
+                        child: Container(
+                          constraints: BoxConstraints(maxWidth: _dimensions.widthPercent(70)),
+                          child: Center(
+                            child: Text(
+                              "لم نجد اية فروع, من فضلك اضغط على الزر السفلي لاضافة اول فرع لك",
+                              style: _textStyles.warningStyle(),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Column(
                         children: [
                           SizedBox(height: _dimensions.heightPercent(1.5)),
                           Expanded(
@@ -119,16 +166,7 @@ class _BranchesState extends State<Branches> {
                                 }),
                           ),
                         ],
-                      )
-                    : Container(
-                      child: Container(
-                        constraints: BoxConstraints(maxWidth: _dimensions.widthPercent(70)),
-                        child: Center(
-                            child: Text(
-                                "لم نجد اية فروع, من فضلك اضغط على الزر السفلي لاضافة اول فرع لك",style: _textStyles.warningStyle(),),
-                          ),
-                      ),
-                    )),
+                      )),
         // tablet: HomeTablet(branches: branches),
       );
     });

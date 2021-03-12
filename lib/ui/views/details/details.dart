@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_bar/core/services/add_person_services.dart';
+import 'package:gym_bar/core/services/add_product_services.dart';
 import 'package:gym_bar/core/services/details_services.dart';
 import 'package:gym_bar/core/services/quantity_purchase_services.dart';
 import 'package:gym_bar/core/view_models/branch_model.dart';
 import 'package:gym_bar/core/view_models/category_model.dart';
+import 'package:gym_bar/core/view_models/product_model.dart';
 import 'package:gym_bar/core/view_models/total_model.dart';
 import 'package:gym_bar/core/view_models/transaction_model.dart';
 import 'package:gym_bar/ui/shared/dimensions.dart';
 import 'package:gym_bar/ui/shared/text_styles.dart';
 import 'package:gym_bar/ui/widgets/custom_card_item.dart';
 import 'package:provider/provider.dart';
+
 import 'dart:math' as math;
 
 class Details extends StatefulWidget {
@@ -41,6 +45,8 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    print("launching Details() => Build method");
+
     Dimensions _dimensions = Dimensions(context);
     CustomCardItem _homeItem = CustomCardItem(context: context);
     TextStyles _textStyles = TextStyles(context: context);
@@ -48,15 +54,28 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     Color backgroundColorForIcon = Theme.of(context).cardColor;
     // Color foregroundColor = Theme.of(context).accentColor;
 
-    TransactionModel transactionModel = Provider.of<TransactionModel>(context, listen: false);
+    AddProductServices addProductServices =
+        Provider.of<AddProductServices>(context, listen: false);
+
+    AddPersonServices addClientServices =
+        Provider.of<AddPersonServices>(context, listen: false);
+
+    ProductModel productModel = Provider.of<ProductModel>(context, listen: false);
+
     QuantityPurchaseServices quantityPurchaseServices =
         Provider.of<QuantityPurchaseServices>(context, listen: false);
+
+    TransactionModel transactionModel =
+        Provider.of<TransactionModel>(context, listen: false);
+
     BranchModel branchModel = Provider.of<BranchModel>(context);
+
     CategoryModel categoryModel = Provider.of<CategoryModel>(context, listen: false);
+
     DetailsServices detailsService = Provider.of<DetailsServices>(context, listen: false);
+
     openFloatingButton() {
       detailsService.backgroundColor = Colors.black.withOpacity(0.8);
-      print("dismisssssed");
       _controller.forward();
     }
 
@@ -106,86 +125,91 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         );
 
     quickReport() {
-      return Padding(
-        padding: EdgeInsets.only(
-          right: _dimensions.widthPercent(2),
-          top: _dimensions.heightPercent(2),
-        ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
-          Text(
-            ": الشهر الحالي",
-            style: _textStyles.detailsBoldTitlesStyle(),
+      return StreamProvider<String>(
+        create: (_) => TotalModel().fetchTotalCashStream(branchModel.selectedBranch),
+        initialData: "",
+        child: Padding(
+          padding: EdgeInsets.only(
+            right: _dimensions.widthPercent(2),
+            top: _dimensions.heightPercent(2),
           ),
-          SizedBox(
-            height: _dimensions.heightPercent(2),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: _dimensions.heightPercent(3.5),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
+            Text(
+              ": الشهر الحالي",
+              style: _textStyles.detailsBoldTitlesStyle(),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                StreamProvider<String>(
-                  create: (_) => TotalModel().fetchTotalStream(branchModel.selectedBranch),
-                  initialData: "loading...",
-                  catchError: (_, Object err) {
-                    if (err.toString().contains("Tried calling: [](\"cash\")")) {
-                      return "لا يوجد";
-                    } else
-                      return "حدث خطأ";
-                  },
-                  child: Consumer<String>(
-                    builder: (BuildContext context, total, Widget child) {
-                      return Text(
-                        total == null ? "" : total,
-                        style: _textStyles.detailsTitlesStyle(),
-                      );
+            SizedBox(
+              height: _dimensions.heightPercent(2),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: _dimensions.heightPercent(3.5),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  StreamProvider<String>(
+                    create: (_) =>
+                        TotalModel().fetchTotalCashStream(branchModel.selectedBranch),
+                    initialData: "loading...",
+                    catchError: (_, Object err) {
+                      if (err.toString().contains("Tried calling: [](\"cash\")")) {
+                        return "لا يوجد";
+                      } else
+                        return "حدث خطأ";
                     },
+                    child: Consumer<String>(
+                      builder: (BuildContext context, total, Widget child) {
+                        return Text(
+                          total == null ? "" : total,
+                          style: _textStyles.detailsTitlesStyle(),
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Text(
-                  "الخزنة",
-                  style: _textStyles.detailsBoldTitlesStyle(),
-                ),
-              ],
+                  Text(
+                    "الخزنة",
+                    style: _textStyles.detailsBoldTitlesStyle(),
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: _dimensions.heightPercent(2)),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: _dimensions.heightPercent(3.5)),
-            child: Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "2000",
-                  style: _textStyles.detailsTitlesStyle(),
-                ),
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
+            SizedBox(height: _dimensions.heightPercent(2)),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: _dimensions.heightPercent(3.5)),
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "2000",
+                    style: _textStyles.detailsTitlesStyle(),
                   ),
-                ),
-                Text(
-                  "السحب الشخصي",
-                  style: _textStyles.detailsBoldTitlesStyle(),
-                ),
-                SizedBox(
-                  width: _dimensions.widthPercent(4),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    print("ds");
-                  },
-                  child: Icon(
-                    Icons.add_circle_outlined,
-                    color: Colors.black54,
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ]),
+                  Text(
+                    "السحب الشخصي",
+                    style: _textStyles.detailsBoldTitlesStyle(),
+                  ),
+                  SizedBox(
+                    width: _dimensions.widthPercent(4),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      print("ds");
+                    },
+                    child: Icon(
+                      Icons.add_circle_outlined,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ]),
+        ),
       );
     }
 
@@ -235,11 +259,13 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                           _homeItem.item(
                               title: "العملاء",
                               assetImage: "assets/images/details/clients.jpeg",
-                              onPress: () => Navigator.pushNamed(context, '/clients_list')),
+                              onPress: () =>
+                                  Navigator.pushNamed(context, '/clients_list')),
                           _homeItem.item(
                               title: "الموظفين",
                               assetImage: "assets/images/details/employees.jpeg",
-                              onPress: () => Navigator.pushNamed(context, '/employees_list')),
+                              onPress: () =>
+                                  Navigator.pushNamed(context, '/employees_list')),
                           _homeItem.item(
                             title: "المنتجات",
                             assetImage: "assets/images/details/products.jpeg",
@@ -281,7 +307,8 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
             child: ScaleTransition(
               scale: CurvedAnimation(
                 parent: _controller,
-                curve: Interval(0.0, 1.0 - index / icons.length / 2.0, curve: Curves.easeOut),
+                curve: Interval(0.0, 1.0 - index / icons.length / 2.0,
+                    curve: Curves.easeOut),
               ),
               child: FloatingActionButton(
                 tooltip: toolTips[index],
@@ -294,11 +321,18 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                   if (index == 0) {
                     categoryModel.fetchCategories();
                     quantityPurchaseServices.fromHomeScreen = true;
+                    quantityPurchaseServices.selectedCategory = null;
+                    quantityPurchaseServices.clear();
+                    productModel.selectedProduct = null;
                     Navigator.pushNamed(context, "/quantity_purchase");
-                  } else if (index == 1)
+                  } else if (index == 1) {
+                    addClientServices.clear();
+                    addClientServices.index = 0;
                     Navigator.pushNamed(context, "/add_person");
-                  else if (index == 2) {
+                  } else if (index == 2) {
                     categoryModel.fetchCategories();
+                    addProductServices.clear();
+                    addProductServices.index = 0;
                     Navigator.pushNamed(context, "/add_product");
                   }
                 },

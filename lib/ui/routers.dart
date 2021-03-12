@@ -42,16 +42,19 @@ class Routers {
 
       case '/products':
         return MaterialPageRoute(builder: (_) => Products());
+
       case '/product_profile':
         return MaterialPageRoute(builder: (_) => ProductProfile());
 
       case '/clients_list':
         return MaterialPageRoute(builder: (_) => ClientsList());
+
       case '/one_client_info':
         return MaterialPageRoute(builder: (_) => OneClientInfo());
 
       case '/employees_list':
         return MaterialPageRoute(builder: (_) => EmployeesList());
+
       case '/one_employee_info':
         return MaterialPageRoute(builder: (_) => OneEmployeeInfo());
 
@@ -60,8 +63,10 @@ class Routers {
 
       case '/add_product':
         return MaterialPageRoute(builder: (_) => AddProduct());
+
       case '/add_person':
         return MaterialPageRoute(builder: (_) => AddPerson());
+
       case '/quantity_purchase':
         return MaterialPageRoute(builder: (_) => QuantityPurchase());
 

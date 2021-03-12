@@ -51,54 +51,122 @@ class TransactionModel extends ChangeNotifier {
 
   Status get status => _status;
 
-  bool _hourAscending = false;
-  bool _amountAscending = false;
+  bool _hourAscending = true;
+  bool _dateAscending = true;
+  bool _amountAscending = true;
+  bool _nameAscending = true;
 
   IconData sortHourIcon = Icons.sort;
+  IconData sortDateIcon = Icons.sort;
   IconData sortAmountIcon = Icons.sort;
+  IconData sortNameIcon = Icons.sort;
+
+  sortAmountHelper() {
+    sortNameIcon = Icons.sort;
+    sortHourIcon = Icons.sort;
+    sortDateIcon = Icons.sort;
+    _nameAscending = true;
+    _hourAscending = true;
+    _dateAscending = true;
+    _amountAscending = !_amountAscending;
+  }
 
   onSortAmount() {
-    _amountAscending = !_amountAscending;
-
     if (_amountAscending) {
       sortAmountIcon = Icons.keyboard_arrow_down;
-      sortHourIcon = Icons.sort;
-
-      filteredTransactions.sort((a, b) =>
-          double.parse(a.transactionAmount).compareTo(double.parse(b.transactionAmount)));
+      sortAmountHelper();
+      filteredTransactions
+          .sort((a, b) => double.parse(b.transactionAmount).compareTo(double.parse(a.transactionAmount)));
     } else {
       sortAmountIcon = Icons.keyboard_arrow_up;
-      sortHourIcon = Icons.sort;
-
-      filteredTransactions.sort((a, b) =>
-          double.parse(b.transactionAmount).compareTo(double.parse(a.transactionAmount)));
+      sortAmountHelper();
+      filteredTransactions
+          .sort((a, b) => double.parse(a.transactionAmount).compareTo(double.parse(b.transactionAmount)));
     }
     notifyListeners();
   }
 
-  onSortHour() {
+  sortHourHelper() {
+    sortAmountIcon = Icons.sort;
+    sortNameIcon = Icons.sort;
+    sortDateIcon = Icons.sort;
+    _amountAscending = true;
+    _nameAscending = true;
+    _dateAscending = true;
     _hourAscending = !_hourAscending;
+  }
+
+  onSortHour() {
     if (_hourAscending) {
       sortHourIcon = Icons.keyboard_arrow_down;
-      sortAmountIcon = Icons.sort;
-      filteredTransactions.sort((a, b) =>
-          DateFormat('h:mm a').parse(a.hour).compareTo(DateFormat('h:mm a').parse(b.hour)));
+      sortHourHelper();
+      filteredTransactions
+          .sort((a, b) => DateFormat('h:mm a').parse(b.hour).compareTo(DateFormat('h:mm a').parse(a.hour)));
     } else {
       sortHourIcon = Icons.keyboard_arrow_up;
-      sortAmountIcon = Icons.sort;
+      sortHourHelper();
+      filteredTransactions
+          .sort((a, b) => DateFormat('h:mm a').parse(a.hour).compareTo(DateFormat('h:mm a').parse(b.hour)));
+    }
+    notifyListeners();
+  }
 
-      filteredTransactions.sort((a, b) =>
-          DateFormat('h:mm a').parse(b.hour).compareTo(DateFormat('h:mm a').parse(a.hour)));
+  sortDateHelper() {
+    sortAmountIcon = Icons.sort;
+    sortNameIcon = Icons.sort;
+    sortHourIcon = Icons.sort;
+    _amountAscending = true;
+    _nameAscending = true;
+    _hourAscending = true;
+    _dateAscending = !_dateAscending;
+  }
+
+  onSortDate() {
+    if (_dateAscending) {
+      sortDateIcon = Icons.keyboard_arrow_down;
+      sortDateHelper();
+      filteredTransactions
+          .sort((a, b) => DateFormat('yyyy-MM-dd').parse(b.date).compareTo(DateFormat('yyyy-MM-dd').parse(a.date)));
+    } else {
+      sortDateIcon = Icons.keyboard_arrow_up;
+      sortDateHelper();
+      filteredTransactions
+          .sort((a, b) => DateFormat('yyyy-MM-dd').parse(a.date).compareTo(DateFormat('yyyy-MM-dd').parse(b.date)));
+    }
+    notifyListeners();
+  }
+
+  sortNameHelper() {
+    sortHourIcon = Icons.sort;
+    sortDateIcon = Icons.sort;
+    sortAmountIcon = Icons.sort;
+    _hourAscending = true;
+    _dateAscending = true;
+    _amountAscending = true;
+    _nameAscending = !_nameAscending;
+  }
+
+  onSortName() {
+    if (_nameAscending) {
+      sortNameIcon = Icons.keyboard_arrow_down;
+      sortNameHelper();
+      filteredTransactions.sort((a, b) => b.customerName.compareTo(a.customerName));
+    } else {
+      sortNameIcon = Icons.keyboard_arrow_up;
+      sortNameHelper();
+      filteredTransactions.sort((a, b) => a.customerName.compareTo(b.customerName));
     }
     notifyListeners();
   }
 
   resetSort() {
-    _hourAscending = false;
-    _amountAscending = false;
+    _hourAscending = true;
+    _amountAscending = true;
+    _nameAscending = true;
 
     sortHourIcon = Icons.sort;
     sortAmountIcon = Icons.sort;
+    sortNameIcon = Icons.sort;
   }
 
   Future fetchTransaction({branchName}) async {
@@ -118,8 +186,7 @@ class TransactionModel extends ChangeNotifier {
         .where("transactionType", isEqualTo: type)
         .where("date", isEqualTo: date)
         .get();
-    _filteredTransactions =
-        result.docs.map((doc) => MyTransaction.fromMap(doc.data(), doc.id)).toList();
+    _filteredTransactions = result.docs.map((doc) => MyTransaction.fromMap(doc.data(), doc.id)).toList();
     _status = Status.Idle;
     notifyListeners();
   }
@@ -127,12 +194,9 @@ class TransactionModel extends ChangeNotifier {
   Future fetchTransactionByCustomerName({branchName, customerName}) async {
     resetSort();
     _status = Status.Busy;
-    var result = await _db
-        .collection("transactions/branches/$branchName/")
-        .where("customerName", isEqualTo: customerName)
-        .get();
-    _filteredTransactions =
-        result.docs.map((doc) => MyTransaction.fromMap(doc.data(), doc.id)).toList();
+    var result =
+        await _db.collection("transactions/branches/$branchName/").where("customerName", isEqualTo: customerName).get();
+    _filteredTransactions = result.docs.map((doc) => MyTransaction.fromMap(doc.data(), doc.id)).toList();
     _status = Status.Idle;
     notifyListeners();
   }

@@ -42,7 +42,7 @@ class TextStyles {
       );
 
   tableContentStyleLight() => TextStyle(
-        fontSize: Dimensions(context).widthPercent(4),
+        fontSize: Dimensions(context).widthPercent(5),
         fontFamily: 'Tajawal',
         color: Colors.black,
       );
@@ -100,13 +100,13 @@ class TextStyles {
 
 // form_widget styles
   formLabelsStyle() => TextStyle(
-        fontSize: Dimensions(context).widthPercent(3.6),
+        fontSize: Dimensions(context).widthPercent(5),
         fontFamily: 'Tajawal',
         color: Colors.black54,
       );
 
   formLabelsStyleBlack() => TextStyle(
-        fontSize: Dimensions(context).widthPercent(3.8),
+        fontSize: Dimensions(context).widthPercent(5),
         fontFamily: 'Tajawal',
         color: Colors.black,
       );

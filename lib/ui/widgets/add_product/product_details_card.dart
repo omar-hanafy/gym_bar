@@ -23,7 +23,6 @@ class ProductDetailsCard extends StatelessWidget {
     List<Category> categories = categoryModel.categories;
 
     dropDownCategories() {
-      //todo: make it stream better;
       return Column(
         children: [
           DropdownButtonFormField<String>(
@@ -71,18 +70,16 @@ class ProductDetailsCard extends StatelessWidget {
               style: _textStyles.formLabelsStyleBlack(),
             ),
             content: _formWidget.formTextFieldTemplate(
-                border: false,
-                hint: "'اكتب نوع المنتج هنا",
-                controller: addProductServices.newCategoryName),
+                border: false, hint: "'اكتب نوع المنتج هنا", controller: addProductServices.newCategoryName),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                   child: Text(
                     'اتمام',
                   ),
                   onPressed: () {
                     if (formKey.currentState.validate()) {
                       Navigator.of(dialogContext).pop();
-                      categoryModel.addCategory( Category(
+                      categoryModel.addCategory(Category(
                         photo: "photo",
                         name: addProductServices.newCategoryName.text,
                       ));
@@ -94,7 +91,13 @@ class ProductDetailsCard extends StatelessWidget {
       );
     }
 
-    categoryWidget() => Row(
+    categoryWidget() {
+      if (categories == null || categories == [])
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      else
+        return Row(
           children: [
             Expanded(
               child: dropDownCategories(),
@@ -107,10 +110,11 @@ class ProductDetailsCard extends StatelessWidget {
                 }),
           ],
         );
+    }
+
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(_dimensions.heightPercent(2))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_dimensions.heightPercent(2))),
       child: Padding(
         padding: EdgeInsets.all(_dimensions.widthPercent(2)),
         child: Form(
@@ -123,19 +127,16 @@ class ProductDetailsCard extends StatelessWidget {
                 hint: "اسم المنتج",
                 // key: formKey,
                 controller: addProductServices.name,
-                maxLengthEnforced: true,
               ),
               _formWidget.formTextFieldTemplate(
                 hint: "الوصف",
 
                 // key: formKey,
                 controller: addProductServices.description,
-                maxLengthEnforced: true,
               ),
               _formWidget.formTextFieldTemplate(
                 hint: "اسم الشركه",
                 controller: addProductServices.companyName,
-                maxLengthEnforced: true,
               ),
             ],
           ),

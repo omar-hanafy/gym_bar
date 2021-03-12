@@ -18,57 +18,61 @@ class ProductAmountCard extends StatelessWidget {
     Dimensions _dimensions = Dimensions(context);
 
     AddProductServices addProductServices = Provider.of<AddProductServices>(context);
+
     Widget radioButtons() {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Row(
+            // mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Expanded(
-                child: Container(
-                    child: Row(
-                  children: <Widget>[
-                    Radio(
-                      value: 1,
-                      groupValue: addProductServices.selectedRadio,
-                      onChanged: (value) {
-                        addProductServices.selectedRadio = value;
-                      },
-                    ),
-                    Text(
+              Row(
+                children: <Widget>[
+                  Radio(
+                    value: 1,
+                    groupValue: addProductServices.selectedRadio,
+                    onChanged: (value) {
+                      addProductServices.selectedRadio = value;
+                    },
+                  ),
+                  Container(
+                    constraints: BoxConstraints(maxWidth: _dimensions.widthPercent(30)),
+                    child: Text(
                       "اضافة الكمية الان",
                       style: _textStyles.formLabelsStyle(),
                     ),
-                  ],
-                )),
+                  ),
+                ],
               ),
               Expanded(
-                child: Container(
-                    child: Row(
-                  children: <Widget>[
-                    Radio(
-                        value: 2,
-                        groupValue: addProductServices.selectedRadio,
-                        onChanged: (value) {
-                          addProductServices.selectedRadio = value;
-                        }),
-                    Text(
+                  child: SizedBox(
+                width: double.infinity,
+              )),
+              Row(
+                children: <Widget>[
+                  Radio(
+                      value: 2,
+                      groupValue: addProductServices.selectedRadio,
+                      onChanged: (value) {
+                        addProductServices.selectedRadio = value;
+                      }),
+                  Container(
+                    constraints: BoxConstraints(maxWidth: _dimensions.widthPercent(30)),
+                    child: Text(
                       "اضافة المنتج فقط",
                       style: _textStyles.formLabelsStyle(),
                     ),
-                  ],
-                )),
+                  )
+                ],
               ),
             ],
-          )
+          ),
         ],
       );
     }
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(_dimensions.heightPercent(2))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_dimensions.heightPercent(2))),
       child: Padding(
         padding: EdgeInsets.all(_dimensions.widthPercent(2)),
         child: Form(
@@ -86,7 +90,6 @@ class ProductAmountCard extends StatelessWidget {
                               controller: addProductServices.wholesaleQuantity,
                               hint: "الكمية(بالجملة)",
                               maxLength: 25,
-                              maxLengthEnforced: true,
                               keyboardType: TextInputType.number,
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -99,10 +102,8 @@ class ProductAmountCard extends StatelessWidget {
                                 controller: addProductServices.wholesaleUnit,
                                 hint: "الوحده(بالجملة)",
                                 maxLength: 25,
-                                maxLengthEnforced: true,
                                 onChanged: (value) {
-                                  addProductServices.selectedCategory =
-                                      addProductServices.selectedCategory;
+                                  addProductServices.selectedCategory = addProductServices.selectedCategory;
                                 }),
                           ),
                         ]),
@@ -114,7 +115,6 @@ class ProductAmountCard extends StatelessWidget {
                                 controller: addProductServices.quantityOfWholesaleUnit,
                                 hint: "كمية ال ${addProductServices.wholesaleUnit.text}",
                                 maxLength: 25,
-                                maxLengthEnforced: true,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -127,10 +127,8 @@ class ProductAmountCard extends StatelessWidget {
                                 controller: addProductServices.unit,
                                 hint: "الوحده",
                                 maxLength: 25,
-                                maxLengthEnforced: true,
                                 onChanged: (value) {
-                                  addProductServices.selectedCategory =
-                                      addProductServices.selectedCategory;
+                                  addProductServices.selectedCategory = addProductServices.selectedCategory;
                                 },
                               ),
                             ),
@@ -153,10 +151,8 @@ class ProductAmountCard extends StatelessWidget {
                                   controller: addProductServices.wholesaleUnit,
                                   hint: "الوحده(بالجملة)",
                                   maxLength: 25,
-                                  maxLengthEnforced: true,
                                   onChanged: (value) {
-                                    addProductServices.selectedCategory =
-                                        addProductServices.selectedCategory;
+                                    addProductServices.selectedCategory = addProductServices.selectedCategory;
                                   },
                                 ),
                               ),
@@ -169,7 +165,6 @@ class ProductAmountCard extends StatelessWidget {
                                     controller: addProductServices.quantityOfWholesaleUnit,
                                     hint: "كمية ال ${addProductServices.wholesaleUnit.text}",
                                     maxLength: 25,
-                                    maxLengthEnforced: true,
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -182,10 +177,8 @@ class ProductAmountCard extends StatelessWidget {
                                     controller: addProductServices.unit,
                                     hint: "الوحده",
                                     maxLength: 25,
-                                    maxLengthEnforced: true,
                                     onChanged: (value) {
-                                      addProductServices.selectedCategory =
-                                          addProductServices.selectedCategory;
+                                      addProductServices.selectedCategory = addProductServices.selectedCategory;
                                     },
                                   ),
                                 ),
@@ -212,7 +205,6 @@ class ProductAmountCard extends StatelessWidget {
                       hint: "كمية البيع للمنتج الواحد",
                       controller: addProductServices.theAmountOfSalesPerProduct,
                       maxLength: 25,
-                      maxLengthEnforced: true,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -225,7 +217,6 @@ class ProductAmountCard extends StatelessWidget {
                 hint: 'الحد الادنى للعدد',
                 controller: addProductServices.quantityLimit,
                 maxLength: 25,
-                maxLengthEnforced: true,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),

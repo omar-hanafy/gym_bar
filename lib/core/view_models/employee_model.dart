@@ -58,18 +58,20 @@ class EmployeeModel extends ChangeNotifier {
   }
 
   List<Employee> filterEmployees({String selectedEmployeeType, List<Employee> liveEmployees}) {
-    if (selectedEmployeeType == "all") {
-      return liveEmployees;
-    } else
-      return liveEmployees.where((employee) => employee.type == selectedEmployeeType).toList();
+    if (liveEmployees == null) {
+      return [];
+    } else {
+      if (selectedEmployeeType == "all") {
+        return liveEmployees;
+      } else
+        return liveEmployees.where((employee) => employee.type == selectedEmployeeType).toList();
+    }
   }
 
   Future fetchEmployeeById({branchName, id}) async {
-    print("Printing IDDDDDDDD");
     print(id);
     _status = Status.Busy;
-    Employee employee =
-        await _db.collection("employees/branches/$branchName/").doc(id).get().then((snapshot) {
+    Employee employee = await _db.collection("employees/branches/$branchName/").doc(id).get().then((snapshot) {
       return Employee.fromMap(snapshot.data(), id);
     });
 
@@ -80,8 +82,10 @@ class EmployeeModel extends ChangeNotifier {
   }
 
   Stream<List<Employee>> fetchEmployeeStream({branchName}) {
-    return _db.collection("employees/branches/$branchName/").snapshots().map(
-        (snapShot) => snapShot.docs.map((doc) => Employee.fromMap(doc.data(), doc.id)).toList());
+    return _db
+        .collection("employees/branches/$branchName/")
+        .snapshots()
+        .map((snapShot) => snapShot.docs.map((doc) => Employee.fromMap(doc.data(), doc.id)).toList());
   }
 
   Future addEmployee({Employee employee, String branchName}) async {

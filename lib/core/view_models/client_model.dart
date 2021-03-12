@@ -58,18 +58,20 @@ class ClientModel extends ChangeNotifier {
   }
 
   List<Client> filterClients({String selectedClientType, List<Client> liveClients}) {
-    if (selectedClientType == "all") {
-      return liveClients;
-    } else
-      return liveClients.where((client) => client.type == selectedClientType).toList();
+    if (liveClients == null) {
+      return [];
+    } else {
+      if (selectedClientType == "all") {
+        return liveClients;
+      } else
+        return liveClients.where((client) => client.type == selectedClientType).toList();
+    }
   }
 
   Future fetchClientById({branchName, id}) async {
-    print("Printing IDDDDDDDD");
     print(id);
     _status = Status.Busy;
-    Client client =
-        await _db.collection("clients/branches/$branchName/").doc(id).get().then((snapshot) {
+    Client client = await _db.collection("clients/branches/$branchName/").doc(id).get().then((snapshot) {
       return Client.fromMap(snapshot.data(), id);
     });
 
@@ -80,8 +82,10 @@ class ClientModel extends ChangeNotifier {
   }
 
   Stream<List<Client>> fetchClientStream({branchName}) {
-    return _db.collection("clients/branches/$branchName/").snapshots().map(
-        (snapShot) => snapShot.docs.map((doc) => Client.fromMap(doc.data(), doc.id)).toList());
+    return _db
+        .collection("clients/branches/$branchName/")
+        .snapshots()
+        .map((snapShot) => snapShot.docs.map((doc) => Client.fromMap(doc.data(), doc.id)).toList());
   }
 
   Future addClient({Client client, String branchName}) async {

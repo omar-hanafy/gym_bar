@@ -50,3 +50,4 @@ ios/Flutter/.last_build_id
 ios/Podfile.lock
 ios/Flutter/.last_build_id
 pubspec.lock
+*.lock

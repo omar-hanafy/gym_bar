@@ -25,6 +25,7 @@ class AddProduct extends StatelessWidget {
     FormWidget _formWidget = FormWidget(context: context);
 
     var branchName = Provider.of<BranchModel>(context).selectedBranch;
+
     final List<Widget> addProductCards = [
       ProductDetailsCard(formKey: _productDetailsCardFormKey),
       ProductAmountCard(formKey: _productAmountCardFormKey),
@@ -59,9 +60,8 @@ class AddProduct extends StatelessWidget {
             wholesaleUnit: addProductServices.wholesaleUnit.text,
             theAmountOfSalesPerProduct: addProductServices.theAmountOfSalesPerProduct.text,
             supplierName: addProductServices.companyName.text,
-            wholesaleQuantity: addProductServices.selectedRadio == 1
-                ? addProductServices.wholesaleQuantity.text
-                : "0.0",
+            wholesaleQuantity:
+                addProductServices.selectedRadio == 1 ? addProductServices.wholesaleQuantity.text : "0.0",
             netTotalQuantity: addProductServices.netTotalQuantity(),
             photo: "photo"),
         branchName: branchName,
@@ -78,13 +78,7 @@ class AddProduct extends StatelessWidget {
               title: Text('تأكية إضافة المنتج'),
               content: Text('اختر اتمام لاضافة المنتج الان'),
               actions: <Widget>[
-                FlatButton(
-                  child: Text('الغاء'),
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop(); // Dismiss alert dialog
-                  },
-                ),
-                FlatButton(
+                TextButton(
                   child: Text('اتمام'),
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
@@ -93,6 +87,12 @@ class AddProduct extends StatelessWidget {
                       addProductServices.index = 0;
                       navigatePageToIndex();
                     });
+                  },
+                ),
+                TextButton(
+                  child: Text('الغاء'),
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop(); // Dismiss alert dialog
                   },
                 ),
               ],
@@ -196,8 +196,7 @@ class AddProduct extends StatelessWidget {
                         onTab: () {
                           FocusScope.of(context).requestFocus(FocusNode());
 
-                          addProductServices.index =
-                              addProductServices.index == 0 ? 0 : addProductServices.index - 1;
+                          addProductServices.index = addProductServices.index == 0 ? 0 : addProductServices.index - 1;
 
                           print("sliding back");
                           navigatePageToIndex();
