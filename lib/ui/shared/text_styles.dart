@@ -116,6 +116,11 @@ class TextStyles {
         fontFamily: 'Tajawal',
         color: Colors.black54,
       );
+  formLabelsStyleLight() => TextStyle(
+        fontSize: Dimensions(context).widthPercent(4),
+        fontFamily: 'Tajawal',
+        color: Colors.black54,
+      );
 
   formLabelsStyleBlack() => TextStyle(
         fontSize: Dimensions(context).widthPercent(5),

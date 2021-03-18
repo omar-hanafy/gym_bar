@@ -31,6 +31,7 @@ class FormWidget {
     controller,
     validator,
     hint,
+    hintStyle,
     ValueChanged<String> onChanged,
     secure = false,
     border = true,
@@ -76,7 +77,7 @@ class FormWidget {
             ),
             isDense: true,
 //            contentPadding: EdgeInsets.only(top: height, right: 10,),
-            labelStyle: _textStyles.formLabelsStyle(),
+            labelStyle:hintStyle==null? _textStyles.formLabelsStyle():hintStyle,
             labelText: hint,
 
 //          hintStyle: TextStyle(decoration: ),

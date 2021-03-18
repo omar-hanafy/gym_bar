@@ -22,6 +22,59 @@ class ProductDetailsCard extends StatelessWidget {
     CategoryModel categoryModel = Provider.of<CategoryModel>(context);
     List<Category> categories = categoryModel.categories;
 
+
+    Widget radioButtons() {
+      return Column(
+        children: <Widget>[
+          Row(
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Radio(
+                    value: 1,
+                    groupValue: addProductServices.selectedRadio,
+                    onChanged: (value) {
+                      addProductServices.selectedRadio = value;
+                    },
+                  ),
+                  Container(
+                    constraints: BoxConstraints(maxWidth: _dimensions.widthPercent(30)),
+                    child: Text(
+                      "اضافة الكمية الان",
+                      style: _textStyles.formLabelsStyle(),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                  )),
+              Row(
+                children: <Widget>[
+                  Radio(
+                      value: 2,
+                      groupValue: addProductServices.selectedRadio,
+                      onChanged: (value) {
+                        addProductServices.selectedRadio = value;
+                      }),
+                  Container(
+                    constraints: BoxConstraints(maxWidth: _dimensions.widthPercent(30)),
+                    child: Text(
+                      "اضافة المنتج فقط",
+                      style: _textStyles.formLabelsStyle(),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
+
     dropDownCategories() {
       return Column(
         children: [
@@ -130,14 +183,10 @@ class ProductDetailsCard extends StatelessWidget {
               ),
               _formWidget.formTextFieldTemplate(
                 hint: "الوصف",
-
                 // key: formKey,
                 controller: addProductServices.description,
               ),
-              _formWidget.formTextFieldTemplate(
-                hint: "اسم الشركه",
-                controller: addProductServices.companyName,
-              ),
+              radioButtons(),
             ],
           ),
         ),

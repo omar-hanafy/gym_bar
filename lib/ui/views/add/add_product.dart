@@ -44,31 +44,30 @@ class AddProduct extends StatelessWidget {
     }
 
     addProduct() async {
-      addProductServices.addingProduct = true;
       await productModel.addProduct(
         product: Product(
-            name: addProductServices.name.text,
-            category: addProductServices.selectedCategory,
-            description: addProductServices.description.text,
-            branch: branchName,
-            customerPrice: addProductServices.customerPrice.text,
-            employeePrice: addProductServices.employeePrice.text,
-            housePrice: addProductServices.housePrice.text,
-            quantityOfWholesaleUnit: addProductServices.quantityOfWholesaleUnit.text,
-            quantityLimit: addProductServices.quantityLimit.text,
-            unit: addProductServices.unit.text,
-            wholesaleUnit: addProductServices.wholesaleUnit.text,
-            theAmountOfSalesPerProduct: addProductServices.theAmountOfSalesPerProduct.text,
-            supplierName: addProductServices.companyName.text,
-            wholesaleQuantity:
-                addProductServices.selectedRadio == 1 ? addProductServices.wholesaleQuantity.text : "0.0",
-            netTotalQuantity: addProductServices.netTotalQuantity().toString(),
-            photo: "photo",
-            limit: productModel.checkLimit(
-                addProductServices.netTotalQuantity(), double.parse(addProductServices.quantityLimit.text))),
+          name: addProductServices.name.text,
+          category: addProductServices.selectedCategory,
+          description: addProductServices.description.text,
+          branch: branchName,
+          photo: "photo",
+          customerPrice: addProductServices.customerPrice.text,
+          employeePrice: addProductServices.employeePrice.text,
+          housePrice: addProductServices.housePrice.text,
+          unit: addProductServices.unit.text,
+          netQuantityOfUnit: addProductServices.netQuantityOfUnit(addProductServices.quantityPerWholesaleUnit.text),
+          wholesaleUnit: addProductServices.wholesaleUnit.text,
+          netQuantityOfWholesaleUnit:
+              addProductServices.netQuantityOfWholesaleUnit(addProductServices.quantityPerWholesaleUnit.text),
+          quantityPerWholesaleUnit: addProductServices.quantityPerWholesaleUnit.text,
+          quantityLimit: addProductServices.quantityLimit.text,
+          reachLimit: productModel.checkLimit(
+            addProductServices.netQuantityOfUnit(addProductServices.quantityPerWholesaleUnit.text),
+            double.parse(addProductServices.quantityLimit.text),
+          ),
+        ),
         branchName: branchName,
       );
-      addProductServices.addingProduct = false;
     }
 
     _confirmAddProduct() => showDialog<void>(
@@ -83,11 +82,13 @@ class AddProduct extends StatelessWidget {
                 TextButton(
                   child: Text('اتمام'),
                   onPressed: () {
+                    addProductServices.addingProduct = true;
                     Navigator.of(dialogContext).pop();
                     addProduct().then((value) {
                       addProductServices.clear();
                       addProductServices.index = 0;
                       navigatePageToIndex();
+                      addProductServices.addingProduct = false;
                     });
                   },
                 ),
@@ -113,7 +114,7 @@ class AddProduct extends StatelessWidget {
             );
           }
         },
-        text: "اتمام",
+        text: "التالي",
         context: context,
       );
     }

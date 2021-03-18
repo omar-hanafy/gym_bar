@@ -88,7 +88,8 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String checkLimit(double netTotalQuantity, quantityLimit) {
+  String checkLimit(String nTotalQuantity, quantityLimit) {
+    double netTotalQuantity = double.parse(nTotalQuantity);
     if (netTotalQuantity <= quantityLimit) {
       return "true";
     } else
@@ -112,7 +113,7 @@ class ProductModel extends ChangeNotifier {
   Stream<List<Product>> fetchProductStreamByLimit(branchName) {
     return _db
         .collection("products/branches/$branchName/")
-        .where("limit", isEqualTo: "true")
+        .where("reachLimit", isEqualTo: "true")
         .snapshots()
         .map((snapShot) => snapShot.docs.map((doc) => Product.fromMap(doc.data(), doc.id)).toList());
   }
