@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gym_bar/core/models/product.dart';
@@ -69,11 +70,15 @@ class ProductProfile extends StatelessWidget {
           children: <Widget>[
             SizedBox(height: _dimensions.heightPercent(2)),
             FormWidget(context: context).logo(
-              imageContent: Image.asset(
+              imageContent:product.photo == "photo"? Image.asset(
                 "assets/images/details/products.jpeg",
                 width: double.infinity,
                 height: double.infinity,
                 fit: BoxFit.contain,
+              ): CachedNetworkImage(
+                imageUrl: product.photo,
+                placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => new Icon(Icons.error),
               ),
             ),
             SizedBox(height: _dimensions.heightPercent(2)),

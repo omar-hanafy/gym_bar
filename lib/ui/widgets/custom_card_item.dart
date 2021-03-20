@@ -47,15 +47,14 @@ class CustomCardItem {
                   child: Opacity(
                     opacity: 0.4,
                     child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: assetImage == null
-                          ? CachedNetworkImage(
-                              imageUrl: networkImage,
-                              placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) => new Icon(Icons.error),
-                            )
-                          : Image.asset(assetImage),
-                    ),
+                        fit: BoxFit.fill,
+                        child: networkImage == null || networkImage == "photo" || networkImage.length < 0
+                            ? Image.asset(assetImage)
+                            : CachedNetworkImage(
+                          imageUrl: networkImage,
+                          placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => new Icon(Icons.error),
+                        ),),
                   ),
                 ),
                 if (statistics == null)

@@ -77,7 +77,7 @@ class FormWidget {
             ),
             isDense: true,
 //            contentPadding: EdgeInsets.only(top: height, right: 10,),
-            labelStyle:hintStyle==null? _textStyles.formLabelsStyle():hintStyle,
+            labelStyle: hintStyle == null ? _textStyles.formLabelsStyle() : hintStyle,
             labelText: hint,
 
 //          hintStyle: TextStyle(decoration: ),
